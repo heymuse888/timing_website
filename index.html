@@ -56,10 +56,10 @@
 				line-height: 1.5;
 			}
 			#work h2.major {
-				font-size: 1.1em;
-				letter-spacing: 0.03em;
+				font-size: 1.3em;
 				line-height: 1.4;
 				margin-bottom: 1.5em;
+				white-space: normal; /* Allow text to wrap */
 			}
 			.features-grid {
 				display: grid;
@@ -76,6 +76,11 @@
 				transition: all 0.3s ease;
 				border: 1px solid rgba(255, 255, 255, 0.1);
 				text-align: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 200px;
 			}
 			
 			.feature-card:hover {
@@ -104,6 +109,10 @@
 				-webkit-background-clip: text;
 				-webkit-text-fill-color: transparent;
 				transition: all 0.3s ease;
+				display: inline-block;
+				width: auto;
+				height: auto;
+				min-height: 40px;
 			}
 			
 			.feature-card:hover .icon {
@@ -195,29 +204,33 @@
 			@media screen and (max-width: 736px) {
 				.features-grid {
 					grid-template-columns: 1fr;
-					gap: 1em;
-					margin: 1em 0;
+					gap: 1.5em;
+					margin: 1.5em 0;
 					padding: 0 1em;
 				}
 
 				.feature-card {
-					padding: 1em;
-					margin-bottom: 0.5em;
+					padding: 1.5em;
+					margin-bottom: 0;
+					min-height: 180px;
 				}
 
 				.feature-card .icon {
-					font-size: 1.5em;
-					margin-bottom: 0.3em;
+					font-size: 1.8em;
+					margin-bottom: 0.8em;
+					min-height: 35px;
 				}
 
 				.feature-card h3 {
-					font-size: 1em;
-					margin-bottom: 0.5em;
+					font-size: 1.1em;
+					margin-bottom: 0.8em;
+					padding: 0 0.5em;
 				}
 
 				.feature-card p {
-					font-size: 0.8em;
-					line-height: 1.4;
+					font-size: 0.9em;
+					line-height: 1.5;
+					padding: 0 0.5em;
 				}
 
 				#work {
@@ -225,8 +238,8 @@
 				}
 
 				#work h2.major {
-					font-size: 1em;
-					margin-bottom: 1em;
+					font-size: 1.1em;
+					padding: 0 0.5em;
 				}
 
 				.subtitle {
@@ -249,6 +262,33 @@
 				/* Ensure the content stays within view */
 				#main article {
 					margin-top: -0.5em;
+				}
+
+				#intro h2.major {
+					font-size: 1.2em;
+				}
+			}
+
+			@media screen and (max-width: 480px) {
+				.feature-card {
+					padding: 1.2em;
+					min-height: 160px;
+				}
+
+				.feature-card .icon {
+					font-size: 1.6em;
+					margin-bottom: 0.6em;
+					min-height: 30px;
+				}
+
+				.feature-card h3 {
+					font-size: 1em;
+					margin-bottom: 0.6em;
+				}
+
+				.feature-card p {
+					font-size: 0.85em;
+					line-height: 1.4;
 				}
 			}
 
@@ -351,7 +391,7 @@
 
 						<!-- Work -->
 							<article id="work">
-								<h2 class="major">Energy Projection X Productivity Management = Flow with Time</h2>
+								<h2 class="major">Energy Projection<br />X<br />Productivity Management<br />=<br />Flow with Time</h2>
 								<p class="subtitle">Let energy shape your calendar</p>
 								<span class="image main"><img src="images/pic02_eng.jpg" alt="" /></span>
 								
