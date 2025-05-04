@@ -1,0 +1,326 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh">
+	<head>
+		<title>Dimension - 中文版</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			.lang-switch {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				z-index: 1000;
+			}
+			.lang-switch a {
+				display: inline-block;
+				padding: 8px 15px;
+				background: rgba(255, 255, 255, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.3);
+				border-radius: 4px;
+				color: #ffffff;
+				text-decoration: none;
+				font-size: 0.8em;
+				letter-spacing: 2px;
+				transition: all 0.3s ease;
+			}
+			.lang-switch a:hover {
+				background: rgba(255, 255, 255, 0.2);
+				border-color: rgba(255, 255, 255, 0.5);
+			}
+			.logo {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.logo img {
+				width: 7em;
+				height: 7em;
+				object-fit: contain;
+				padding: 1em;
+			}
+			.subtitle {
+				font-size: 0.9em;
+				margin-top: 1em;
+				color: rgba(255, 255, 255, 0.75);
+				letter-spacing: 0.1em;
+				line-height: 1.5;
+			}
+			.features-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2em;
+				margin: 2em 0;
+			}
+			
+			.feature-card {
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 10px;
+				padding: 1.5em;
+				transition: all 0.3s ease;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				text-align: center;
+			}
+			
+			.feature-card:hover {
+				background: rgba(255, 255, 255, 0.1);
+				transform: translateY(-5px);
+			}
+			
+			.feature-card h3 {
+				color: #ffffff;
+				font-size: 1.2em;
+				margin-bottom: 0.8em;
+				letter-spacing: 0.05em;
+			}
+			
+			.feature-card p {
+				color: rgba(255, 255, 255, 0.7);
+				font-size: 0.9em;
+				line-height: 1.6;
+				margin: 0;
+			}
+
+			.feature-card .icon {
+				font-size: 2em;
+				margin-bottom: 0.5em;
+				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				transition: all 0.3s ease;
+			}
+			
+			.feature-card:hover .icon {
+				background: linear-gradient(45deg, #b784ff, #84a0ff);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+			
+			.cta-section {
+				text-align: center;
+				padding: 2em 0;
+			}
+			
+			.cta-title {
+				font-size: 2em;
+				margin-bottom: 0.5em;
+				line-height: 1.4;
+			}
+			
+			.cta-subtitle {
+				font-size: 1.2em;
+				color: rgba(255, 255, 255, 0.8);
+				margin-bottom: 2em;
+				line-height: 1.6;
+			}
+			
+			.cta-button {
+				display: inline-block;
+				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+				color: #ffffff;
+				padding: 1em 2em;
+				border-radius: 30px;
+				font-size: 1.1em;
+				letter-spacing: 0.1em;
+				transition: all 0.3s ease;
+				border: none;
+				cursor: pointer;
+				box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+			}
+			
+			.cta-button:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(159, 108, 247, 0.4);
+				background: linear-gradient(45deg, #b784ff, #84a0ff);
+			}
+			
+			.highlight {
+				color: #9f6cf7;
+				font-weight: bold;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+				}
+				50% {
+					transform: scale(1.05);
+					box-shadow: 0 8px 25px rgba(159, 108, 247, 0.5);
+				}
+				100% {
+					transform: scale(1);
+					box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+				}
+			}
+
+			.header-cta .cta-button {
+				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+				color: #ffffff;
+				padding: 0.8em 2em;
+				border-radius: 30px;
+				font-size: 1.2em;
+				letter-spacing: 0.15em;
+				transition: all 0.3s ease;
+				border: none;
+				cursor: pointer;
+				box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+				animation: pulse 2s infinite;
+				text-transform: uppercase;
+			}
+
+			.header-cta .cta-button:hover {
+				transform: translateY(-2px) scale(1.05);
+				box-shadow: 0 8px 25px rgba(159, 108, 247, 0.5);
+				background: linear-gradient(45deg, #b784ff, #84a0ff);
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+		<div class="lang-switch">
+			<a href="index.html">English Version</a>
+		</div>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="logo">
+							<img src="images/LOGO.png" alt="Logo" />
+						</div>
+						<div class="content">
+							<div class="inner">
+								<h1>打造人生作弊系统</h1>
+								<p>属于你的「 行动节律指南 」助你顺势而为</p>
+								<div class="header-cta" style="margin-top: 2em;">
+									<a href="#" class="cta-button" style="font-size: 1.2em; padding: 0.8em 2em; text-transform: uppercase; letter-spacing: 0.15em; animation: pulse 2s infinite;">点击获取邀请码</a>
+								</div>
+							</div>
+						</div>
+						<nav>
+							<ul>
+								<li><a href="#intro">简介</a></li>
+								<li><a href="#work">功能</a></li>
+								<li><a href="#about">开启旅程</a></li>
+								<li><a href="#contact">联系</a></li>
+								<!--<li><a href="#elements">元素</a></li>-->
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Intro -->
+							<article id="intro">
+								<h2 class="major">致每一个努力生活的你</h2>
+								<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+								<p>你是否有过深夜辗转反侧</p>
+								<p>拼命奔跑却像踩在棉花上，想破局却迷茫无措，不知如何达到理想目标？</p>
+								<p>当撞上「能量暗礁」，再努力也只是原地打转。</p>
+								<p>让Timing成为你的「人生作弊系统」</p>
+								<p>用玄学能量校准行动频率，让每一步都踩在「顺势点」上，达到事半功倍。</p>
+							</article>
+
+						<!-- Work -->
+							<article id="work">
+								<h2 class="major">能量推演 × 效率管理 = 顺势而为</h2>
+								<p class="subtitle">你的专属AI 为你拆解目标，进行日程能量校准，让努力自带「趋势加成」</p>
+								<span class="image main"><img src="images/pic02.jpg" alt="行动能量评分曲线" /></span>
+								
+								<div class="features-grid">
+									<div class="feature-card">
+										<i class="icon solid fa-road"></i>
+										<h3>长期生活规划</h3>
+										<p>提前布局机遇爆发期<br />蓄能能量低谷</p>
+									</div>
+									
+									<div class="feature-card">
+										<i class="icon solid fa-compass"></i>
+										<h3>专属运势导航</h3>
+										<p>每日能量趋势分析<br />标注高能行动时段</p>
+									</div>
+									
+									<div class="feature-card">
+										<i class="icon solid fa-tasks"></i>
+										<h3>目标拆解 行动落地</h3>
+										<p>将宏大的目标拆解<br>为用户落地的能量节点行动<br>我们不卷时间 我们顺势而为</p>
+									</div>
+									
+									<div class="feature-card">
+										<i class="icon solid fa-users"></i>
+										<h3>社区共赢</h3>
+										<p>与共振的灵魂同行<br />与丢失的自己和解</p>
+									</div>
+								</div>
+							</article>
+
+						<!-- About -->
+							<article id="about">
+								<div class="cta-section">
+									<h2 class="cta-title">现在开始</h2>
+									<h3 class="cta-subtitle">打造你的「人生作弊系统」<br>
+									开启 <span class="highlight">「顺势而为」</span> 模式</h3>
+									<a href="#" class="cta-button">点击获取邀请码</a>
+								</div>
+							</article>
+
+						<!-- Contact -->
+							<article id="contact">
+								<h2 class="major">联系我们</h2>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half">
+											<label for="name">姓名</label>
+											<input type="text" name="name" id="name" />
+										</div>
+										<div class="field half">
+											<label for="email">邮箱</label>
+											<input type="text" name="email" id="email" />
+										</div>
+										<div class="field">
+											<label for="message">留言</label>
+											<textarea name="message" id="message" rows="4"></textarea>
+										</div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="发送消息" class="primary" /></li>
+										<li><input type="reset" value="重置" /></li>
+									</ul>
+								</form>
+								<ul class="icons">
+									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+								</ul>
+							</article>
+
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<p class="copyright">© 2025 Timing 版权所有 </p>
+					</footer>
+
+			</div>
+
+		<!-- BG -->
+			<div id="bg"></div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html> 
