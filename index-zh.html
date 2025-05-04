@@ -6,7 +6,7 @@
 -->
 <html lang="zh">
 	<head>
-		<title>Dimension - 中文版</title>
+		<title>Timing - 人生作弊系统</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -57,12 +57,13 @@
 				grid-template-columns: repeat(2, 1fr);
 				gap: 2em;
 				margin: 2em 0;
+				max-width: 100%;
 			}
 			
 			.feature-card {
 				background: rgba(255, 255, 255, 0.05);
 				border-radius: 10px;
-				padding: 1.5em;
+				padding: 1.2em;
 				transition: all 0.3s ease;
 				border: 1px solid rgba(255, 255, 255, 0.1);
 				text-align: center;
@@ -179,6 +180,108 @@
 				transform: translateY(-2px) scale(1.05);
 				box-shadow: 0 8px 25px rgba(159, 108, 247, 0.5);
 				background: linear-gradient(45deg, #b784ff, #84a0ff);
+			}
+
+			/* Mobile Responsive Styles */
+			@media screen and (max-width: 736px) {
+				.features-grid {
+					grid-template-columns: 1fr;
+					gap: 1em;
+					margin: 1em 0;
+					padding: 0 1em;
+				}
+
+				.feature-card {
+					padding: 1em;
+					margin-bottom: 0.5em;
+				}
+
+				.feature-card .icon {
+					font-size: 1.5em;
+					margin-bottom: 0.3em;
+				}
+
+				.feature-card h3 {
+					font-size: 1em;
+					margin-bottom: 0.5em;
+				}
+
+				.feature-card p {
+					font-size: 0.8em;
+					line-height: 1.4;
+				}
+
+				#work {
+					padding: 2em 1em;
+				}
+
+				#work h2.major {
+					font-size: 1em;
+					margin-bottom: 1em;
+				}
+
+				.subtitle {
+					font-size: 0.8em;
+					margin-bottom: 1em;
+				}
+
+				#main article {
+					padding-top: 5em;  /* Increased from 3.5em to 5em */
+				}
+				
+				#main article .close {
+					top: 2.5em;  /* Increased from 1.5em to 2.5em */
+				}
+				
+				#work h2.major {
+					margin-top: 1.5em;  /* Increased from 1em to 1.5em */
+				}
+
+				/* Ensure the content stays within view */
+				#main article {
+					margin-top: -0.5em;  /* Adjust overall position to compensate for extra padding */
+				}
+			}
+
+			/* Ensure background image covers properly */
+			@media screen and (max-width: 736px) {
+				#work .image.main {
+					margin: 1em 0;
+				}
+				
+				#work .image.main img {
+					width: 100%;
+					height: auto;
+					object-fit: cover;
+				}
+			}
+
+			.footnote {
+				font-size: 10px;
+				color: rgba(255, 255, 255, 0.3);
+				margin-top: 4em;
+				padding-top: 0.5em;
+				text-align: center;
+				letter-spacing: 0.5px;
+				border-top: solid 1px rgba(255, 255, 255, 0.05);
+			}
+
+			.footnote a {
+				color: rgba(255, 255, 255, 0.3);
+				text-decoration: none;
+				border-bottom: dotted 1px rgba(255, 255, 255, 0.1);
+			}
+
+			.footnote a:hover {
+				color: rgba(255, 255, 255, 0.4);
+				border-bottom-color: rgba(255, 255, 255, 0.2);
+			}
+
+			@media screen and (max-width: 736px) {
+				.footnote {
+					font-size: 8px;
+					margin-top: 3em;
+				}
 			}
 		</style>
 	</head>
@@ -301,14 +404,13 @@
 									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 								</ul>
+								<div style="height: 1em"></div>
+								<div class="footnote">
+									© 2025 Timing. 视觉参考 <a href="https://html5up.net">HTML5 UP</a>
+								</div>
 							</article>
 
 					</div>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<p class="copyright">© 2025 Timing 版权所有 </p>
-					</footer>
 
 			</div>
 
