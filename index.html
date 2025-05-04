@@ -71,7 +71,7 @@
 			
 			.feature-card {
 				background: rgba(255, 255, 255, 0.05);
-				border-radius: 10px;
+				border-radius: 15px;
 				padding: 1.2em;
 				transition: all 0.3s ease;
 				border: 1px solid rgba(255, 255, 255, 0.1);
@@ -81,6 +81,7 @@
 				align-items: center;
 				justify-content: center;
 				min-height: 200px;
+				overflow: hidden;
 			}
 			
 			.feature-card:hover {
@@ -144,7 +145,7 @@
 				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
 				color: #ffffff;
 				padding: 1em 2em;
-				border-radius: 30px;
+				border-radius: 12px;
 				font-size: 1.1em;
 				letter-spacing: 0.1em;
 				transition: all 0.3s ease;
@@ -183,7 +184,7 @@
 				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
 				color: #ffffff;
 				padding: 0.8em 2em;
-				border-radius: 30px;
+				border-radius: 12px;
 				font-size: 1.2em;
 				letter-spacing: 0.15em;
 				transition: all 0.3s ease;
@@ -213,6 +214,7 @@
 					padding: 1.5em;
 					margin-bottom: 0;
 					min-height: 180px;
+					border-radius: 12px;
 				}
 
 				.feature-card .icon {
@@ -249,6 +251,7 @@
 
 				#main article {
 					padding-top: 5em;
+					border-radius: 15px;
 				}
 				
 				#main article .close {
@@ -332,6 +335,127 @@
 					margin-top: 3em;
 				}
 			}
+
+			/* English title specific styles */
+			.en-title {
+				font-size: 1.3em;
+				line-height: 1.4;
+				margin-bottom: 1.5em;
+			}
+
+			.en-title .first-line {
+				white-space: nowrap;
+				display: block;
+				margin-bottom: 0.3em;
+			}
+
+			.en-title .second-line {
+				display: block;
+			}
+
+			@media screen and (max-width: 736px) {
+				.en-title {
+					font-size: 1.1em;
+					padding: 0 0.5em;
+				}
+				
+				.en-title .first-line {
+					white-space: normal;
+					margin-bottom: 0.2em;
+				}
+			}
+
+			/* Introduction title specific styles */
+			#intro h2.major {
+				font-size: 1.3em;
+				line-height: 1.4;
+				margin-bottom: 1.5em;
+				letter-spacing: 0.1em;
+			}
+
+			#intro p {
+				font-size: 0.95em;
+				line-height: 1.8;
+				margin-bottom: 1.2em;
+			}
+
+			@media screen and (max-width: 736px) {
+				#intro h2.major {
+					font-size: 1.1em;
+					margin-bottom: 1.2em;
+					padding: 0 0.5em;
+				}
+
+				#intro p {
+					font-size: 0.9em;
+					line-height: 1.6;
+					margin-bottom: 1em;
+				}
+			}
+
+			@media screen and (max-width: 480px) {
+				#intro h2.major {
+					font-size: 1em;
+					margin-bottom: 1em;
+				}
+
+				#intro p {
+					font-size: 0.85em;
+					line-height: 1.5;
+				}
+			}
+
+			/* Rounded corners for all article backgrounds */
+			#main article {
+				border-radius: 20px;
+				overflow: hidden;
+			}
+
+			/* Round the form elements */
+			input[type="text"],
+			input[type="password"],
+			input[type="email"],
+			input[type="tel"],
+			select,
+			textarea {
+				border-radius: 12px;
+			}
+
+			/* Round the buttons */
+			.cta-button,
+			input[type="submit"],
+			input[type="reset"],
+			input[type="button"],
+			button,
+			.button {
+				border-radius: 12px;
+			}
+
+			/* Round the navigation menu */
+			#header nav ul {
+				border-radius: 12px;
+				overflow: hidden;
+			}
+
+			/* Round the social icons */
+			ul.icons li a {
+				border-radius: 12px;
+			}
+
+			/* Round the close button */
+			#main article .close:before {
+				border-radius: 15px;
+			}
+
+			@media screen and (max-width: 736px) {
+				#main article {
+					border-radius: 15px;
+				}
+				
+				.feature-card {
+					border-radius: 12px;
+				}
+			}
 		</style>
 	</head>
 	<body class="is-preload">
@@ -391,7 +515,10 @@
 
 						<!-- Work -->
 							<article id="work">
-								<h2 class="major">Energy Projection<br />X<br />Productivity Management<br />=<br />Flow with Time</h2>
+								<h2 class="major en-title">
+									<span class="first-line">Energy Projection X Productivity Management</span>
+									<span class="second-line">= Flow with Time</span>
+								</h2>
 								<p class="subtitle">Let energy shape your calendar</p>
 								<span class="image main"><img src="images/pic02_eng.jpg" alt="" /></span>
 								
