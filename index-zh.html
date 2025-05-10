@@ -11,7 +11,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:;">
 		<meta http-equiv="X-Content-Type-Options" content="nosniff">
-		<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+		<link rel="icon" type="image/x-icon" href="/favicon.ico">
+		<link rel="icon" type="image/png" href="/favicon.png">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 		<link rel="stylesheet" href="/assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
 		<style>
@@ -430,7 +432,7 @@
 								<h1>打造人生作弊系统</h1>
 								<p>属于你的「 行动节律指南 」助你顺势而为</p>
 								<div class="header-cta" style="margin-top: 2em;">
-									<a href="#" class="cta-button" style="font-size: 1.2em; padding: 0.8em 2em; text-transform: uppercase; letter-spacing: 0.15em; animation: pulse 2s infinite;">点击获取邀请码</a>
+									<a href="#contact" class="cta-button" style="font-size: 1.2em; padding: 0.8em 2em; text-transform: uppercase; letter-spacing: 0.15em; animation: pulse 2s infinite;">获取邀请码</a>
 								</div>
 							</div>
 						</div>
@@ -505,23 +507,28 @@
 						<!-- Contact -->
 							<article id="contact">
 								<h2 class="major">联系我们</h2>
-								<form method="post" action="#">
+								<p class="subtitle" style="text-align: center; margin-bottom: 2em;">填写邮箱获取 Timing 邀请码</p>
+								<form method="post" action="mailto:support@sparkingtiming.com" enctype="text/plain">
 									<div class="fields">
-										<div class="field half">
+										<div class="field">
 											<label for="name">姓名</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">邮箱</label>
-											<input type="text" name="email" id="email" />
+											<input type="text" name="name" id="name" required placeholder="请输入您的姓名" />
 										</div>
 										<div class="field">
-											<label for="message">留言</label>
-											<textarea name="message" id="message" rows="4"></textarea>
+											<label for="email">邮箱地址</label>
+											<input type="email" name="email" id="email" required placeholder="请输入您的邮箱地址" />
+										</div>
+										<div class="field">
+											<label for="subject">主题</label>
+											<input type="text" name="subject" id="subject" value="Timing邀请码申请" readonly />
+										</div>
+										<div class="field">
+											<label for="message">留言（选填）</label>
+											<textarea name="message" id="message" rows="4" placeholder="有什么想对我们说的吗？"></textarea>
 										</div>
 									</div>
 									<ul class="actions">
-										<li><input type="submit" value="发送消息" class="primary" /></li>
+										<li><input type="submit" value="获取邀请码" class="primary" /></li>
 										<li><input type="reset" value="重置" /></li>
 									</ul>
 								</form>
