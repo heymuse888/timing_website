@@ -11,11 +11,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: https:;">
 		<meta http-equiv="X-Content-Type-Options" content="nosniff">
-		<link rel="icon" type="image/x-icon" href="/favicon.ico">
-		<link rel="icon" type="image/png" href="/favicon.png">
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-		<link rel="stylesheet" href="/assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
+		<link rel="icon" type="image/png" href="favicon.png">
+		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<script>
+			// 根据当前环境设置正确的资源路径
+			(function() {
+				var isLocal = window.location.hostname === '' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+				var basePath = isLocal ? '' : '/';
+				
+				// 添加CSS文件
+				var mainCss = document.createElement('link');
+				mainCss.rel = 'stylesheet';
+				mainCss.href = basePath + 'assets/css/main.css';
+				document.head.appendChild(mainCss);
+				
+				// 添加noscript CSS
+				var noscriptCss = document.createElement('link');
+				noscriptCss.rel = 'stylesheet';
+				noscriptCss.href = basePath + 'assets/css/noscript.css';
+				noscriptCss.setAttribute('media', 'none');
+				document.head.appendChild(noscriptCss);
+				
+				// 更新图标路径
+				document.querySelector('link[rel="icon"][type="image/x-icon"]').href = basePath + 'favicon.ico';
+				document.querySelector('link[rel="icon"][type="image/png"]').href = basePath + 'favicon.png';
+				document.querySelector('link[rel="apple-touch-icon"]').href = basePath + 'apple-touch-icon.png';
+			})();
+		</script>
 		<style>
 			.lang-switch {
 				position: fixed;
