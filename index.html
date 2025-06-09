@@ -14,30 +14,24 @@
 		<link rel="icon" type="image/x-icon" href="favicon.ico">
 		<link rel="icon" type="image/png" href="favicon.png">
 		<link rel="apple-touch-icon" href="apple-touch-icon.png">
+		<!-- Prevent FOUC -->
+		<style>
+			.js-loading * {
+				display: none;
+			}
+		</style>
 		<script>
-			// 根据当前环境设置正确的资源路径
-			(function() {
-				var isLocal = window.location.hostname === '' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-				var basePath = isLocal ? '' : '/';
-				
-				// 添加CSS文件
-				var mainCss = document.createElement('link');
-				mainCss.rel = 'stylesheet';
-				mainCss.href = basePath + 'assets/css/main.css';
-				document.head.appendChild(mainCss);
-				
-				// 添加noscript CSS
-				var noscriptCss = document.createElement('link');
-				noscriptCss.rel = 'stylesheet';
-				noscriptCss.href = basePath + 'assets/css/noscript.css';
-				noscriptCss.setAttribute('media', 'none');
-				document.head.appendChild(noscriptCss);
-				
-				// 更新图标路径
-				document.querySelector('link[rel="icon"][type="image/x-icon"]').href = basePath + 'favicon.ico';
-				document.querySelector('link[rel="icon"][type="image/png"]').href = basePath + 'favicon.png';
-				document.querySelector('link[rel="apple-touch-icon"]').href = basePath + 'apple-touch-icon.png';
-			})();
+			// Add js-loading class to body
+			document.documentElement.className = 'js-loading';
+		</script>
+		<!-- Load CSS directly -->
+		<link rel="stylesheet" href="assets/css/main.css">
+		<link rel="stylesheet" href="assets/css/noscript.css" media="none">
+		<script>
+			// Remove js-loading class when page is ready
+			window.addEventListener('DOMContentLoaded', (event) => {
+				document.documentElement.className = document.documentElement.className.replace('js-loading','');
+			});
 		</script>
 		<style>
 			.lang-switch {
@@ -638,7 +632,15 @@
 			<div id="bg"></div>
 
 		<!-- Scripts -->
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+			<script src="assets/js/jquery.min.js"></script>
+			<script>
+				// Fallback to CDN if local file fails to load
+				if (typeof jQuery === 'undefined') {
+					document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+					// Additional fallback to a Chinese CDN
+					document.write('<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+				}
+			</script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
