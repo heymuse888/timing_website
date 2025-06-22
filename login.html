@@ -1,0 +1,491 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>登录 - SparkingTiming</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/navigation.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<style>
+		/* Login page specific styles */
+		.login-container {
+			position: relative;
+			z-index: 3;
+			min-height: calc(100vh - 5rem);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 2rem 2rem;
+		}
+
+		.login-content {
+			background-color: rgba(27, 31, 34, 0.85);
+			border-radius: 12px;
+			padding: 3rem 2.5rem 2rem 2.5rem;
+			width: 28rem;
+			max-width: 100%;
+			position: relative;
+		}
+
+		.login-title {
+			text-align: center;
+			color: #ffffff;
+			font-size: 1.8rem;
+			font-weight: 300;
+			margin-bottom: 2rem;
+			letter-spacing: 0.1em;
+		}
+
+		.form-group {
+			margin-bottom: 1.5rem;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+			color: #ffffff;
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		.form-input {
+			width: 100%;
+			padding: 0.8rem 1rem;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			border-radius: 8px;
+			background: rgba(255, 255, 255, 0.05);
+			color: #ffffff;
+			font-size: 0.9rem;
+			transition: all 0.3s ease;
+			box-sizing: border-box;
+		}
+
+		.form-input:focus {
+			outline: none;
+			border-color: #9f6cf7;
+			background: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 0 0 3px rgba(159, 108, 247, 0.1);
+		}
+
+		.form-input::placeholder {
+			color: rgba(255, 255, 255, 0.5);
+		}
+
+		.checkbox-forgot-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin: 1.5rem 0 2rem 0;
+		}
+
+		.checkbox-group {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.checkbox-group input[type="checkbox"] {
+			width: 18px;
+			height: 18px;
+			accent-color: #9f6cf7;
+		}
+
+		.checkbox-group label {
+			margin: 0;
+			font-size: 0.9rem;
+			font-weight: 600;
+			color: #ffffff;
+			letter-spacing: 0.05em;
+		}
+
+		.forgot-password {
+			text-align: right;
+		}
+
+		.forgot-password a {
+			color: #ffffff;
+			text-decoration: none;
+			font-size: 0.85rem;
+			transition: color 0.3s ease;
+		}
+
+		.forgot-password a:hover {
+			color: rgba(255, 255, 255, 0.8);
+			text-decoration: underline;
+		}
+
+		.form-login-btn {
+			width: 100%;
+			background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+			color: #ffffff;
+			border: none;
+			padding: 1rem 2rem;
+			border-radius: 8px;
+			font-size: 1rem;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.form-login-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(159, 108, 247, 0.4);
+			background: linear-gradient(45deg, #b784ff, #84a0ff);
+		}
+
+		.register-link {
+			text-align: center;
+			margin-top: 2rem;
+			padding-top: 1.5rem;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+
+		.register-link p {
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 0.9rem;
+			margin-bottom: 0.5rem;
+		}
+
+		.register-link a {
+			color: #9f6cf7;
+			text-decoration: none;
+			font-weight: 600;
+			transition: color 0.3s ease;
+		}
+
+		.register-link a:hover {
+			color: #b784ff;
+		}
+
+		/* Mobile responsive */
+		@media screen and (max-width: 768px) {
+			.login-container {
+				padding: 0 1rem 1rem;
+			}
+
+			.login-content {
+				padding: 2.5rem 2rem 1.5rem 2rem;
+				width: 100%;
+			}
+
+			.login-title {
+				font-size: 1.5rem;
+			}
+		}
+
+		@media screen and (max-width: 600px) {
+			.login-container {
+				min-height: calc(100vh - 4rem);
+				padding: 0 1rem 1rem;
+			}
+		}
+
+		@media screen and (max-width: 480px) {
+			.login-container {
+				padding: 0 0.5rem 0.5rem;
+			}
+
+			.login-content {
+				padding: 2rem 1.5rem 1rem 1.5rem;
+				border-radius: 8px;
+			}
+		}
+	</style>
+	<body class="is-preload">
+		<!-- Top Navigation Bar (exactly same as intro page) -->
+		<nav class="top-navigation">
+			<div class="nav-container">
+				<div class="nav-logo" onclick="goToHomePage()" style="cursor: pointer;">
+					<img src="images/LOGO.png" alt="SparkingTiming Logo" />
+					<span class="logo-text">SparkingTiming</span>
+				</div>
+				<div class="nav-menu">
+					<a href="#" class="nav-item" id="nav-intro">简介</a>
+					<a href="#" class="nav-item" id="nav-work">功能</a>
+					<a href="#" class="nav-item" id="nav-curve">能量曲线</a>
+					<a href="#" class="nav-item" id="nav-contact">联系我们</a>
+				</div>
+				<div class="nav-auth">
+					<a href="#" class="login-btn" id="nav-login">登录</a>
+					<a href="#" class="signup-btn" id="nav-signup">注册</a>
+					<a href="#" class="lang-btn" id="nav-lang">ENG</a>
+				</div>
+			</div>
+		</nav>
+
+		<!-- Wrapper (same as intro page for background consistency) -->
+		<div id="wrapper">
+
+		<!-- Main Login Container -->
+		<div class="login-container">
+			<div class="login-content">
+				<h1 class="login-title" id="login-title">欢迎使用Timing</h1>
+				
+				<form id="loginForm" action="#" method="post">
+					<div class="form-group">
+						<label for="username" id="username-label">账号</label>
+						<input type="text" id="username" name="username" class="form-input" placeholder="" required>
+					</div>
+					
+					<div class="form-group">
+						<label for="password" id="password-label">密码</label>
+						<input type="password" id="password" name="password" class="form-input" placeholder="" required>
+					</div>
+					
+					<div class="checkbox-forgot-row">
+						<div class="checkbox-group">
+							<input type="checkbox" id="remember" name="remember">
+							<label for="remember" id="remember-label">保持登录状态</label>
+						</div>
+						
+						<div class="forgot-password">
+							<a href="#" id="forgotPassword">忘记密码</a>
+						</div>
+					</div>
+					
+					<button type="submit" class="form-login-btn" id="login-submit">登录</button>
+				</form>
+				
+				<div class="register-link">
+					<p id="register-text">还没有账户？</p>
+					<a href="#" id="register-link">立即注册</a>
+				</div>
+			</div>
+		</div>
+
+		</div>
+
+		<!-- BG -->
+		<div id="bg"></div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script>
+			// Fallback to CDN if local file fails to load
+			if (typeof jQuery === 'undefined') {
+				document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+				// Additional fallback to a Chinese CDN
+				document.write('<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+			}
+		</script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<!-- Navigation handling -->
+		<script src="assets/js/navigation.js"></script>
+		
+		<script>
+			// Language detection and content switching
+			let currentLanguage = 'zh'; // Default to Chinese
+			
+			// Detect language from URL parameters or referrer
+			function detectLanguage() {
+				const urlParams = new URLSearchParams(window.location.search);
+				const langParam = urlParams.get('lang');
+				
+				// Priority 1: URL parameter
+				if (langParam === 'en') {
+					return 'en';
+				} else if (langParam === 'zh') {
+					return 'zh';
+				}
+				
+				// Priority 2: Check referrer
+				const referrer = document.referrer;
+				if (referrer) {
+					// Check if coming from English pages
+					if (referrer.includes('index.html') && !referrer.includes('index-zh.html')) {
+						return 'en';
+					}
+					// Check if coming from Chinese pages
+					if (referrer.includes('index-zh.html')) {
+						return 'zh';
+					}
+					// Check for language parameters in referrer
+					if (referrer.includes('lang=en')) {
+						return 'en';
+					}
+					if (referrer.includes('lang=zh')) {
+						return 'zh';
+					}
+				}
+				
+				return 'zh'; // Default to Chinese
+			}
+			
+			// Language content
+			const content = {
+				zh: {
+					title: 'SparkingTiming - 登录',
+					loginTitle: '欢迎使用Timing',
+					usernameLabel: '账号',
+					usernamePlaceholder: '请输入账号',
+					passwordLabel: '密码',
+					passwordPlaceholder: '请输入密码',
+					rememberLabel: '保持登录状态',
+					forgotPassword: '忘记密码',
+					loginSubmit: '登录',
+					registerText: '还没有账户？',
+					registerLink: '立即注册',
+					navIntro: '简介',
+					navWork: '功能',
+					navCurve: '能量曲线',
+					navContact: '联系我们',
+					navLogin: '登录',
+					navSignup: '注册',
+					navLang: 'ENG'
+				},
+				en: {
+					title: 'SparkingTiming - Login',
+					loginTitle: 'Welcome to Timing',
+					usernameLabel: 'Username',
+					usernamePlaceholder: 'Enter your username',
+					passwordLabel: 'Password',
+					passwordPlaceholder: 'Enter your password',
+					rememberLabel: 'Keep me logged in',
+					forgotPassword: 'Forgot Password',
+					loginSubmit: 'Login',
+					registerText: "Don't have an account?",
+					registerLink: 'Sign Up Now',
+					navIntro: 'Introduction',
+					navWork: 'Function',
+					navCurve: 'Energy Curve',
+					navContact: 'Contact',
+					navLogin: 'LOG IN',
+					navSignup: 'SIGN UP',
+					navLang: '中文'
+				}
+			};
+			
+			// Update page content based on language
+			function updateContent(lang) {
+				currentLanguage = lang;
+				const c = content[lang];
+				
+				// Update page title
+				document.title = c.title;
+				
+				// Update form content
+				document.getElementById('login-title').textContent = c.loginTitle;
+				document.getElementById('username-label').textContent = c.usernameLabel;
+				document.getElementById('username').placeholder = c.usernamePlaceholder;
+				document.getElementById('password-label').textContent = c.passwordLabel;
+				document.getElementById('password').placeholder = c.passwordPlaceholder;
+				document.getElementById('remember-label').textContent = c.rememberLabel;
+				document.getElementById('forgotPassword').textContent = c.forgotPassword;
+				document.getElementById('login-submit').textContent = c.loginSubmit;
+				document.getElementById('register-text').textContent = c.registerText;
+				document.getElementById('register-link').textContent = c.registerLink;
+				
+				// Update navigation
+				document.getElementById('nav-intro').textContent = c.navIntro;
+				document.getElementById('nav-work').textContent = c.navWork;
+				document.getElementById('nav-curve').textContent = c.navCurve;
+				document.getElementById('nav-contact').textContent = c.navContact;
+				document.getElementById('nav-login').textContent = c.navLogin;
+				document.getElementById('nav-signup').textContent = c.navSignup;
+				document.getElementById('nav-lang').textContent = c.navLang;
+				
+				// Update navigation links based on language
+				if (lang === 'zh') {
+					document.getElementById('nav-intro').href = 'index-zh.html#intro';
+					document.getElementById('nav-work').href = 'index-zh.html#work';
+					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=zh';
+					document.getElementById('nav-contact').href = 'index-zh.html#contact';
+					document.getElementById('nav-login').href = 'login.html?lang=zh';
+					document.getElementById('nav-signup').href = 'register.html?lang=zh';
+					document.getElementById('nav-lang').href = 'login.html?lang=en';
+				} else {
+					document.getElementById('nav-intro').href = 'index.html#intro';
+					document.getElementById('nav-work').href = 'index.html#work';
+					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=en';
+					document.getElementById('nav-contact').href = 'index.html#contact';
+					document.getElementById('nav-login').href = 'login.html?lang=en';
+					document.getElementById('nav-signup').href = 'register.html?lang=en';
+					document.getElementById('nav-lang').href = 'login.html?lang=zh';
+				}
+				
+				// Update nav-auth class for English page
+				const navAuth = document.querySelector('.nav-auth');
+				if (lang === 'en') {
+					navAuth.classList.add('english-page');
+				} else {
+					navAuth.classList.remove('english-page');
+				}
+			}
+			
+			// Language switching
+			document.getElementById('nav-lang').addEventListener('click', function(e) {
+				e.preventDefault();
+				const newLang = currentLanguage === 'zh' ? 'en' : 'zh';
+				updateContent(newLang);
+			});
+			
+			// Logo click handler
+			function goToHomePage() {
+				if (currentLanguage === 'zh') {
+					window.location.href = 'index-zh.html';
+				} else {
+					window.location.href = 'index.html';
+				}
+			}
+			
+			// Initialize language on page load
+			document.addEventListener('DOMContentLoaded', function() {
+				const detectedLang = detectLanguage();
+				updateContent(detectedLang);
+			});
+			
+			// Login form handling
+			document.getElementById('loginForm').addEventListener('submit', function(e) {
+				e.preventDefault();
+				
+				const username = document.getElementById('username').value;
+				const password = document.getElementById('password').value;
+				const remember = document.getElementById('remember').checked;
+				
+				if (!username || !password) {
+					const message = currentLanguage === 'zh' ? '请填写完整的账号和密码' : 'Please fill in username and password';
+					alert(message);
+					return;
+				}
+				
+				// TODO: 这里将来会连接到后端API
+				console.log('登录信息:', {
+					username: username,
+					password: password,
+					remember: remember,
+					language: currentLanguage
+				});
+				
+				// 临时提示
+				const message = currentLanguage === 'zh' ? '登录功能将在后端完成后启用' : 'Login functionality will be enabled after backend completion';
+				alert(message);
+			});
+			
+			// Forgot password handling
+			document.getElementById('forgotPassword').addEventListener('click', function(e) {
+				e.preventDefault();
+				const message = currentLanguage === 'zh' ? '忘记密码功能将在后端完成后启用' : 'Forgot password functionality will be enabled after backend completion';
+				alert(message);
+			});
+			
+			// Register link handling
+			document.getElementById('register-link').addEventListener('click', function(e) {
+				e.preventDefault();
+				// Navigate to register page with current language
+				window.location.href = `register.html?lang=${currentLanguage}`;
+			});
+		</script>
+	</body>
+</html> 
