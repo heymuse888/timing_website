@@ -697,7 +697,7 @@
 					<a href="#contact" class="nav-item">Contact</a>
 				</div>
 				<div class="nav-auth english-page">
-					<a href="login.html?lang=en" class="login-btn">LOG IN</a>
+					<a href="login.html?lang=en" class="login-btn">SIGN IN</a>
 					<a href="register.html?lang=en" class="signup-btn">SIGN UP</a>
 					<a href="index-zh.html" class="lang-btn">中文</a>
 				</div>
@@ -761,7 +761,13 @@
 									<span class="second-line">= Flow with Time</span>
 								</h3>
 								<p class="subtitle">Let energy shape your calendar</p>
-								<span class="image main"><img src="images/pic02_eng.jpg" alt="" /></span>
+								<span class="image main">
+									<video autoplay muted loop playsinline preload="auto" style="width: 100%; height: auto; border-radius: 8px;" onloadstart="console.log('Video loading started')" oncanplay="console.log('Video can play')" onerror="console.log('Video error:', this.error); this.style.display='none'; this.nextElementSibling.style.display='block';">
+										<source src="images/video_eng.mp4" type="video/mp4">
+										Your browser does not support video playback.
+									</video>
+									<img src="images/pic02_eng.jpg" alt="" style="display: none;" />
+								</span>
 								
 								<div class="features-grid">
 									<div class="feature-card">

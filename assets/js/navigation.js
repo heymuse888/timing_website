@@ -18,14 +18,40 @@
                 return 'zh';
             }
             // Check if coming from English page to curve
-            if (window.location.pathname.includes('curve/') && 
-                (document.referrer.includes('index.html') && !document.referrer.includes('index-zh.html') ||
-                 new URLSearchParams(window.location.search).get('lang') === 'en')) {
-                return 'en';
+            if (window.location.pathname.includes('curve/')) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const langParam = urlParams.get('lang');
+                if (langParam === 'en') {
+                    return 'en';
+                } else if (langParam === 'zh') {
+                    return 'zh';
+                }
+                // Check referrer if no URL parameter
+                if (document.referrer.includes('index.html') && !document.referrer.includes('index-zh.html')) {
+                    return 'en';
+                } else if (document.referrer.includes('index-zh.html')) {
+                    return 'zh';
+                }
+                // Default to Chinese
+                return 'zh';
             }
-            // Check for login/register pages - default to Chinese
+            // Check for login/register pages - check URL parameter first
             if (window.location.pathname.includes('login.html') || 
                 window.location.pathname.includes('register.html')) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const langParam = urlParams.get('lang');
+                if (langParam === 'en') {
+                    return 'en';
+                } else if (langParam === 'zh') {
+                    return 'zh';
+                }
+                // If no lang parameter, check referrer
+                if (document.referrer.includes('index.html') && !document.referrer.includes('index-zh.html')) {
+                    return 'en';
+                } else if (document.referrer.includes('index-zh.html')) {
+                    return 'zh';
+                }
+                // Default to Chinese only if no other indication
                 return 'zh';
             }
             // Default based on filename
@@ -43,7 +69,7 @@
             const langBtn = document.querySelector('.lang-btn');
             
             if (loginBtn) {
-                loginBtn.textContent = isEnglish ? 'LOG IN' : '登录';
+                loginBtn.textContent = isEnglish ? 'SIGN IN' : '登录';
                 // Update login link with language parameter
                 if (isCurvePage) {
                     loginBtn.href = isEnglish ? '../login.html?lang=en' : '../login.html?lang=zh';
@@ -64,6 +90,9 @@
             // Update language button
             if (langBtn) {
                 langBtn.textContent = isEnglish ? '中文' : 'ENG';
+                const isLoginRegisterPage = window.location.pathname.includes('login.html') || 
+                                          window.location.pathname.includes('register.html');
+                
                 if (isCurvePage) {
                     langBtn.href = isEnglish ? '../index-zh.html' : '../index.html';
                     langBtn.onclick = function(e) {
@@ -71,6 +100,10 @@
                         sessionStorage.setItem('returnFromEnergy', 'true');
                         window.location.href = isEnglish ? '../index-zh.html' : '../index.html';
                     };
+                } else if (isLoginRegisterPage) {
+                    // For login/register pages, switch language but stay on same page type
+                    const currentPage = window.location.pathname.includes('login.html') ? 'login.html' : 'register.html';
+                    langBtn.href = isEnglish ? `${currentPage}?lang=zh` : `${currentPage}?lang=en`;
                 } else {
                     langBtn.href = isEnglish ? 'index-zh.html' : 'index.html';
                 }
@@ -95,6 +128,13 @@
             // Update curve page content if needed
             if (isCurvePage && isEnglish) {
                 this.updateCurvePageContent();
+            }
+            
+            // Update login/register page content if needed
+            const isLoginRegisterPage = window.location.pathname.includes('login.html') || 
+                                      window.location.pathname.includes('register.html');
+            if (isLoginRegisterPage && isEnglish) {
+                this.updateLoginRegisterPageContent();
             }
         },
 
@@ -143,6 +183,26 @@
             
             const closeBtn = document.querySelector('.close');
             if (closeBtn) closeBtn.textContent = 'Close';
+        },
+
+        // Update login/register page content for English
+        updateLoginRegisterPageContent: function() {
+            // Update navigation menu items for login/register pages
+            const navItems = document.querySelectorAll('.nav-item');
+            if (navItems.length >= 4) {
+                navItems[0].textContent = 'Introduction';
+                navItems[1].textContent = 'Event Timing';
+                navItems[2].textContent = 'Energy Curve';
+                navItems[3].textContent = 'Contact';
+            }
+            
+            // Update page title and meta content if needed
+            const title = document.querySelector('title');
+            if (title && window.location.pathname.includes('login.html')) {
+                title.textContent = 'Login - SparkingTiming';
+            } else if (title && window.location.pathname.includes('register.html')) {
+                title.textContent = 'Sign Up - SparkingTiming';
+            }
         },
 
         // Initialize localization

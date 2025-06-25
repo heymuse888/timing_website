@@ -15,9 +15,9 @@
 			z-index: 3;
 			min-height: calc(100vh - 5rem);
 			display: flex;
-			align-items: center;
+			align-items: flex-start;
 			justify-content: center;
-			padding: 0 2rem 2rem;
+			padding: 2rem 2rem 2rem;
 		}
 
 		.login-content {
@@ -267,8 +267,9 @@
 		<!-- BG -->
 		<div id="bg"></div>
 
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
+				<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/auth.js"></script>
 		<script>
 			// Fallback to CDN if local file fails to load
 			if (typeof jQuery === 'undefined') {
@@ -361,7 +362,7 @@
 					navWork: 'Function',
 					navCurve: 'Energy Curve',
 					navContact: 'Contact',
-					navLogin: 'LOG IN',
+					                navLogin: 'SIGN IN',
 					navSignup: 'SIGN UP',
 					navLang: '中文'
 				}
