@@ -468,26 +468,7 @@
 		<!-- Background -->
 		<div id="bg"></div>
 		
-		<!-- Top Navigation Bar -->
-		<nav class="top-navigation">
-			<div class="nav-container">
-				<div class="nav-logo" onclick="goToHomePage()" style="cursor: pointer;">
-										<img src="../images/LOGO.png" alt="Timing Logo" />
-					<span class="logo-text">Timing</span>
-				</div>
-				<div class="nav-menu">
-					<a href="#intro" class="nav-item">简介</a>
-					<a href="#work" class="nav-item">功能</a>
-					<a href="#" class="nav-item active">能量曲线</a>
-					<a href="#contact" class="nav-item">联系我们</a>
-				</div>
-				<div class="nav-auth">
-					<a href="../login.html" class="login-btn">SIGN IN</a>
-					<a href="../register.html" class="signup-btn">SIGN UP</a>
-					<a href="#" class="lang-btn">ENG</a>
-				</div>
-        </div>
-    </nav>
+		<!-- Navigation will be loaded dynamically -->
 
 		<div class="modal-container">
 			<div class="modal-content">
@@ -560,8 +541,128 @@
 				document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
 			}
 		</script>
-		<!-- Navigation handling -->
+		<!-- Load navigation system -->
+		<script src="../assets/js/navigation-loader.js"></script>
 		<script src="../assets/js/navigation.js"></script>
+		
+		<!-- Language content management -->
+		<script>
+			// Language content for curve page
+			const curveContent = {
+				zh: {
+					title: '能量曲线 - Timing',
+					pageTitle: '能量曲线',
+					subtitle: '输入你的信息，生成专属能量曲线',
+					nameLabel: '姓名',
+					namePlaceholder: '请输入您的姓名',
+					birthtimeLabel: '出生时间',
+					birthtimePlaceholder: 'MM/DD/YYYY XX:XX AM',
+					genderLabel: '出生性别',
+					genderPlaceholder: '请选择性别',
+					genderOptions: {
+						default: '请选择性别',
+						female: '女',
+						male: '男'
+					},
+					birthplaceLabel: '出生地点',
+					birthplacePlaceholder: '请输入出生城市',
+					submitText: '推演',
+					closeText: '关闭',
+					legendHealth: '健康',
+					legendCareer: '事业',
+					legendLove: '爱情'
+				},
+				en: {
+					title: 'Energy Curve - Timing',
+					pageTitle: 'Energy Curve',
+					subtitle: 'Enter your information to generate your personalized energy curve',
+					nameLabel: 'Name',
+					namePlaceholder: 'Please enter your name',
+					birthtimeLabel: 'Birth Date & Time',
+					birthtimePlaceholder: 'MM/DD/YYYY XX:XX AM',
+					genderLabel: 'Gender',
+					genderPlaceholder: 'Please select gender',
+					genderOptions: {
+						default: 'Please select gender',
+						female: 'Female',
+						male: 'Male'
+					},
+					birthplaceLabel: 'Birth Place',
+					birthplacePlaceholder: 'Please enter birth city',
+					submitText: 'Calculate',
+					closeText: 'Close',
+					legendHealth: 'Health',
+					legendCareer: 'Career',
+					legendLove: 'Love'
+				}
+			};
+
+			// Update curve page content based on language
+			function updateCurveContent(language) {
+				const content = curveContent[language];
+				
+				// Update page title
+				document.title = content.title;
+				
+				// Update main title and subtitle
+				const title = document.querySelector('h2.major');
+				if (title) title.textContent = content.pageTitle;
+				
+				const subtitle = document.querySelector('.subtitle');
+				if (subtitle) subtitle.textContent = content.subtitle;
+				
+				// Update form labels and placeholders
+				const labels = document.querySelectorAll('label');
+				if (labels.length >= 4) {
+					labels[0].textContent = content.nameLabel;
+					labels[1].textContent = content.birthtimeLabel;
+					labels[2].textContent = content.genderLabel;
+					labels[3].textContent = content.birthplaceLabel;
+				}
+				
+				const nameInput = document.getElementById('name');
+				if (nameInput) nameInput.placeholder = content.namePlaceholder;
+				
+				const birthtimeInput = document.getElementById('birthtime');
+				if (birthtimeInput) birthtimeInput.placeholder = content.birthtimePlaceholder;
+				
+				const birthplaceInput = document.getElementById('birthplace');
+				if (birthplaceInput) birthplaceInput.placeholder = content.birthplacePlaceholder;
+				
+				// Update gender select options
+				const genderSelect = document.getElementById('gender');
+				if (genderSelect) {
+					genderSelect.innerHTML = `
+						<option value="">${content.genderOptions.default}</option>
+						<option value="female">${content.genderOptions.female}</option>
+						<option value="male">${content.genderOptions.male}</option>
+					`;
+				}
+				
+				// Update submit button
+				const submitBtn = document.querySelector('.btn-text');
+				if (submitBtn) submitBtn.textContent = content.submitText;
+				
+				// Update close button
+				const closeBtn = document.querySelector('.close');
+				if (closeBtn) closeBtn.textContent = content.closeText;
+				
+				// Update legend items
+				const legendItems = document.querySelectorAll('.legend-item span:not(.legend-color)');
+				if (legendItems.length >= 3) {
+					legendItems[0].textContent = content.legendHealth;
+					legendItems[1].textContent = content.legendCareer;
+					legendItems[2].textContent = content.legendLove;
+				}
+			}
+
+			// Initialize language on navigation load
+			document.addEventListener('navigationLoaded', function(e) {
+				const language = e.detail.language;
+				updateCurveContent(language);
+			});
+		</script>
+		
 		<!-- Original script.js functionality -->
     <script src="script.js"></script>
 </body>

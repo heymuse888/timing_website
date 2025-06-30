@@ -201,26 +201,7 @@
 		}
 	</style>
 	<body class="is-preload">
-		<!-- Top Navigation Bar (exactly same as intro page) -->
-		<nav class="top-navigation">
-			<div class="nav-container">
-				<div class="nav-logo" onclick="goToHomePage()" style="cursor: pointer;">
-					<img src="images/LOGO.png" alt="Timing Logo" />
-					<span class="logo-text">Timing</span>
-				</div>
-				<div class="nav-menu">
-					<a href="#" class="nav-item" id="nav-intro">简介</a>
-					<a href="#" class="nav-item" id="nav-work">功能</a>
-					<a href="#" class="nav-item" id="nav-curve">能量曲线</a>
-					<a href="#" class="nav-item" id="nav-contact">联系我们</a>
-				</div>
-				<div class="nav-auth">
-					<a href="#" class="login-btn" id="nav-login">登录</a>
-					<a href="#" class="signup-btn" id="nav-signup">注册</a>
-					<a href="#" class="lang-btn" id="nav-lang">ENG</a>
-				</div>
-			</div>
-		</nav>
+		<!-- Navigation will be loaded dynamically -->
 
 		<!-- Wrapper (same as intro page for background consistency) -->
 		<div id="wrapper">
@@ -282,52 +263,15 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
-		<!-- Navigation handling -->
+		<!-- Load navigation system -->
+		<script src="assets/js/navigation-loader.js"></script>
 		<script src="assets/js/navigation.js"></script>
 		
 		<script>
-			// Language detection and content switching
-			let currentLanguage = 'zh'; // Default to Chinese
-			
-			// Detect language from URL parameters or referrer
-			function detectLanguage() {
-				const urlParams = new URLSearchParams(window.location.search);
-				const langParam = urlParams.get('lang');
-				
-				// Priority 1: URL parameter
-				if (langParam === 'en') {
-					return 'en';
-				} else if (langParam === 'zh') {
-					return 'zh';
-				}
-				
-				// Priority 2: Check referrer
-				const referrer = document.referrer;
-				if (referrer) {
-					// Check if coming from English pages
-					if (referrer.includes('index.html') && !referrer.includes('index-zh.html')) {
-						return 'en';
-					}
-					// Check if coming from Chinese pages
-					if (referrer.includes('index-zh.html')) {
-						return 'zh';
-					}
-					// Check for language parameters in referrer
-					if (referrer.includes('lang=en')) {
-						return 'en';
-					}
-					if (referrer.includes('lang=zh')) {
-						return 'zh';
-					}
-				}
-				
-				return 'zh'; // Default to Chinese
-			}
-			
 			// Language content
 			const content = {
 				zh: {
-											title: 'Timing - 登录',
+					title: 'Timing - 登录',
 					loginTitle: '欢迎使用Timing',
 					usernameLabel: '账号',
 					usernamePlaceholder: '请输入账号',
@@ -337,14 +281,7 @@
 					forgotPassword: '忘记密码',
 					loginSubmit: '登录',
 					registerText: '还没有账户？',
-					registerLink: '立即注册',
-					navIntro: '简介',
-					navWork: '功能',
-					navCurve: '能量曲线',
-					navContact: '联系我们',
-					navLogin: '登录',
-					navSignup: '注册',
-					navLang: 'ENG'
+					registerLink: '立即注册'
 				},
 				en: {
 					title: 'Timing - Login',
@@ -357,20 +294,12 @@
 					forgotPassword: 'Forgot Password',
 					loginSubmit: 'Login',
 					registerText: "Don't have an account?",
-					registerLink: 'Sign Up Now',
-					navIntro: 'Introduction',
-					navWork: 'Function',
-					navCurve: 'Energy Curve',
-					navContact: 'Contact',
-					                navLogin: 'SIGN IN',
-					navSignup: 'SIGN UP',
-					navLang: '中文'
+					registerLink: 'Sign Up Now'
 				}
 			};
 			
 			// Update page content based on language
 			function updateContent(lang) {
-				currentLanguage = lang;
 				const c = content[lang];
 				
 				// Update page title
@@ -387,105 +316,29 @@
 				document.getElementById('login-submit').textContent = c.loginSubmit;
 				document.getElementById('register-text').textContent = c.registerText;
 				document.getElementById('register-link').textContent = c.registerLink;
-				
-				// Update navigation
-				document.getElementById('nav-intro').textContent = c.navIntro;
-				document.getElementById('nav-work').textContent = c.navWork;
-				document.getElementById('nav-curve').textContent = c.navCurve;
-				document.getElementById('nav-contact').textContent = c.navContact;
-				document.getElementById('nav-login').textContent = c.navLogin;
-				document.getElementById('nav-signup').textContent = c.navSignup;
-				document.getElementById('nav-lang').textContent = c.navLang;
-				
-				// Update navigation links based on language
-				if (lang === 'zh') {
-					document.getElementById('nav-intro').href = 'index-zh.html#intro';
-					document.getElementById('nav-work').href = 'index-zh.html#work';
-					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=zh';
-					document.getElementById('nav-contact').href = 'index-zh.html#contact';
-					document.getElementById('nav-login').href = 'login.html?lang=zh';
-					document.getElementById('nav-signup').href = 'register.html?lang=zh';
-					document.getElementById('nav-lang').href = 'login.html?lang=en';
-				} else {
-					document.getElementById('nav-intro').href = 'index.html#intro';
-					document.getElementById('nav-work').href = 'index.html#work';
-					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=en';
-					document.getElementById('nav-contact').href = 'index.html#contact';
-					document.getElementById('nav-login').href = 'login.html?lang=en';
-					document.getElementById('nav-signup').href = 'register.html?lang=en';
-					document.getElementById('nav-lang').href = 'login.html?lang=zh';
-				}
-				
-				// Update nav-auth class for English page
-				const navAuth = document.querySelector('.nav-auth');
-				if (lang === 'en') {
-					navAuth.classList.add('english-page');
-				} else {
-					navAuth.classList.remove('english-page');
-				}
 			}
 			
-			// Language switching
-			document.getElementById('nav-lang').addEventListener('click', function(e) {
-				e.preventDefault();
-				const newLang = currentLanguage === 'zh' ? 'en' : 'zh';
-				updateContent(newLang);
-			});
-			
-			// Logo click handler
-			function goToHomePage() {
-				if (currentLanguage === 'zh') {
-					window.location.href = 'index-zh.html';
-				} else {
-					window.location.href = 'index.html';
-				}
-			}
-			
-			// Initialize language on page load
-			document.addEventListener('DOMContentLoaded', function() {
-				const detectedLang = detectLanguage();
-				updateContent(detectedLang);
-			});
-			
-			// Login form handling
-			document.getElementById('loginForm').addEventListener('submit', function(e) {
-				e.preventDefault();
-				
-				const username = document.getElementById('username').value;
-				const password = document.getElementById('password').value;
-				const remember = document.getElementById('remember').checked;
-				
-				if (!username || !password) {
-					const message = currentLanguage === 'zh' ? '请填写完整的账号和密码' : 'Please fill in username and password';
-					alert(message);
-					return;
-				}
-				
-				// TODO: 这里将来会连接到后端API
-				console.log('登录信息:', {
-					username: username,
-					password: password,
-					remember: remember,
-					language: currentLanguage
-				});
-				
-				// 临时提示
-				const message = currentLanguage === 'zh' ? '登录功能将在后端完成后启用' : 'Login functionality will be enabled after backend completion';
-				alert(message);
+			// Initialize language on navigation load
+			document.addEventListener('navigationLoaded', function(e) {
+				const language = e.detail.language;
+				updateContent(language);
 			});
 			
 			// Forgot password handling
-			document.getElementById('forgotPassword').addEventListener('click', function(e) {
-				e.preventDefault();
-				const message = currentLanguage === 'zh' ? '忘记密码功能将在后端完成后启用' : 'Forgot password functionality will be enabled after backend completion';
-				alert(message);
-			});
-			
-			// Register link handling
-			document.getElementById('register-link').addEventListener('click', function(e) {
-				e.preventDefault();
-				// Navigate to register page with current language
-				window.location.href = `register.html?lang=${currentLanguage}`;
+			document.addEventListener('DOMContentLoaded', function() {
+				document.getElementById('forgotPassword').addEventListener('click', function(e) {
+					e.preventDefault();
+					const language = window.NavigationConfig ? window.NavigationConfig.detectLanguage() : 'zh';
+					const message = language === 'zh' ? '忘记密码功能将在后端完成后启用' : 'Forgot password functionality will be enabled after backend completion';
+					alert(message);
+				});
+				
+				// Register link handling
+				document.getElementById('register-link').addEventListener('click', function(e) {
+					e.preventDefault();
+					const language = window.NavigationConfig ? window.NavigationConfig.detectLanguage() : 'zh';
+					window.location.href = `register.html?lang=${language}`;
+				});
 			});
 		</script>
 	</body>
