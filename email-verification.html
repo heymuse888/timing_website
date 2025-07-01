@@ -317,7 +317,7 @@
 				
 				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
 				
-				<form id="registerForm" action="#" method="post">
+				<form id="verificationForm" action="#" method="post">
 					<!-- Page 1: Basic Information -->
 					<div class="form-page active" id="page1">
 						<div class="form-group">
@@ -326,37 +326,10 @@
 						</div>
 						
 						<div class="form-group">
-							<label for="email" id="email-label">邮箱</label>
-							<input type="email" id="email" name="email" class="form-input" placeholder="">
-						</div>
-						
-						<!-- <div class="form-group">
 							<label for="verification" id="verification-label">验证码</label>
 							<div class="verification-group">
 								<input type="text" id="verification" name="verification" class="form-input" placeholder="">
 								<span class="verification-resend" id="verification-resend">重新发送</span>
-							</div>
-						</div> -->
-						
-						<div class="form-group">
-							<label for="password" id="password-label">密码</label>
-							<input type="password" id="password" name="password" class="form-input" placeholder="">
-						</div>
-						
-						<div class="form-group">
-							<label for="confirmPassword" id="confirm-password-label">确认密码</label>
-							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="">
-							<div class="password-warning" id="password-warning">不一致</div>
-						</div>
-						
-						<div class="checkbox-forgot-row">
-							<div class="checkbox-group">
-								<input type="checkbox" id="agree" name="agree">
-								<label for="agree" id="agree-label">同意服务条款</label>
-							</div>
-							
-							<div class="forgot-password">
-								<a href="#" id="termsLink">查看条款</a>
 							</div>
 						</div>
 						
@@ -479,20 +452,9 @@
 					registerTitle: '欢迎来到Timing',
 					userNameLabel: '用户名',
 					userNamePlaceholder: '请输入您的用户名',
-					emailLabel: '邮箱',
-					emailPlaceholder: '请输入邮箱地址',
-					// verificationLabel: '验证码',
-					// verificationPlaceholder: '请输入验证码',
-					// verificationResend: '重新发送',
-					passwordLabel: '密码',
-					passwordPlaceholder: '请输入密码',
-					confirmPasswordLabel: '确认密码',
-					confirmPasswordPlaceholder: '请再次输入密码',
-					passwordWarning: '不一致',
-					agreeLabel: '同意服务条款',
-					termsLink: '查看条款',
-					nextBtn: '确认',
-					birthtimeLabel: '出生时间',
+					verificationLabel: '验证码',
+					verificationPlaceholder: '请输入验证码',
+					verificationResend: '重新发送',
 					// genderLabel: '出生性别',
 					// genderOptions: {
 					// 	placeholder: '请选择性别',
@@ -519,16 +481,9 @@
 					registerTitle: 'Welcome to Timing',
 					userNameLabel: 'Username',
 					userNamePlaceholder: 'Please enter your username',
-					emailLabel: 'Email',
-					emailPlaceholder: 'Enter your email address',
-					// verificationLabel: 'Verification Code',
-					// verificationPlaceholder: 'Enter verification code',
-					// verificationResend: 'Resend',
-					passwordLabel: 'Password',
-					passwordPlaceholder: 'Enter your password',
-					confirmPasswordLabel: 'Confirm Password',
-					confirmPasswordPlaceholder: 'Enter your password again',
-					passwordWarning: 'Mismatch',
+					verificationLabel: 'Verification Code',
+					verificationPlaceholder: 'Enter verification code',
+					verificationResend: 'Resend',
 					agreeLabel: 'Agree to Terms of Service',
 					termsLink: 'View Terms',
 					nextBtn: 'Confirm',
@@ -568,18 +523,16 @@
 				document.getElementById('register-title').textContent = c.registerTitle;
 				document.getElementById('userName-label').textContent = c.userNameLabel;
 				document.getElementById('username').placeholder = c.userNamePlaceholder;
-				document.getElementById('email-label').textContent = c.emailLabel;
-				document.getElementById('email').placeholder = c.emailPlaceholder;
-				// document.getElementById('verification-label').textContent = c.verificationLabel;
-				// document.getElementById('verification').placeholder = c.verificationPlaceholder;
-				// document.getElementById('verification-resend').textContent = c.verificationResend;
-				document.getElementById('password-label').textContent = c.passwordLabel;
-				document.getElementById('password').placeholder = c.passwordPlaceholder;
-				document.getElementById('confirm-password-label').textContent = c.confirmPasswordLabel;
-				document.getElementById('confirmPassword').placeholder = c.confirmPasswordPlaceholder;
-				document.getElementById('password-warning').textContent = c.passwordWarning;
-				document.getElementById('agree-label').textContent = c.agreeLabel;
-				document.getElementById('termsLink').textContent = c.termsLink;
+				document.getElementById('verification-label').textContent = c.verificationLabel;
+				document.getElementById('verification').placeholder = c.verificationPlaceholder;
+				document.getElementById('verification-resend').textContent = c.verificationResend;
+				// document.getElementById('password-label').textContent = c.passwordLabel;
+				// document.getElementById('password').placeholder = c.passwordPlaceholder;
+				// document.getElementById('confirm-password-label').textContent = c.confirmPasswordLabel;
+				// document.getElementById('confirmPassword').placeholder = c.confirmPasswordPlaceholder;
+				// document.getElementById('password-warning').textContent = c.passwordWarning;
+				// document.getElementById('agree-label').textContent = c.agreeLabel;
+				// document.getElementById('termsLink').textContent = c.termsLink;
 				// document.getElementById('next-btn').textContent = c.nextBtn;
 				// document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
 				// document.getElementById('gender-label').textContent = c.genderLabel;
@@ -718,41 +671,28 @@
 				const detectedLang = detectLanguage();
 				updateContent(detectedLang);
 				
-				// Add password validation listeners
-				document.getElementById('password').addEventListener('input', validatePassword);
-				document.getElementById('confirmPassword').addEventListener('input', validatePassword);
 			});
 			
 
 			
 			// Register form handling
-			document.getElementById('registerForm').addEventListener('submit', function(e) {
+			document.getElementById('verificationForm').addEventListener('submit', function(e) {
 				e.preventDefault();
 
 				const username = document.getElementById('username').value;
-				const email = document.getElementById('email').value;
+                const verification = document.getElementById('verification').value;
+				// const email = document.getElementById('email').value;
 				// const verification = document.getElementById('verification').value;
-				const password = document.getElementById('password').value;
-				const confirmPassword = document.getElementById('confirmPassword').value;
-				const agree = document.getElementById('agree').checked;
+				// const password = document.getElementById('password').value;
+				// const confirmPassword = document.getElementById('confirmPassword').value;
+				// const agree = document.getElementById('agree').checked;
 				
-				if (!username || !email || !password) {
+				if (!username || !verification) {
 					const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
 					alert(message);
 					return;
 				}
-				
-				if (password !== confirmPassword) {
-					const message = currentLanguage === 'zh' ? '密码不一致' : 'Passwords do not match';
-					alert(message);
-					return;
-				}
-				
-				if (!agree) {
-					const message = currentLanguage === 'zh' ? '请同意服务条款' : 'Please agree to the terms of service';
-					alert(message);
-					return;
-				}
+
 				
 				// // Validate page 2 fields
 				// const birthtime = document.getElementById('birthtime').value;
@@ -783,14 +723,7 @@
 				// console.log('注册信息:', formData);
 				
 			});
-			
-			// Terms link handling
-			document.getElementById('termsLink').addEventListener('click', function(e) {
-				e.preventDefault();
-				const message = currentLanguage === 'zh' ? '服务条款功能将在后端完成后启用' : 'Terms of service functionality will be enabled after backend completion';
-				alert(message);
-			});
-			
+
 			// Login link handling
 			document.getElementById('login-link').addEventListener('click', function(e) {
 				e.preventDefault();

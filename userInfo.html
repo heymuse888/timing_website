@@ -317,47 +317,26 @@
 				
 				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
 				
-				<form id="registerForm" action="#" method="post">
+				<form id="userInfoForm" action="#" method="post">
 					<!-- Page 1: Basic Information -->
 					<div class="form-page active" id="page1">
-						<div class="form-group">
-							<label for="username" id="userName-label">用户名</label>
-							<input type="text" id="username" name="username" class="form-input" placeholder="">
+                        <div class="form-group">
+							<label for="birthtime" id="birthtime-label">出生时间</label>
+							<input type="datetime-local" id="birthtime" name="birthtime" class="form-input">
 						</div>
-						
+
 						<div class="form-group">
-							<label for="email" id="email-label">邮箱</label>
-							<input type="email" id="email" name="email" class="form-input" placeholder="">
+							<label for="gender" id="gender-label">出生性别</label>
+							<select id="gender" name="gender" class="form-input">
+								<option value="">请选择性别</option>
+								<option value="female">女</option>
+								<option value="male">男</option>
+							</select>
 						</div>
-						
-						<!-- <div class="form-group">
-							<label for="verification" id="verification-label">验证码</label>
-							<div class="verification-group">
-								<input type="text" id="verification" name="verification" class="form-input" placeholder="">
-								<span class="verification-resend" id="verification-resend">重新发送</span>
-							</div>
-						</div> -->
-						
+
 						<div class="form-group">
-							<label for="password" id="password-label">密码</label>
-							<input type="password" id="password" name="password" class="form-input" placeholder="">
-						</div>
-						
-						<div class="form-group">
-							<label for="confirmPassword" id="confirm-password-label">确认密码</label>
-							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="">
-							<div class="password-warning" id="password-warning">不一致</div>
-						</div>
-						
-						<div class="checkbox-forgot-row">
-							<div class="checkbox-group">
-								<input type="checkbox" id="agree" name="agree">
-								<label for="agree" id="agree-label">同意服务条款</label>
-							</div>
-							
-							<div class="forgot-password">
-								<a href="#" id="termsLink">查看条款</a>
-							</div>
+							<label for="birthplace" id="birthplace-label">出生地点</label>
+							<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="">
 						</div>
 						
 						<!-- <button type="button" class="form-register-btn" id="next-btn" onclick="nextPage()">确认</button> -->
@@ -477,30 +456,16 @@
 				zh: {
 					title: 'Timing - 注册',
 					registerTitle: '欢迎来到Timing',
-					userNameLabel: '用户名',
-					userNamePlaceholder: '请输入您的用户名',
-					emailLabel: '邮箱',
-					emailPlaceholder: '请输入邮箱地址',
-					// verificationLabel: '验证码',
-					// verificationPlaceholder: '请输入验证码',
-					// verificationResend: '重新发送',
-					passwordLabel: '密码',
-					passwordPlaceholder: '请输入密码',
-					confirmPasswordLabel: '确认密码',
-					confirmPasswordPlaceholder: '请再次输入密码',
-					passwordWarning: '不一致',
-					agreeLabel: '同意服务条款',
-					termsLink: '查看条款',
-					nextBtn: '确认',
+					
 					birthtimeLabel: '出生时间',
-					// genderLabel: '出生性别',
-					// genderOptions: {
-					// 	placeholder: '请选择性别',
-					// 	female: '女',
-					// 	male: '男'
-					// },
-					// birthplaceLabel: '出生地点',
-					// birthplacePlaceholder: '请输入出生地点',
+					genderLabel: '性别',
+					genderOptions: {
+						placeholder: '请选择性别',
+						female: '女',
+						male: '男'
+					},
+					birthplaceLabel: '出生地点',
+					birthplacePlaceholder: '请输入出生地点',
 					userAgreementLabel: '请阅读并同意用户协议和隐私政策',
 					betaTesterLabel: '申请成为内测用户',
 					registerSubmit: '注册',
@@ -517,30 +482,16 @@
 				en: {
 					title: 'Timing - Register',
 					registerTitle: 'Welcome to Timing',
-					userNameLabel: 'Username',
-					userNamePlaceholder: 'Please enter your username',
-					emailLabel: 'Email',
-					emailPlaceholder: 'Enter your email address',
-					// verificationLabel: 'Verification Code',
-					// verificationPlaceholder: 'Enter verification code',
-					// verificationResend: 'Resend',
-					passwordLabel: 'Password',
-					passwordPlaceholder: 'Enter your password',
-					confirmPasswordLabel: 'Confirm Password',
-					confirmPasswordPlaceholder: 'Enter your password again',
-					passwordWarning: 'Mismatch',
-					agreeLabel: 'Agree to Terms of Service',
-					termsLink: 'View Terms',
-					nextBtn: 'Confirm',
-					// birthtimeLabel: 'Birth Date & Time',
-					// genderLabel: 'Birth Gender',
-					// genderOptions: {
-					// 	placeholder: 'Please select gender',
-					// 	female: 'Female',
-					// 	male: 'Male'
-					// },
-					// birthplaceLabel: 'Birth Place',
-					// birthplacePlaceholder: 'Please enter birth place',
+
+					birthtimeLabel: 'Birth Date & Time',
+					genderLabel: 'Birth Gender',
+					genderOptions: {
+						placeholder: 'Please select gender',
+						female: 'Female',
+						male: 'Male'
+					},
+					birthplaceLabel: 'Birth Place',
+					birthplacePlaceholder: 'Please enter birth place',
 					userAgreementLabel: 'Please read and agree to the User Agreement and Privacy Policy',
 					betaTesterLabel: 'Apply to become a beta tester',
 					registerSubmit: 'Register',
@@ -566,25 +517,12 @@
 				
 				// Update form content
 				document.getElementById('register-title').textContent = c.registerTitle;
-				document.getElementById('userName-label').textContent = c.userNameLabel;
-				document.getElementById('username').placeholder = c.userNamePlaceholder;
-				document.getElementById('email-label').textContent = c.emailLabel;
-				document.getElementById('email').placeholder = c.emailPlaceholder;
-				// document.getElementById('verification-label').textContent = c.verificationLabel;
-				// document.getElementById('verification').placeholder = c.verificationPlaceholder;
-				// document.getElementById('verification-resend').textContent = c.verificationResend;
-				document.getElementById('password-label').textContent = c.passwordLabel;
-				document.getElementById('password').placeholder = c.passwordPlaceholder;
-				document.getElementById('confirm-password-label').textContent = c.confirmPasswordLabel;
-				document.getElementById('confirmPassword').placeholder = c.confirmPasswordPlaceholder;
-				document.getElementById('password-warning').textContent = c.passwordWarning;
-				document.getElementById('agree-label').textContent = c.agreeLabel;
-				document.getElementById('termsLink').textContent = c.termsLink;
-				// document.getElementById('next-btn').textContent = c.nextBtn;
-				// document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
-				// document.getElementById('gender-label').textContent = c.genderLabel;
-				// document.getElementById('birthplace-label').textContent = c.birthplaceLabel;
-				// document.getElementById('birthplace').placeholder = c.birthplacePlaceholder;
+				
+				
+				document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
+				document.getElementById('gender-label').textContent = c.genderLabel;
+				document.getElementById('birthplace-label').textContent = c.birthplaceLabel;
+				document.getElementById('birthplace').placeholder = c.birthplacePlaceholder;
 				// document.getElementById('user-agreement-label').textContent = c.userAgreementLabel;
 				// document.getElementById('beta-tester-label').textContent = c.betaTesterLabel;
 				document.getElementById('register-submit').textContent = c.registerSubmit;
@@ -718,79 +656,26 @@
 				const detectedLang = detectLanguage();
 				updateContent(detectedLang);
 				
-				// Add password validation listeners
-				document.getElementById('password').addEventListener('input', validatePassword);
-				document.getElementById('confirmPassword').addEventListener('input', validatePassword);
 			});
 			
 
 			
 			// Register form handling
-			document.getElementById('registerForm').addEventListener('submit', function(e) {
+			document.getElementById('userInfoForm').addEventListener('submit', function(e) {
 				e.preventDefault();
 
-				const username = document.getElementById('username').value;
-				const email = document.getElementById('email').value;
-				// const verification = document.getElementById('verification').value;
-				const password = document.getElementById('password').value;
-				const confirmPassword = document.getElementById('confirmPassword').value;
-				const agree = document.getElementById('agree').checked;
+				const birthtime = document.getElementById('birthtime').value;
+				const gender = document.getElementById('gender').value;
+				const birthplace = document.getElementById('birthplace').value;
 				
-				if (!username || !email || !password) {
+				if (!birthtime || !gender || !birthplace) {
 					const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
 					alert(message);
 					return;
 				}
 				
-				if (password !== confirmPassword) {
-					const message = currentLanguage === 'zh' ? '密码不一致' : 'Passwords do not match';
-					alert(message);
-					return;
-				}
-				
-				if (!agree) {
-					const message = currentLanguage === 'zh' ? '请同意服务条款' : 'Please agree to the terms of service';
-					alert(message);
-					return;
-				}
-				
-				// // Validate page 2 fields
-				// const birthtime = document.getElementById('birthtime').value;
-				// const gender = document.getElementById('gender').value;
-				// const birthplace = document.getElementById('birthplace').value;
-				
-				// if (!birthtime || !gender || !birthplace) {
-				// 	const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
-				// 	alert(message);
-				// 	return;
-				// }
-				
-				// Get all form data
-				// const formData = {
-				// 	username: document.getElementById('username').value,
-				// 	email: document.getElementById('email').value,
-				// 	verification: document.getElementById('verification').value,
-				// 	password: document.getElementById('password').value,
-				// 	birthtime: birthtime,
-				// 	gender: gender,
-				// 	birthplace: birthplace,
-				// 	userAgreement: document.getElementById('userAgreement').checked,
-				// 	betaTester: document.getElementById('betaTester').checked,
-				// 	language: currentLanguage
-				// };
-				
-				// // TODO: 这里将来会连接到后端API
-				// console.log('注册信息:', formData);
-				
 			});
-			
-			// Terms link handling
-			document.getElementById('termsLink').addEventListener('click', function(e) {
-				e.preventDefault();
-				const message = currentLanguage === 'zh' ? '服务条款功能将在后端完成后启用' : 'Terms of service functionality will be enabled after backend completion';
-				alert(message);
-			});
-			
+
 			// Login link handling
 			document.getElementById('login-link').addEventListener('click', function(e) {
 				e.preventDefault();

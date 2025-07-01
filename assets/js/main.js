@@ -404,8 +404,9 @@
 // Contains utility functions for email verification, registration, and authentication
 class ServerValidation {
     constructor() {
-        this.API_BASE_URL = 'https://api.sparkingtiming.com';
-        this.API_VERSION = '/v1';
+        this.API_BASE_URL = 'https://curve.sparkingtiming.com';
+        // this.API_VERSION = '/v1';
+		this.API_PORT = 9443
         this.TIMEOUT = 10000; // 10 seconds timeout
     }
 
@@ -416,7 +417,7 @@ class ServerValidation {
      * @returns {Promise<Object>} - API response
      */
     async makeRequest(endpoint, options = {}) {
-        const url = `${this.API_BASE_URL}${this.API_VERSION}${endpoint}`;
+        const url = `${this.API_BASE_URL}:${this.API_PORT}${endpoint}`;
         
         const defaultOptions = {
             method: 'GET',
@@ -429,11 +430,11 @@ class ServerValidation {
 
         const mergedOptions = { ...defaultOptions, ...options };
 
-        try {
-            console.log(`Making ${mergedOptions.method} request to: ${url}`);
-            
+        try {            
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT);
+
+			console.log("mergedOptions: ", mergedOptions);
 
             const response = await fetch(url, {
                 ...mergedOptions,
@@ -468,17 +469,13 @@ class ServerValidation {
      * @param {string} email - User email address
      * @returns {Promise<Object>} - Response with message
      */
-    async sendVerificationCode(email) {
-        if (!this.isValidEmail(email)) {
-            throw new Error('请输入有效的邮箱地址');
-        }
-
+    async sendVerificationCode(username) {
         const requestData = {
-            email: email
+            username: username
         };
 
         try {
-            const response = await this.makeRequest('/register/send_code', {
+            const response = await this.makeRequest('/auth/resend-verification-code', {
                 method: 'POST',
                 body: JSON.stringify(requestData)
             });
@@ -505,24 +502,53 @@ class ServerValidation {
      * @returns {Promise<Object>} - Registration response
      */
     async registerUser(userData) {
-        const { name, email, verificationCode, password, confirmPassword } = userData;
+        const { username, email, password } = userData;
 
-        // Validate input data
-        const validation = this.validateRegistrationData(userData);
-        if (!validation.isValid) {
-            throw new Error(validation.message);
-        }
+        // // Validate input data
+        // const validation = this.validateRegistrationData(userData);
+        // if (!validation.isValid) {
+        //     throw new Error(validation.message);
+        // }
 
         const requestData = {
-            name: name,
+            username: username,
             email: email,
-            verification_code: verificationCode,
             password: password,
-            confirm_password: confirmPassword
         };
 
         try {
-            const response = await this.makeRequest('/register/submit', {
+            const response = await this.makeRequest('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify(requestData)
+            });
+
+            return {
+                success: true,
+                message: response.message || '注册成功',
+                data: response
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || '注册失败，请重试',
+                error: error
+            };
+        }
+    }
+
+
+	async verifyUser(verifyData) {
+        const { username, verificationCode} = verifyData;
+
+        const requestData = {
+            username: username,
+            confirmation_code: verificationCode,
+        };
+
+        try {
+			console.log("caole: ", requestData)
+            const response = await this.makeRequest('/auth/verify-email', {
                 method: 'POST',
                 body: JSON.stringify(requestData)
             });
@@ -548,18 +574,10 @@ class ServerValidation {
      * @returns {Promise<Object>} - Login response
      */
     async loginUser(loginData) {
-        const { email, password, remember = false } = loginData;
-
-        if (!email || !password) {
-            throw new Error('请输入邮箱和密码');
-        }
-
-        if (!this.isValidEmail(email)) {
-            throw new Error('请输入有效的邮箱地址');
-        }
+        const { username, password, remember = false } = loginData;
 
         const requestData = {
-            email: email,
+            login_id: username,
             password: password,
             remember: remember
         };
@@ -573,8 +591,10 @@ class ServerValidation {
             return {
                 success: true,
                 message: response.message || '登录成功',
-                token: response.token,
-                user: response.user,
+                access_token: response.access_token,
+				token_type: response.token_type,
+				username_token: response.username_token,
+                user: username,
                 data: response
             };
 
@@ -586,6 +606,50 @@ class ServerValidation {
             };
         }
     }
+
+	
+	async userInfoUpdate(userInfoData) {
+        const { birthtime, gender, birthplace } = userInfoData;
+
+        const requestData = {
+            dob: birthtime,
+            sex: gender,
+            birthplace: birthplace
+        };
+
+		const username_token = localStorage.getItem('username_token');
+
+
+        try {
+            const response = await this.makeRequest('/users/me', {
+                method: 'PUT',
+                body: JSON.stringify(requestData),
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${username_token}`,
+					'Accept': 'application/json',
+				},
+            });
+
+			console.log("response: ", response);
+
+            return {
+                success: true,
+                message: response.message || '登录成功',
+                user: response.username,
+                data: response
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                message: error.message || '登录失败，请检查邮箱和密码',
+                error: error
+            };
+        }
+    }
+
+	
 
     /**
      * Validate email format
@@ -603,7 +667,7 @@ class ServerValidation {
      * @returns {Object} - Validation result
      */
     validateRegistrationData(userData) {
-        const { name, email, verificationCode, password, confirmPassword } = userData;
+        const { name, email, password} = userData;
 
         if (!name || name.trim().length === 0) {
             return { isValid: false, message: '请输入姓名' };
@@ -613,16 +677,8 @@ class ServerValidation {
             return { isValid: false, message: '请输入有效的邮箱地址' };
         }
 
-        if (!verificationCode || verificationCode.length !== 6) {
-            return { isValid: false, message: '请输入6位验证码' };
-        }
-
         if (!password || password.length < 6) {
             return { isValid: false, message: '密码长度至少6位' };
-        }
-
-        if (password !== confirmPassword) {
-            return { isValid: false, message: '两次密码输入不一致' };
         }
 
         return { isValid: true, message: '验证通过' };

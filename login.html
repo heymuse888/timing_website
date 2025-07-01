@@ -232,13 +232,13 @@
 				
 				<form id="loginForm" action="#" method="post">
 					<div class="form-group">
-						<label for="username" id="username-label">账号</label>
-						<input type="text" id="username" name="username" class="form-input" placeholder="" required>
+						<label for="username" id="username-label">用户名/邮箱</label>
+						<input type="text" id="username" name="username" class="form-input" placeholder="">
 					</div>
 					
 					<div class="form-group">
 						<label for="password" id="password-label">密码</label>
-						<input type="password" id="password" name="password" class="form-input" placeholder="" required>
+						<input type="password" id="password" name="password" class="form-input" placeholder="">
 					</div>
 					
 					<div class="checkbox-forgot-row">
@@ -327,10 +327,10 @@
 			// Language content
 			const content = {
 				zh: {
-											title: 'Timing - 登录',
+					title: 'Timing - 登录',
 					loginTitle: '欢迎使用Timing',
-					usernameLabel: '账号',
-					usernamePlaceholder: '请输入账号',
+					usernameLabel: '用户名/邮箱',
+					usernamePlaceholder: '请输入用户名/邮箱',
 					passwordLabel: '密码',
 					passwordPlaceholder: '请输入密码',
 					rememberLabel: '保持登录状态',
@@ -349,8 +349,8 @@
 				en: {
 					title: 'Timing - Login',
 					loginTitle: 'Welcome to Timing',
-					usernameLabel: 'Username',
-					usernamePlaceholder: 'Enter your username',
+					usernameLabel: 'Username/Email',
+					usernamePlaceholder: 'Enter your username/email',
 					passwordLabel: 'Password',
 					passwordPlaceholder: 'Enter your password',
 					rememberLabel: 'Keep me logged in',
@@ -362,7 +362,7 @@
 					navWork: 'Function',
 					navCurve: 'Energy Curve',
 					navContact: 'Contact',
-					                navLogin: 'SIGN IN',
+					navLogin: 'SIGN IN',
 					navSignup: 'SIGN UP',
 					navLang: '中文'
 				}
@@ -380,8 +380,10 @@
 				document.getElementById('login-title').textContent = c.loginTitle;
 				document.getElementById('username-label').textContent = c.usernameLabel;
 				document.getElementById('username').placeholder = c.usernamePlaceholder;
+				document.getElementById('username').title = c.usernamePlaceholder;
 				document.getElementById('password-label').textContent = c.passwordLabel;
 				document.getElementById('password').placeholder = c.passwordPlaceholder;
+				document.getElementById('password').title = c.passwordPlaceholder;
 				document.getElementById('remember-label').textContent = c.rememberLabel;
 				document.getElementById('forgotPassword').textContent = c.forgotPassword;
 				document.getElementById('login-submit').textContent = c.loginSubmit;
@@ -470,8 +472,8 @@
 				});
 				
 				// 临时提示
-				const message = currentLanguage === 'zh' ? '登录功能将在后端完成后启用' : 'Login functionality will be enabled after backend completion';
-				alert(message);
+				// const message = currentLanguage === 'zh' ? '登录功能将在后端完成后启用' : 'Login functionality will be enabled after backend completion';
+				// alert(message);
 			});
 			
 			// Forgot password handling
