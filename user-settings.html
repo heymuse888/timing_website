@@ -1,0 +1,713 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>用户设置 - User Settings - Timing</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/navigation.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<style>
+		/* User Settings page specific styles */
+		.settings-container {
+			position: relative;
+			z-index: 3;
+			min-height: calc(100vh - 5rem);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0 2rem 2rem;
+		}
+
+		.settings-content {
+			background-color: rgba(27, 31, 34, 0.85);
+			border-radius: 12px;
+			padding: 3rem 2.5rem 2rem 2.5rem;
+			width: 28rem;
+			max-width: 100%;
+			position: relative;
+		}
+
+		.settings-title {
+			text-align: center;
+			color: #ffffff;
+			font-size: 1.8rem;
+			font-weight: 300;
+			margin-bottom: 1rem;
+			letter-spacing: 0.1em;
+		}
+
+		.settings-subtitle {
+			text-align: center;
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 0.9rem;
+			margin-bottom: 2rem;
+		}
+
+		.form-group {
+			margin-bottom: 1.5rem;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+			color: #ffffff;
+			font-size: 0.9rem;
+			letter-spacing: 0.05em;
+		}
+
+		.form-input {
+			width: 100%;
+			padding: 1rem 1.5rem;
+			border: 1px solid rgba(255, 255, 255, 0.3);
+			border-radius: 8px;
+			background: rgba(255, 255, 255, 0.05);
+			color: #ffffff;
+			font-size: 1rem;
+			line-height: 1.5;
+			min-height: 3.5rem;
+			height: 3.5rem;
+			transition: all 0.3s ease;
+			box-sizing: border-box;
+		}
+
+		.form-input:focus {
+			outline: none;
+			border-color: #9f6cf7;
+			background: rgba(255, 255, 255, 0.1);
+			box-shadow: 0 0 0 3px rgba(159, 108, 247, 0.1);
+		}
+
+		.form-input::placeholder {
+			color: rgba(255, 255, 255, 0.5);
+		}
+
+		/* DateTime input styling */
+		.form-input[type="datetime-local"] {
+			color-scheme: dark;
+		}
+
+		/* Select input styling */
+		select.form-input {
+			padding: 1rem 3rem 1rem 1.5rem;
+			appearance: none;
+			background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+			background-repeat: no-repeat;
+			background-position: right 1rem center;
+			background-size: 1.2rem;
+		}
+
+		select.form-input option {
+			background: #2a1810;
+			color: #ffffff;
+		}
+
+		/* Password section separator */
+		.password-section {
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+			padding-top: 1.5rem;
+			margin-top: 2rem;
+		}
+
+		.password-section-title {
+			color: rgba(255, 255, 255, 0.8);
+			font-size: 0.9rem;
+			font-weight: 600;
+			margin-bottom: 1rem;
+			text-align: center;
+			letter-spacing: 0.05em;
+		}
+
+		/* Button styling */
+		.button-group {
+			display: flex;
+			gap: 1rem;
+			margin-top: 2rem;
+		}
+
+		.form-btn {
+			flex: 1;
+			border: none;
+			padding: 1rem 2rem;
+			border-radius: 8px;
+			font-size: 1rem;
+			font-weight: 600;
+			letter-spacing: 0.1em;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.form-cancel-btn {
+			background: rgba(255, 255, 255, 0.1);
+			color: rgba(255, 255, 255, 0.9);
+			border: 1px solid rgba(255, 255, 255, 0.3);
+		}
+
+		.form-cancel-btn:hover {
+			background: rgba(255, 255, 255, 0.2);
+			border-color: rgba(255, 255, 255, 0.5);
+			color: #ffffff;
+		}
+
+		.form-save-btn {
+			background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+			color: #ffffff;
+			box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+		}
+
+		.form-save-btn:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 8px 25px rgba(159, 108, 247, 0.4);
+			background: linear-gradient(45deg, #b784ff, #84a0ff);
+		}
+
+		/* Back button */
+		.back-btn {
+			position: absolute;
+			top: 1rem;
+			left: 1.5rem;
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: rgba(255, 255, 255, 0.9);
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
+			border-radius: 50%;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+		}
+
+		.back-btn:hover {
+			background: rgba(255, 255, 255, 0.2);
+			border-color: rgba(255, 255, 255, 0.4);
+			color: #ffffff;
+		}
+
+		.back-btn::before {
+			content: "←";
+			font-size: 1.2rem;
+		}
+
+
+
+		/* Mobile responsive */
+		@media screen and (max-width: 768px) {
+			.settings-container {
+				padding: 0 1rem 1rem;
+			}
+
+			.settings-content {
+				padding: 2.5rem 2rem 1.5rem 2rem;
+				width: 100%;
+			}
+
+			.button-group {
+				flex-direction: column;
+			}
+
+			.back-btn {
+				top: 0.5rem;
+				left: 1rem;
+				width: 35px;
+				height: 35px;
+			}
+		}
+	</style>
+	<body class="is-preload">
+		<!-- Navigation will be loaded dynamically -->
+
+		<!-- Wrapper -->
+		<div id="wrapper">
+
+		<!-- Main Settings Container -->
+		<div class="settings-container">
+			<div class="settings-content">
+				<a href="#" class="back-btn" onclick="goBack()"></a>
+				
+				<h1 class="settings-title" id="settings-title">用户设置</h1>
+				<p class="settings-subtitle" id="settings-subtitle">修改您的个人信息和账户设置</p>
+				
+				<form id="settingsForm">
+					<!-- Basic Information Section -->
+					<div class="form-group">
+						<label for="name" id="name-label">姓名</label>
+						<input type="text" id="name" name="name" class="form-input" placeholder="请输入您的姓名" required>
+					</div>
+					
+					<div class="form-group">
+						<label for="gender" id="gender-label">性别</label>
+						<select id="gender" name="gender" class="form-input" required>
+							<option value="" id="gender-placeholder">请选择性别</option>
+							<option value="female" id="gender-female">女</option>
+							<option value="male" id="gender-male">男</option>
+						</select>
+					</div>
+					
+					<div class="form-group">
+						<label for="birthtime" id="birthtime-label">生日时间</label>
+						<input type="datetime-local" id="birthtime" name="birthtime" class="form-input" required>
+					</div>
+					
+					<div class="form-group">
+						<label for="birthplace" id="birthplace-label">生日地点</label>
+						<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="请输入您的出生地点" required>
+					</div>
+
+					<!-- Password Section -->
+					<div class="password-section">
+						<div class="password-section-title" id="password-section-title">密码修改（可选）</div>
+						
+						<div class="form-group">
+							<label for="currentPassword" id="current-password-label">当前密码</label>
+							<input type="password" id="currentPassword" name="currentPassword" class="form-input" placeholder="请输入当前密码以确认修改">
+						</div>
+						
+						<div class="form-group">
+							<label for="newPassword" id="new-password-label">新密码</label>
+							<input type="password" id="newPassword" name="newPassword" class="form-input" placeholder="如需修改密码请填写（至少6个字符）">
+						</div>
+						
+						<div class="form-group">
+							<label for="confirmPassword" id="confirm-password-label">确认新密码</label>
+							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="请再次输入新密码">
+						</div>
+					</div>
+
+					<!-- Buttons -->
+					<div class="button-group">
+						<button type="button" class="form-btn form-cancel-btn" onclick="cancelChanges()" id="cancel-btn">取消</button>
+						<button type="submit" class="form-btn form-save-btn" id="save-btn">确认保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		</div>
+
+		<!-- BG -->
+		<div id="bg"></div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+		<script src="assets/js/navigation-loader.js"></script>
+		<script src="assets/js/navigation.js"></script>
+
+		<script>
+			// Language configuration
+			const translations = {
+				zh: {
+					title: '用户设置',
+					subtitle: '修改您的个人信息和账户设置',
+					nameLabel: '姓名',
+					namePlaceholder: '请输入您的姓名',
+					genderLabel: '性别',
+					genderPlaceholder: '请选择性别',
+					genderFemale: '女',
+					genderMale: '男',
+					birthtimeLabel: '生日时间',
+					birthplaceLabel: '生日地点',
+					birthplacePlaceholder: '请输入您的出生地点',
+					passwordSectionTitle: '密码修改（可选）',
+					currentPasswordLabel: '当前密码',
+					currentPasswordPlaceholder: '请输入当前密码以确认修改',
+					newPasswordLabel: '新密码',
+					newPasswordPlaceholder: '如需修改密码请填写（至少6个字符）',
+					confirmPasswordLabel: '确认新密码',
+					confirmPasswordPlaceholder: '请再次输入新密码',
+					cancelBtn: '取消',
+					saveBtn: '确认保存',
+					loginRequired: '请先登录！',
+					loadError: '加载用户信息失败，请重试',
+					nameRequired: '请输入姓名',
+					genderRequired: '请选择性别',
+					birthtimeRequired: '请选择生日时间',
+					birthplaceRequired: '请输入生日地点',
+					currentPasswordRequired: '修改密码需要输入当前密码',
+					passwordTooShort: '新密码至少需要6个字符',
+					passwordMismatch: '新密码与确认密码不一致',
+					updateSuccess: '用户信息更新成功！',
+					updateError: '更新失败：',
+					unsavedChanges: '您有未保存的修改，确定要取消吗？',
+					userNotFound: '用户信息不存在'
+				},
+				en: {
+					title: 'User Settings',
+					subtitle: 'Modify your personal information and account settings',
+					nameLabel: 'Name',
+					namePlaceholder: 'Enter your name',
+					genderLabel: 'Gender',
+					genderPlaceholder: 'Please select gender',
+					genderFemale: 'Female',
+					genderMale: 'Male',
+					birthtimeLabel: 'Birth Date & Time',
+					birthplaceLabel: 'Birth Location',
+					birthplacePlaceholder: 'Enter your birth location',
+					passwordSectionTitle: 'Password Change (Optional)',
+					currentPasswordLabel: 'Current Password',
+					currentPasswordPlaceholder: 'Enter current password to confirm changes',
+					newPasswordLabel: 'New Password',
+					newPasswordPlaceholder: 'Enter new password if you want to change it (at least 6 characters)',
+					confirmPasswordLabel: 'Confirm New Password',
+					confirmPasswordPlaceholder: 'Re-enter new password',
+					cancelBtn: 'Cancel',
+					saveBtn: 'Save Changes',
+					loginRequired: 'Please login first!',
+					loadError: 'Failed to load user information, please try again',
+					nameRequired: 'Please enter your name',
+					genderRequired: 'Please select your gender',
+					birthtimeRequired: 'Please select your birth date and time',
+					birthplaceRequired: 'Please enter your birth location',
+					currentPasswordRequired: 'Please enter your current password to change password',
+					passwordTooShort: 'New password must be at least 6 characters long',
+					passwordMismatch: 'New password and confirmation do not match',
+					updateSuccess: 'User information updated successfully!',
+					updateError: 'Update failed: ',
+					unsavedChanges: 'You have unsaved changes, are you sure you want to cancel?',
+					userNotFound: 'User information does not exist'
+				}
+			};
+
+			// Current language and user data
+			let currentLanguage = 'zh';
+			let originalUserData = {};
+
+			// Initialize page
+			document.addEventListener('DOMContentLoaded', function() {
+				// Detect language from URL parameter
+				const urlParams = new URLSearchParams(window.location.search);
+				const lang = urlParams.get('lang');
+				if (lang === 'en') {
+					currentLanguage = 'en';
+				}
+
+				// Check if user is logged in
+				if (!isUserLoggedIn()) {
+					alert(translations[currentLanguage].loginRequired);
+					redirectToLogin();
+					return;
+				}
+
+				// Set initial language
+				updateLanguage();
+
+				// Load current user settings
+				loadUserSettings();
+
+				// Setup form validation
+				setupFormValidation();
+
+				// Setup navigation handling for user settings page
+				setupUserSettingsNavigation();
+			});
+
+			// Check if user is logged in
+			function isUserLoggedIn() {
+				const userRegistered = localStorage.getItem('userRegistered');
+				const userInfo = localStorage.getItem('userInfo');
+				return userRegistered === 'true' && userInfo;
+			}
+
+			// Redirect to login page
+			function redirectToLogin() {
+				const loginPage = currentLanguage === 'en' ? 'login.html?lang=en' : 'login.html?lang=zh';
+				window.location.href = loginPage;
+			}
+
+
+
+			// Update page language
+			function updateLanguage() {
+				const t = translations[currentLanguage];
+				
+				document.getElementById('settings-title').textContent = t.title;
+				document.getElementById('settings-subtitle').textContent = t.subtitle;
+				document.getElementById('name-label').textContent = t.nameLabel;
+				document.getElementById('name').placeholder = t.namePlaceholder;
+				document.getElementById('gender-label').textContent = t.genderLabel;
+				document.getElementById('gender-placeholder').textContent = t.genderPlaceholder;
+				document.getElementById('gender-female').textContent = t.genderFemale;
+				document.getElementById('gender-male').textContent = t.genderMale;
+				document.getElementById('birthtime-label').textContent = t.birthtimeLabel;
+				document.getElementById('birthplace-label').textContent = t.birthplaceLabel;
+				document.getElementById('birthplace').placeholder = t.birthplacePlaceholder;
+				document.getElementById('password-section-title').textContent = t.passwordSectionTitle;
+				document.getElementById('current-password-label').textContent = t.currentPasswordLabel;
+				document.getElementById('currentPassword').placeholder = t.currentPasswordPlaceholder;
+				document.getElementById('new-password-label').textContent = t.newPasswordLabel;
+				document.getElementById('newPassword').placeholder = t.newPasswordPlaceholder;
+				document.getElementById('confirm-password-label').textContent = t.confirmPasswordLabel;
+				document.getElementById('confirmPassword').placeholder = t.confirmPasswordPlaceholder;
+				document.getElementById('cancel-btn').textContent = t.cancelBtn;
+				document.getElementById('save-btn').textContent = t.saveBtn;
+			}
+
+			// Load current user settings
+			function loadUserSettings() {
+				try {
+					const userInfo = localStorage.getItem('userInfo');
+					if (userInfo) {
+						const user = JSON.parse(userInfo);
+						originalUserData = { ...user };
+
+						// Populate form fields with existing user data
+						if (user.name) {
+							document.getElementById('name').value = user.name;
+						}
+						if (user.displayName && !user.name) {
+							document.getElementById('name').value = user.displayName;
+						}
+						if (user.gender) {
+							document.getElementById('gender').value = user.gender;
+						}
+						if (user.birthDatetime) {
+							document.getElementById('birthtime').value = user.birthDatetime;
+						}
+						if (user.birthLocation) {
+							document.getElementById('birthplace').value = user.birthLocation;
+						}
+
+						console.log('User data loaded:', user);
+					} else {
+						console.log('No user info found in localStorage');
+					}
+				} catch (error) {
+					console.error('Error loading user settings:', error);
+					alert(translations[currentLanguage].loadError);
+				}
+			}
+
+			// Setup form validation
+			function setupFormValidation() {
+				const form = document.getElementById('settingsForm');
+				
+				// Form submission
+				form.addEventListener('submit', function(e) {
+					e.preventDefault();
+					handleFormSubmission();
+				});
+			}
+
+			// Handle form submission
+			function handleFormSubmission() {
+				// Validate form
+				if (!validateForm()) {
+					return;
+				}
+
+				// Set saving flag to prevent beforeunload prompt
+				isSaving = true;
+
+				// Collect form data
+				const formData = {
+					name: document.getElementById('name').value.trim(),
+					gender: document.getElementById('gender').value,
+					birthDatetime: document.getElementById('birthtime').value,
+					birthLocation: document.getElementById('birthplace').value.trim(),
+					currentPassword: document.getElementById('currentPassword').value,
+					newPassword: document.getElementById('newPassword').value,
+					confirmPassword: document.getElementById('confirmPassword').value
+				};
+
+				try {
+					updateUserSettings(formData);
+					alert(translations[currentLanguage].updateSuccess);
+					goToHomePage();
+				} catch (error) {
+					console.error('Update failed:', error);
+					alert(translations[currentLanguage].updateError + error.message);
+					isSaving = false; // Reset flag if error occurs
+				}
+			}
+
+			// Validate form
+			function validateForm() {
+				const t = translations[currentLanguage];
+				const name = document.getElementById('name').value.trim();
+				const gender = document.getElementById('gender').value;
+				const birthtime = document.getElementById('birthtime').value;
+				const birthplace = document.getElementById('birthplace').value.trim();
+				const currentPassword = document.getElementById('currentPassword').value;
+				const newPassword = document.getElementById('newPassword').value;
+				const confirmPassword = document.getElementById('confirmPassword').value;
+
+				// Basic required fields
+				if (!name) {
+					alert(t.nameRequired);
+					document.getElementById('name').focus();
+					return false;
+				}
+
+				if (!gender) {
+					alert(t.genderRequired);
+					document.getElementById('gender').focus();
+					return false;
+				}
+
+				if (!birthtime) {
+					alert(t.birthtimeRequired);
+					document.getElementById('birthtime').focus();
+					return false;
+				}
+
+				if (!birthplace) {
+					alert(t.birthplaceRequired);
+					document.getElementById('birthplace').focus();
+					return false;
+				}
+
+				// Password validation
+				if (newPassword || confirmPassword) {
+					if (!currentPassword) {
+						alert(t.currentPasswordRequired);
+						document.getElementById('currentPassword').focus();
+						return false;
+					}
+
+					if (newPassword.length < 6) {
+						alert(t.passwordTooShort);
+						document.getElementById('newPassword').focus();
+						return false;
+					}
+
+					if (newPassword !== confirmPassword) {
+						alert(t.passwordMismatch);
+						document.getElementById('confirmPassword').focus();
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+			// Update user settings
+			function updateUserSettings(formData) {
+				const userInfo = localStorage.getItem('userInfo');
+				if (!userInfo) {
+					throw new Error(translations[currentLanguage].userNotFound);
+				}
+
+				const user = JSON.parse(userInfo);
+				
+				// Update basic information
+				user.name = formData.name;
+				user.displayName = formData.name;
+				user.gender = formData.gender;
+				user.birthDatetime = formData.birthDatetime;
+				user.birthLocation = formData.birthLocation;
+
+				// Save updated user info
+				localStorage.setItem('userInfo', JSON.stringify(user));
+
+				// Reload navigation to show updated name
+				if (window.NavigationLoader) {
+					window.NavigationLoader.reload();
+				}
+			}
+
+			// Cancel changes
+			function cancelChanges() {
+				const t = translations[currentLanguage];
+				if (hasChanges()) {
+					if (confirm(t.unsavedChanges)) {
+						goBack();
+					}
+				} else {
+					goBack();
+				}
+			}
+
+			// Check if there are unsaved changes
+			function hasChanges() {
+				const currentData = {
+					name: document.getElementById('name').value.trim(),
+					gender: document.getElementById('gender').value,
+					birthDatetime: document.getElementById('birthtime').value,
+					birthLocation: document.getElementById('birthplace').value.trim()
+				};
+
+				return (
+					currentData.name !== (originalUserData.name || '') ||
+					currentData.gender !== (originalUserData.gender || '') ||
+					currentData.birthDatetime !== (originalUserData.birthDatetime || '') ||
+					currentData.birthLocation !== (originalUserData.birthLocation || '') ||
+					document.getElementById('currentPassword').value ||
+					document.getElementById('newPassword').value ||
+					document.getElementById('confirmPassword').value
+				);
+			}
+
+			// Go to home page after successful save
+			function goToHomePage() {
+				const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
+				window.location.href = homePage;
+			}
+
+			// Go back to previous page
+			function goBack() {
+				if (document.referrer && document.referrer.includes(window.location.origin)) {
+					window.history.back();
+				} else {
+					const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
+					window.location.href = homePage;
+				}
+			}
+
+			// Track if user is saving to avoid unnecessary prompts
+			let isSaving = false;
+
+			// Setup navigation handling for user settings page
+			function setupUserSettingsNavigation() {
+				// Wait for navigation to be loaded
+				function handleUserSettingsNavigation() {
+					// Override navigation clicks to go to home page with section
+					document.querySelectorAll('.nav-item').forEach(function(item) {
+						const navId = item.getAttribute('data-nav-id');
+						const href = item.getAttribute('href');
+						
+						// Only handle section navigation links (starting with #)
+						if (href && href.startsWith('#')) {
+							item.addEventListener('click', function(e) {
+								e.preventDefault();
+								
+								// Get the target section
+								const sectionId = href.substring(1);
+								
+								// Navigate to home page with section
+								const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
+								window.location.href = homePage + '#' + sectionId;
+							});
+						}
+					});
+				}
+
+				// Wait for navigation to be loaded
+				if (document.querySelector('.top-navigation')) {
+					handleUserSettingsNavigation();
+				} else {
+					document.addEventListener('navigationLoaded', handleUserSettingsNavigation);
+				}
+			}
+
+			// Handle beforeunload to warn about unsaved changes
+			window.addEventListener('beforeunload', function(e) {
+				if (hasChanges() && !isSaving) {
+					e.preventDefault();
+					e.returnValue = '';
+				}
+			});
+		</script>
+	</body>
+</html>

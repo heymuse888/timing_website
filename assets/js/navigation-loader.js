@@ -58,6 +58,7 @@
             if (pathname.includes('curve/')) return 'curve';
             if (pathname.includes('login.html')) return 'login';
             if (pathname.includes('register.html')) return 'register';
+            if (pathname.includes('user-settings.html')) return 'user-settings';
             if (pathname.includes('index-zh.html')) return 'home-zh';
             if (pathname.includes('index.html')) return 'home-en';
             return 'home-zh'; // default
@@ -142,11 +143,11 @@
             if (isLoggedIn && userInfo) {
                 // User is logged in - show user menu
                 return [
-                    {
-                        text: userInfo.displayName,
-                        href: '#',
-                        class: 'user-name-btn',
-                        id: 'user-name',
+                                          {
+                          text: userInfo.displayName,
+                          href: this.getUserSettingsHref(language, pageType),
+                          class: 'user-name-btn',
+                          id: 'user-name',
                         type: 'user-display'
                     },
                     {
@@ -197,6 +198,7 @@
             const isEnglish = language === 'en';
             const isCurvePage = pageType === 'curve';
             const isLoginRegisterPage = pageType === 'login' || pageType === 'register';
+            const isUserSettingsPage = pageType === 'user-settings';
             
             if (item === 'curve') {
                 const curvePage = isCurvePage ? '#' : 
@@ -204,7 +206,7 @@
                 return isCurvePage ? curvePage : (pageType.includes('curve') ? '../' : '') + curvePage;
             }
             
-            if (isLoginRegisterPage || isCurvePage) {
+            if (isLoginRegisterPage || isCurvePage || isUserSettingsPage) {
                 const mainPage = isEnglish ? 'index.html' : 'index-zh.html';
                 const basePath = isCurvePage ? '../' : '';
                 return basePath + mainPage + '#' + item;
@@ -238,8 +240,17 @@
                 return currentPage + '?lang=' + newLanguage;
             }
             
-            return currentLanguage === 'en' ? 'index-zh.html' : 'index.html';
-        }
+                          return currentLanguage === 'en' ? 'index-zh.html' : 'index.html';
+          },
+ 
+          // Get user settings page href
+          getUserSettingsHref: function(language, pageType) {
+              const isCurvePage = pageType === 'curve';
+              const basePath = isCurvePage ? '../' : '';
+              const langParam = '?lang=' + language;
+              
+              return basePath + 'user-settings.html' + langParam;
+          }
     };
 
     // Navigation renderer
@@ -305,11 +316,17 @@
                     padding: 0.6rem 1.2rem;
                     background: rgba(255, 255, 255, 0.1);
                     border-radius: 6px;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    text-decoration: none;
-                    cursor: default;
-                    pointer-events: none;
-                }
+                                          border: 1px solid rgba(255, 255, 255, 0.2);
+                      text-decoration: none;
+                                            cursor: pointer;
+                      transition: all 0.3s ease;
+                  }
+                  
+                  .nav-auth .user-name-btn:hover {
+                      background: rgba(255, 255, 255, 0.15);
+                      border-color: rgba(255, 255, 255, 0.3);
+                      transform: translateY(-1px);
+                  }
                 
                 .nav-auth .logout-btn {
                     color: rgba(255, 255, 255, 0.8) !important;

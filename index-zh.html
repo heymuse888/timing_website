@@ -678,16 +678,21 @@
 
 			.modal-title {
 				color: #ffffff;
-				font-size: 1.3em;
+				font-size: 1.1em;
 				margin-bottom: 1.5em;
 				text-align: center;
-				line-height: 1.5;
+				line-height: 1.4;
 			}
 
-			.modal-register-btn {
+			.modal-buttons {
+				display: flex;
+				gap: 1rem;
+				flex-direction: column;
+			}
+
+			.modal-login-btn, .modal-register-btn {
 				display: block;
 				width: 100%;
-				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
 				color: #ffffff;
 				border: none;
 				padding: 1em 2em;
@@ -696,15 +701,36 @@
 				letter-spacing: 0.1em;
 				cursor: pointer;
 				transition: all 0.3s ease;
-				box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
 				text-decoration: none;
 				text-align: center;
+			}
+
+			.modal-login-btn {
+				background: linear-gradient(45deg, #6f8bf7, #9f6cf7);
+				box-shadow: 0 4px 15px rgba(111, 139, 247, 0.3);
+			}
+
+			.modal-register-btn {
+				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+				box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+			}
+
+			.modal-login-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(111, 139, 247, 0.4);
+				background: linear-gradient(45deg, #84a0ff, #b784ff);
 			}
 
 			.modal-register-btn:hover {
 				transform: translateY(-2px);
 				box-shadow: 0 6px 20px rgba(159, 108, 247, 0.4);
 				background: linear-gradient(45deg, #b784ff, #84a0ff);
+			}
+
+			@media screen and (min-width: 480px) {
+				.modal-buttons {
+					flex-direction: row;
+				}
 			}
 
 		</style>
@@ -916,9 +942,12 @@
 				<button class="modal-close" onclick="closeRegistrationModal()">&times;</button>
 				<div class="modal-title">
 					事件择时需要生日信息，<br>
-					请注册账户即可解锁更多功能与使用权限！
+					请登录或注册账户即可解锁更多功能与使用权限！
 				</div>
-				<a href="register.html?lang=zh" class="modal-register-btn">注册</a>
+				<div class="modal-buttons">
+					<a href="login.html?lang=zh" class="modal-login-btn">登录</a>
+					<a href="register.html?lang=zh" class="modal-register-btn">注册</a>
+				</div>
 			</div>
 		</div>
 
@@ -954,11 +983,11 @@
 					modal.classList.remove('active');
 				}
 
-				// Check if user is registered (simple mock function)
+				// Check if user is registered and logged in
 				function isUserRegistered() {
-					// This is a mock function - replace with actual user session check
-					// For now, always return false to demonstrate the modal
-					return localStorage.getItem('userRegistered') === 'true';
+					const userRegistered = localStorage.getItem('userRegistered');
+					const userInfo = localStorage.getItem('userInfo');
+					return userRegistered === 'true' && userInfo;
 				}
 
 				// Event Timing Form Functionality

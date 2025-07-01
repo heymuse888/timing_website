@@ -38,6 +38,16 @@
 			letter-spacing: 0.1em;
 		}
 
+<<<<<<< Updated upstream
+=======
+		.register-subtitle {
+			text-align: center;
+			color: rgba(255, 255, 255, 0.7);
+			font-size: 0.9rem;
+			margin-bottom: 2rem;
+		}
+
+>>>>>>> Stashed changes
 		.form-group {
 			margin-bottom: 1.5rem;
 		}
@@ -53,12 +63,23 @@
 
 		.form-input {
 			width: 100%;
+<<<<<<< Updated upstream
 			padding: 0.8rem 1rem;
+=======
+			padding: 1rem 1.5rem;
+>>>>>>> Stashed changes
 			border: 1px solid rgba(255, 255, 255, 0.3);
 			border-radius: 8px;
 			background: rgba(255, 255, 255, 0.05);
 			color: #ffffff;
+<<<<<<< Updated upstream
 			font-size: 0.9rem;
+=======
+			font-size: 1rem;
+			line-height: 1.5;
+			min-height: 3.5rem;
+			height: 3.5rem;
+>>>>>>> Stashed changes
 			transition: all 0.3s ease;
 			box-sizing: border-box;
 		}
@@ -74,6 +95,111 @@
 			color: rgba(255, 255, 255, 0.5);
 		}
 
+<<<<<<< Updated upstream
+=======
+		/* DateTime input calendar icon styling */
+		.form-input[type="datetime-local"] {
+			color-scheme: dark;
+			position: relative;
+		}
+
+		/* Calendar icon styling - ensure visibility with stronger approach */
+		.form-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+			background: transparent;
+			cursor: pointer;
+			position: relative;
+			width: 20px;
+			height: 20px;
+			border: none;
+			outline: none;
+			/* Multiple approaches to ensure white color visibility */
+			filter: brightness(0) invert(1) contrast(100%);
+			opacity: 1;
+			background-color: transparent;
+			color: rgba(255, 255, 255, 0.8);
+			transition: all 0.3s ease;
+			/* Force the icon to be visible */
+			-webkit-appearance: none;
+			appearance: none;
+		}
+
+		.form-input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+			opacity: 1;
+			filter: brightness(0) invert(1) contrast(120%);
+			background: rgba(255, 255, 255, 0.1);
+			border-radius: 3px;
+		}
+
+		/* Alternative fallback for calendar icon */
+		.form-input[type="datetime-local"] {
+			background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.89-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>');
+			background-repeat: no-repeat;
+			background-position: right 1rem center;
+			background-size: 20px 20px;
+		}
+
+		/* Select input specific styling */
+		.form-input select,
+		select.form-input {
+			padding: 1rem 3rem 1rem 1.5rem;
+			line-height: 1.5;
+			min-height: 3.5rem;
+			height: 3.5rem;
+			appearance: none;
+			background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+			background-repeat: no-repeat;
+			background-position: right 1rem center;
+			background-size: 1.2rem;
+			box-sizing: border-box;
+			font-size: 1rem;
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		/* Gender select specific styling - match datetime input format exactly */
+		#gender {
+			padding: 1rem 3rem 1rem 1.5rem !important;
+			height: 3.5rem !important;
+			min-height: 3.5rem !important;
+			line-height: 1.5 !important;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			vertical-align: middle;
+			box-sizing: border-box;
+			font-size: 1rem;
+			/* Ensure the select behaves like other form inputs */
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		#gender option {
+			background: #2a1810;
+			color: #ffffff;
+			padding: 1rem 0.5rem;
+			min-height: 2.5rem;
+			line-height: 1.5;
+		}
+
+		/* Ensure placeholder text is fully visible */
+		#gender:invalid {
+			color: rgba(255, 255, 255, 0.6);
+		}
+
+		#gender:valid {
+			color: rgba(255, 255, 255, 0.9);
+		}
+
+		/* Form group spacing improvements */
+		.form-group {
+			margin-bottom: 1.8rem;
+		}
+
+		.form-group label {
+			margin-bottom: 0.8rem;
+		}
+
+>>>>>>> Stashed changes
 		/* Verification code input with resend link */
 		.verification-group {
 			position: relative;
@@ -106,6 +232,41 @@
 			text-decoration-color: rgba(255, 255, 255, 0.6);
 		}
 
+<<<<<<< Updated upstream
+=======
+		.verification-resend:disabled {
+			color: rgba(255, 255, 255, 0.4);
+			cursor: not-allowed;
+			text-decoration: none;
+		}
+
+		.verification-resend:disabled:hover {
+			color: rgba(255, 255, 255, 0.4);
+			text-decoration: none;
+		}
+
+		/* Verification code input validation styling */
+		.form-input.success {
+			border-color: #4CAF50 !important;
+			box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2) !important;
+		}
+
+		.form-input.error {
+			border-color: #f44336 !important;
+			box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.2) !important;
+		}
+
+		.form-input.success:focus {
+			border-color: #4CAF50 !important;
+			box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3) !important;
+		}
+
+		.form-input.error:focus {
+			border-color: #f44336 !important;
+			box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.3) !important;
+		}
+
+>>>>>>> Stashed changes
 		/* Password mismatch warning */
 		.password-warning {
 			color: #ff4444;
@@ -137,11 +298,16 @@
 			font-weight: 500;
 		}
 
+<<<<<<< Updated upstream
 		/* Back button */
+=======
+		/* Back button - improved design */
+>>>>>>> Stashed changes
 		.back-btn {
 			position: absolute;
 			top: 1rem;
 			left: 1.5rem;
+<<<<<<< Updated upstream
 			background: none;
 			border: none;
 			color: rgba(255, 255, 255, 0.8);
@@ -156,6 +322,39 @@
 		.back-btn:hover {
 			background: rgba(255, 255, 255, 0.1);
 			color: #ffffff;
+=======
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			color: rgba(255, 255, 255, 0.9);
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
+			border-radius: 50%;
+			transition: all 0.3s ease;
+			display: none;
+			font-size: 1.1rem;
+			font-weight: bold;
+		}
+
+		.back-btn.active {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.back-btn:hover {
+			background: rgba(255, 255, 255, 0.2);
+			border-color: rgba(255, 255, 255, 0.4);
+			color: #ffffff;
+			transform: scale(1.05);
+		}
+
+		/* Alternative: Use a proper back icon */
+		.back-btn::before {
+			content: "←";
+			font-size: 1.2rem;
+			line-height: 1;
+>>>>>>> Stashed changes
 		}
 
 		.checkbox-forgot-row {
@@ -226,6 +425,20 @@
 			background: linear-gradient(45deg, #b784ff, #84a0ff);
 		}
 
+<<<<<<< Updated upstream
+=======
+		.form-register-btn:disabled {
+			opacity: 0.6;
+			cursor: not-allowed;
+			transform: none;
+		}
+
+		.form-register-btn:disabled:hover {
+			transform: none;
+			box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+		}
+
+>>>>>>> Stashed changes
 		.login-link {
 			text-align: center;
 			margin-top: 2rem;
@@ -282,6 +495,7 @@
 				padding: 2rem 1.5rem 1rem 1.5rem;
 				border-radius: 8px;
 			}
+<<<<<<< Updated upstream
 		}
 	</style>
 	<body class="is-preload">
@@ -305,6 +519,25 @@
 				</div>
 			</div>
 		</nav>
+=======
+
+			/* Ensure form inputs maintain proper sizing on mobile */
+			.form-input {
+				min-height: 3.2rem;
+				height: 3.2rem;
+				font-size: 0.95rem;
+			}
+
+			#gender {
+				min-height: 3.2rem !important;
+				height: 3.2rem !important;
+				font-size: 0.95rem !important;
+			}
+		}
+	</style>
+	<body class="is-preload">
+		<!-- Navigation will be loaded dynamically -->
+>>>>>>> Stashed changes
 
 		<!-- Wrapper (same as intro page for background consistency) -->
 		<div id="wrapper">
@@ -312,21 +545,35 @@
 		<!-- Main Register Container -->
 		<div class="register-container">
 			<div class="register-content">
+<<<<<<< Updated upstream
 				<button class="back-btn" id="back-btn" onclick="goBack()">←</button>
 				<div class="page-indicator" id="page-indicator">1/2</div>
 				
 				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
+=======
+				<button class="back-btn" id="back-btn" onclick="goBack()"></button>
+				<div class="page-indicator" id="page-indicator">1/2</div>
+				
+				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
+				<p class="register-subtitle" id="register-subtitle">邮箱将作为唯一身份标识，提交后不可更改</p>
+>>>>>>> Stashed changes
 				
 				<form id="registerForm" action="#" method="post">
 					<!-- Page 1: Basic Information -->
 					<div class="form-page active" id="page1">
 						<div class="form-group">
+<<<<<<< Updated upstream
 							<label for="username" id="userName-label">用户名</label>
 							<input type="text" id="username" name="username" class="form-input" placeholder="">
+=======
+							<label for="name" id="name-label">姓名</label>
+							<input type="text" id="name" name="name" class="form-input" placeholder="" required>
+>>>>>>> Stashed changes
 						</div>
 						
 						<div class="form-group">
 							<label for="email" id="email-label">邮箱</label>
+<<<<<<< Updated upstream
 							<input type="email" id="email" name="email" class="form-input" placeholder="">
 						</div>
 						
@@ -341,17 +588,41 @@
 						<div class="form-group">
 							<label for="password" id="password-label">密码</label>
 							<input type="password" id="password" name="password" class="form-input" placeholder="">
+=======
+							<input type="email" id="email" name="email" class="form-input" placeholder="" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="verification" id="verification-label">验证码</label>
+							<div class="verification-group">
+								<input type="text" id="verification" name="verification" class="form-input" placeholder="" required>
+								<span class="verification-resend" id="verification-resend">发送</span>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label for="password" id="password-label">密码</label>
+							<input type="password" id="password" name="password" class="form-input" placeholder="" required>
+>>>>>>> Stashed changes
 						</div>
 						
 						<div class="form-group">
 							<label for="confirmPassword" id="confirm-password-label">确认密码</label>
+<<<<<<< Updated upstream
 							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="">
+=======
+							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="" required>
+>>>>>>> Stashed changes
 							<div class="password-warning" id="password-warning">不一致</div>
 						</div>
 						
 						<div class="checkbox-forgot-row">
 							<div class="checkbox-group">
+<<<<<<< Updated upstream
 								<input type="checkbox" id="agree" name="agree">
+=======
+								<input type="checkbox" id="agree" name="agree" required>
+>>>>>>> Stashed changes
 								<label for="agree" id="agree-label">同意服务条款</label>
 							</div>
 							
@@ -360,6 +631,7 @@
 							</div>
 						</div>
 						
+<<<<<<< Updated upstream
 						<!-- <button type="button" class="form-register-btn" id="next-btn" onclick="nextPage()">确认</button> -->
 						<button type="submit" class="form-register-btn" id="register-submit">注册</button>
 					</div>
@@ -369,11 +641,25 @@
 						<div class="form-group">
 							<label for="birthtime" id="birthtime-label">出生时间</label>
 							<input type="datetime-local" id="birthtime" name="birthtime" class="form-input">
+=======
+						<button type="button" class="form-register-btn" id="next-btn" onclick="nextPage()">确认</button>
+					</div>
+
+					<!-- Page 2: Birth Information -->
+					<div class="form-page" id="page2">
+						<div class="form-group">
+							<label for="birthtime" id="birthtime-label">出生时间</label>
+							<input type="datetime-local" id="birthtime" name="birthtime" class="form-input" required>
+>>>>>>> Stashed changes
 						</div>
 
 						<div class="form-group">
 							<label for="gender" id="gender-label">出生性别</label>
+<<<<<<< Updated upstream
 							<select id="gender" name="gender" class="form-input">
+=======
+							<select id="gender" name="gender" class="form-input" required>
+>>>>>>> Stashed changes
 								<option value="">请选择性别</option>
 								<option value="female">女</option>
 								<option value="male">男</option>
@@ -382,7 +668,11 @@
 
 						<div class="form-group">
 							<label for="birthplace" id="birthplace-label">出生地点</label>
+<<<<<<< Updated upstream
 							<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="">
+=======
+							<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="" required>
+>>>>>>> Stashed changes
 						</div>
 
 						<div class="checkbox-forgot-row">
@@ -400,7 +690,11 @@
 						</div>
 
 						<button type="submit" class="form-register-btn" id="register-submit">注册</button>
+<<<<<<< Updated upstream
 					</div> -->
+=======
+					</div>
+>>>>>>> Stashed changes
 				</form>
 				
 				<div class="login-link">
@@ -430,6 +724,7 @@
 		<script src="assets/js/breakpoints.min.js"></script>
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
+<<<<<<< Updated upstream
 		<!-- Navigation handling -->
 		<script src="assets/js/navigation.js"></script>
 		
@@ -484,6 +779,31 @@
 					// verificationLabel: '验证码',
 					// verificationPlaceholder: '请输入验证码',
 					// verificationResend: '重新发送',
+=======
+		<!-- Load navigation system -->
+		<script src="assets/js/navigation-loader.js"></script>
+		<script src="assets/js/navigation.js"></script>
+		
+		<script>
+			// Global language variable for form functionality
+			let currentLanguage = 'zh'; // Default to Chinese
+			
+			// Language content
+			const content = {
+				zh: {
+											title: 'Timing - 注册',
+					registerTitle: '欢迎来到Timing',
+					registerSubtitle1: '邮箱将作为唯一身份标识，提交后不可更改',
+					registerSubtitle2: '我们将根据你的出生信息建成模型，\n稍后也可以在设置更改这些信息',
+					nameLabel: '姓名',
+					namePlaceholder: '请输入您的姓名',
+					emailLabel: '邮箱',
+					emailPlaceholder: '请输入邮箱地址',
+					verificationLabel: '验证码',
+					verificationPlaceholder: '请输入验证码',
+					verificationSend: '发送',
+					verificationResend: '重新发送',
+>>>>>>> Stashed changes
 					passwordLabel: '密码',
 					passwordPlaceholder: '请输入密码',
 					confirmPasswordLabel: '确认密码',
@@ -493,6 +813,7 @@
 					termsLink: '查看条款',
 					nextBtn: '确认',
 					birthtimeLabel: '出生时间',
+<<<<<<< Updated upstream
 					// genderLabel: '出生性别',
 					// genderOptions: {
 					// 	placeholder: '请选择性别',
@@ -501,10 +822,21 @@
 					// },
 					// birthplaceLabel: '出生地点',
 					// birthplacePlaceholder: '请输入出生地点',
+=======
+					genderLabel: '出生性别',
+					genderOptions: {
+						placeholder: '请选择性别',
+						female: '女',
+						male: '男'
+					},
+					birthplaceLabel: '出生地点',
+					birthplacePlaceholder: '请输入出生地点',
+>>>>>>> Stashed changes
 					userAgreementLabel: '请阅读并同意用户协议和隐私政策',
 					betaTesterLabel: '申请成为内测用户',
 					registerSubmit: '注册',
 					loginText: '已有账户？',
+<<<<<<< Updated upstream
 					loginLink: '立即登录',
 					navIntro: '简介',
 					navWork: '功能',
@@ -513,10 +845,14 @@
 					navLogin: '登录',
 					navSignup: '注册',
 					navLang: 'ENG'
+=======
+					loginLink: '立即登录'
+>>>>>>> Stashed changes
 				},
 				en: {
 					title: 'Timing - Register',
 					registerTitle: 'Welcome to Timing',
+<<<<<<< Updated upstream
 					userNameLabel: 'Username',
 					userNamePlaceholder: 'Please enter your username',
 					emailLabel: 'Email',
@@ -524,6 +860,18 @@
 					// verificationLabel: 'Verification Code',
 					// verificationPlaceholder: 'Enter verification code',
 					// verificationResend: 'Resend',
+=======
+					registerSubtitle1: 'Email will be used as the unique identifier and cannot be changed after submission',
+					registerSubtitle2: 'We will build a model based on your birth information,\nwhich can also be changed later in settings',
+					nameLabel: 'Name',
+					namePlaceholder: 'Please enter your name',
+					emailLabel: 'Email',
+					emailPlaceholder: 'Enter your email address',
+					verificationLabel: 'Verification Code',
+					verificationPlaceholder: 'Enter verification code',
+					verificationSend: 'Send',
+					verificationResend: 'Resend',
+>>>>>>> Stashed changes
 					passwordLabel: 'Password',
 					passwordPlaceholder: 'Enter your password',
 					confirmPasswordLabel: 'Confirm Password',
@@ -532,6 +880,7 @@
 					agreeLabel: 'Agree to Terms of Service',
 					termsLink: 'View Terms',
 					nextBtn: 'Confirm',
+<<<<<<< Updated upstream
 					// birthtimeLabel: 'Birth Date & Time',
 					// genderLabel: 'Birth Gender',
 					// genderOptions: {
@@ -541,10 +890,22 @@
 					// },
 					// birthplaceLabel: 'Birth Place',
 					// birthplacePlaceholder: 'Please enter birth place',
+=======
+					birthtimeLabel: 'Birth Date & Time',
+					genderLabel: 'Birth Gender',
+					genderOptions: {
+						placeholder: 'Please select gender',
+						female: 'Female',
+						male: 'Male'
+					},
+					birthplaceLabel: 'Birth Place',
+					birthplacePlaceholder: 'Please enter birth place',
+>>>>>>> Stashed changes
 					userAgreementLabel: 'Please read and agree to the User Agreement and Privacy Policy',
 					betaTesterLabel: 'Apply to become a beta tester',
 					registerSubmit: 'Register',
 					loginText: 'Already have an account?',
+<<<<<<< Updated upstream
 					loginLink: 'Sign In Now',
 					navIntro: 'Introduction',
 					navWork: 'Function',
@@ -553,6 +914,9 @@
 					                navLogin: 'SIGN IN',
 					navSignup: 'SIGN UP',
 					navLang: '中文'
+=======
+					loginLink: 'Sign In Now'
+>>>>>>> Stashed changes
 				}
 			};
 			
@@ -566,6 +930,7 @@
 				
 				// Update form content
 				document.getElementById('register-title').textContent = c.registerTitle;
+<<<<<<< Updated upstream
 				document.getElementById('userName-label').textContent = c.userNameLabel;
 				document.getElementById('username').placeholder = c.userNamePlaceholder;
 				document.getElementById('email-label').textContent = c.emailLabel;
@@ -573,6 +938,22 @@
 				// document.getElementById('verification-label').textContent = c.verificationLabel;
 				// document.getElementById('verification').placeholder = c.verificationPlaceholder;
 				// document.getElementById('verification-resend').textContent = c.verificationResend;
+=======
+				updateSubtitle();
+				document.getElementById('name-label').textContent = c.nameLabel;
+				document.getElementById('name').placeholder = c.namePlaceholder;
+				document.getElementById('email-label').textContent = c.emailLabel;
+				document.getElementById('email').placeholder = c.emailPlaceholder;
+				document.getElementById('verification-label').textContent = c.verificationLabel;
+				document.getElementById('verification').placeholder = c.verificationPlaceholder;
+				// Set initial send button text
+				const sendBtn = document.getElementById('verification-resend');
+				if (sendBtn && !sendBtn.dataset.codeSent) {
+					sendBtn.textContent = c.verificationSend;
+				} else {
+					sendBtn.textContent = c.verificationResend;
+				}
+>>>>>>> Stashed changes
 				document.getElementById('password-label').textContent = c.passwordLabel;
 				document.getElementById('password').placeholder = c.passwordPlaceholder;
 				document.getElementById('confirm-password-label').textContent = c.confirmPasswordLabel;
@@ -580,6 +961,7 @@
 				document.getElementById('password-warning').textContent = c.passwordWarning;
 				document.getElementById('agree-label').textContent = c.agreeLabel;
 				document.getElementById('termsLink').textContent = c.termsLink;
+<<<<<<< Updated upstream
 				// document.getElementById('next-btn').textContent = c.nextBtn;
 				// document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
 				// document.getElementById('gender-label').textContent = c.genderLabel;
@@ -587,11 +969,21 @@
 				// document.getElementById('birthplace').placeholder = c.birthplacePlaceholder;
 				// document.getElementById('user-agreement-label').textContent = c.userAgreementLabel;
 				// document.getElementById('beta-tester-label').textContent = c.betaTesterLabel;
+=======
+				document.getElementById('next-btn').textContent = c.nextBtn;
+				document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
+				document.getElementById('gender-label').textContent = c.genderLabel;
+				document.getElementById('birthplace-label').textContent = c.birthplaceLabel;
+				document.getElementById('birthplace').placeholder = c.birthplacePlaceholder;
+				document.getElementById('user-agreement-label').textContent = c.userAgreementLabel;
+				document.getElementById('beta-tester-label').textContent = c.betaTesterLabel;
+>>>>>>> Stashed changes
 				document.getElementById('register-submit').textContent = c.registerSubmit;
 				document.getElementById('login-text').textContent = c.loginText;
 				document.getElementById('login-link').textContent = c.loginLink;
 				
 				// Update gender select options
+<<<<<<< Updated upstream
 				// const genderSelect = document.getElementById('gender');
 				// genderSelect.innerHTML = `
 				// 	<option value="">${c.genderOptions.placeholder}</option>
@@ -652,6 +1044,22 @@
 				}
 			}
 			
+=======
+				const genderSelect = document.getElementById('gender');
+				genderSelect.innerHTML = `
+					<option value="">${c.genderOptions.placeholder}</option>
+					<option value="female">${c.genderOptions.female}</option>
+					<option value="male">${c.genderOptions.male}</option>
+				`;
+			}
+			
+			// Initialize language on navigation load
+			document.addEventListener('navigationLoaded', function(e) {
+				currentLanguage = e.detail.language;
+				updateContent(currentLanguage);
+			});
+			
+>>>>>>> Stashed changes
 			// Password validation function
 			function validatePassword() {
 				const password = document.getElementById('password').value;
@@ -668,6 +1076,7 @@
 			// Page navigation variables
 			let currentPage = 1;
 			
+<<<<<<< Updated upstream
 			// Page navigation functions
 			// function nextPage() {
 			// 	// Validate page 1 fields
@@ -732,11 +1141,30 @@
 				const username = document.getElementById('username').value;
 				const email = document.getElementById('email').value;
 				// const verification = document.getElementById('verification').value;
+=======
+			// Update subtitle based on current page
+			function updateSubtitle() {
+				const c = content[currentLanguage];
+				const subtitle = currentPage === 1 ? c.registerSubtitle1 : c.registerSubtitle2;
+				document.getElementById('register-subtitle').innerHTML = subtitle.replace(/\n/g, '<br>');
+			}
+			
+			// Page navigation functions
+			function nextPage() {
+				// Validate page 1 fields
+				const name = document.getElementById('name').value;
+				const email = document.getElementById('email').value;
+				const verification = document.getElementById('verification').value;
+>>>>>>> Stashed changes
 				const password = document.getElementById('password').value;
 				const confirmPassword = document.getElementById('confirmPassword').value;
 				const agree = document.getElementById('agree').checked;
 				
+<<<<<<< Updated upstream
 				if (!username || !email || !password) {
+=======
+				if (!name || !email || !verification || !password || !confirmPassword) {
+>>>>>>> Stashed changes
 					const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
 					alert(message);
 					return;
@@ -754,6 +1182,7 @@
 					return;
 				}
 				
+<<<<<<< Updated upstream
 				// // Validate page 2 fields
 				// const birthtime = document.getElementById('birthtime').value;
 				// const gender = document.getElementById('gender').value;
@@ -782,6 +1211,82 @@
 				// // TODO: 这里将来会连接到后端API
 				// console.log('注册信息:', formData);
 				
+=======
+				// Switch to page 2
+				document.getElementById('page1').classList.remove('active');
+				document.getElementById('page2').classList.add('active');
+				document.getElementById('page-indicator').textContent = '2/2';
+				const backBtn = document.getElementById('back-btn');
+				backBtn.style.display = 'flex';
+				backBtn.classList.add('active');
+				currentPage = 2;
+				updateSubtitle();
+			}
+			
+			function goBack() {
+				// Switch to page 1
+				document.getElementById('page2').classList.remove('active');
+				document.getElementById('page1').classList.add('active');
+				document.getElementById('page-indicator').textContent = '1/2';
+				const backBtn = document.getElementById('back-btn');
+				backBtn.style.display = 'none';
+				backBtn.classList.remove('active');
+				currentPage = 1;
+				updateSubtitle();
+			}
+			
+			// Initialize form interactions on page load
+			document.addEventListener('DOMContentLoaded', function() {
+				// Add password validation listeners
+				document.getElementById('password').addEventListener('input', validatePassword);
+				document.getElementById('confirmPassword').addEventListener('input', validatePassword);
+			});
+			
+
+			
+			// Register form handling
+			document.getElementById('registerForm').addEventListener('submit', function(e) {
+				e.preventDefault();
+				
+				// Validate page 2 fields
+				const birthtime = document.getElementById('birthtime').value;
+				const gender = document.getElementById('gender').value;
+				const birthplace = document.getElementById('birthplace').value;
+				
+				if (!birthtime || !gender || !birthplace) {
+					const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
+					alert(message);
+					return;
+				}
+				
+				// Get all form data
+				const formData = {
+					name: document.getElementById('name').value,
+					email: document.getElementById('email').value,
+					verification: document.getElementById('verification').value,
+					password: document.getElementById('password').value,
+					birthtime: birthtime,
+					gender: gender,
+					birthplace: birthplace,
+					userAgreement: document.getElementById('userAgreement').checked,
+					betaTester: document.getElementById('betaTester').checked,
+					language: currentLanguage
+				};
+				
+				// Use the AuthSystem to handle registration
+				if (window.authSystem) {
+					// Create a synthetic event for the auth system
+					const syntheticEvent = {
+						preventDefault: () => {}
+					};
+					window.authSystem.handleRegister(syntheticEvent);
+				} else {
+					console.log('注册信息:', formData);
+					// 临时提示
+					const message = currentLanguage === 'zh' ? '注册功能将在后端完成后启用' : 'Registration functionality will be enabled after backend completion';
+					alert(message);
+				}
+>>>>>>> Stashed changes
 			});
 			
 			// Terms link handling
@@ -799,10 +1304,22 @@
 			});
 			
 			// Verification resend handling
+<<<<<<< Updated upstream
 			// document.getElementById('verification-resend').addEventListener('click', function() {
 			// 	const message = currentLanguage === 'zh' ? '验证码已发送' : 'Verification code sent';
 			// 	alert(message);
 			// });
+=======
+			document.getElementById('verification-resend').addEventListener('click', function() {
+				// Use the AuthSystem to send verification code
+				if (window.authSystem) {
+					window.authSystem.sendVerificationCode();
+				} else {
+					const message = currentLanguage === 'zh' ? '验证码发送功能暂不可用' : 'Verification code functionality not available';
+					alert(message);
+				}
+			});
+>>>>>>> Stashed changes
 		</script>
 	</body>
 </html> 

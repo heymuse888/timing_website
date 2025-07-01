@@ -680,6 +680,109 @@
 				}
 			}
 
+			/* Registration Modal Styles */
+			.modal-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.8);
+				backdrop-filter: blur(10px);
+				z-index: 10000;
+				display: none;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.modal-overlay.active {
+				display: flex;
+			}
+
+			.modal-content {
+				background: rgba(27, 31, 35, 0.95);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				border-radius: 20px;
+				padding: 2.5em;
+				max-width: 500px;
+				width: 90%;
+				position: relative;
+				box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+			}
+
+			.modal-close {
+				position: absolute;
+				top: 1em;
+				right: 1em;
+				background: none;
+				border: none;
+				color: rgba(255, 255, 255, 0.6);
+				font-size: 1.5em;
+				cursor: pointer;
+				transition: color 0.3s ease;
+			}
+
+			.modal-close:hover {
+				color: #ffffff;
+			}
+
+			.modal-title {
+				color: #ffffff;
+				font-size: 1.1em;
+				margin-bottom: 1.5em;
+				text-align: center;
+				line-height: 1.4;
+			}
+
+			.modal-buttons {
+				display: flex;
+				gap: 1rem;
+				flex-direction: column;
+			}
+
+			.modal-login-btn, .modal-register-btn {
+				display: block;
+				width: 100%;
+				color: #ffffff;
+				border: none;
+				padding: 1em 2em;
+				border-radius: 12px;
+				font-size: 1.1em;
+				letter-spacing: 0.1em;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				text-decoration: none;
+				text-align: center;
+			}
+
+			.modal-login-btn {
+				background: linear-gradient(45deg, #6f8bf7, #9f6cf7);
+				box-shadow: 0 4px 15px rgba(111, 139, 247, 0.3);
+			}
+
+			.modal-register-btn {
+				background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
+				box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
+			}
+
+			.modal-login-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(111, 139, 247, 0.4);
+				background: linear-gradient(45deg, #84a0ff, #b784ff);
+			}
+
+			.modal-register-btn:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 6px 20px rgba(159, 108, 247, 0.4);
+				background: linear-gradient(45deg, #b784ff, #84a0ff);
+			}
+
+			@media screen and (min-width: 480px) {
+				.modal-buttons {
+					flex-direction: row;
+				}
+			}
+
 		</style>
 	</head>
 	<body class="is-preload">
@@ -897,6 +1000,21 @@
 		<!-- BG -->
 			<div id="bg"></div>
 
+		<!-- Registration Modal -->
+		<div id="registration-modal" class="modal-overlay">
+			<div class="modal-content">
+				<button class="modal-close" onclick="closeRegistrationModal()">&times;</button>
+				<div class="modal-title">
+					Event Timing requires birth information,<br>
+					please login or register to unlock more features and usage permissions!
+				</div>
+				<div class="modal-buttons">
+					<a href="login.html?lang=en" class="modal-login-btn">Login</a>
+					<a href="register.html?lang=en" class="modal-register-btn">Register</a>
+				</div>
+			</div>
+		</div>
+
 		<!-- Scripts -->
 			<!-- Chart.js for timing chart -->
 			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -918,20 +1036,54 @@
 			<script src="assets/js/navigation.js"></script>
 
 			<script>
+<<<<<<< Updated upstream
 				document.addEventListener('')
 
 			</script>
 
 			<script>
+=======
+				// Registration Modal Functions
+				function showRegistrationModal() {
+					const modal = document.getElementById('registration-modal');
+					modal.classList.add('active');
+				}
+
+				function closeRegistrationModal() {
+					const modal = document.getElementById('registration-modal');
+					modal.classList.remove('active');
+				}
+
+				// Check if user is registered and logged in
+				function isUserRegistered() {
+					const userRegistered = localStorage.getItem('userRegistered');
+					const userInfo = localStorage.getItem('userInfo');
+					return userRegistered === 'true' && userInfo;
+				}
+
+>>>>>>> Stashed changes
 				// Event Timing Form Functionality
 				document.addEventListener('DOMContentLoaded', function() {
 					const eventForm = document.getElementById('event-timing-form');
 					const resultContainer = document.getElementById('timing-result');
 					const resultContent = document.getElementById('result-content');
 
+					// Close modal when clicking outside
+					document.getElementById('registration-modal').addEventListener('click', function(e) {
+						if (e.target === this) {
+							closeRegistrationModal();
+						}
+					});
+
 					if (eventForm) {
 						eventForm.addEventListener('submit', function(e) {
 							e.preventDefault();
+							
+							// Check if user is registered first
+							if (!isUserRegistered()) {
+								showRegistrationModal();
+								return;
+							}
 							
 							// Get form data
 							const formData = new FormData(eventForm);
