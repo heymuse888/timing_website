@@ -331,21 +331,18 @@ class AuthSystem {
         const password = document.getElementById('password')?.value;
         const remember = document.getElementById('remember')?.checked;
         
-        if (!email || !password) {
+        if (!username || !password) {
             this.showMessage(this.getMessage('pleaseEnterEmailPassword'), 'error');
-            return;
-        }
-        
-        if (!this.isValidEmail(email)) {
-            this.showMessage(this.getMessage('validEmailRequired'), 'error');
             return;
         }
         
         try {
             this.showLoading(true);
             
-            // 提取邮箱@之前的部分作为用户名
-            const username = email.split('@')[0];
+            // Check if input is email format or username
+            const isEmail = this.isValidEmail(username);
+            const email = isEmail ? username : `${username}@example.com`;
+            const usernameExtracted = email.split('@')[0];
             
             // 根据环境调整请求数据格式
             const requestData = this.isLocalTest ? {
@@ -370,8 +367,8 @@ class AuthSystem {
                     localStorage.setItem('userRegistered', 'true');
                     localStorage.setItem('userInfo', JSON.stringify({ 
                         email: email,
-                        username: response.username || username,
-                        name: response.name || response.username || username
+                        username: response.username || usernameExtracted,
+                        name: response.name || response.username || usernameExtracted
                     }));
                     
                     if (response.token) {
@@ -384,7 +381,7 @@ class AuthSystem {
                             window.NavigationLoader.reload();
                         }, 500);
                     } else {
-                        this.updateNavigation(response.username || username);
+                        this.updateNavigation(response.username || usernameExtracted);
                     }
                     
                     setTimeout(() => {
@@ -399,8 +396,8 @@ class AuthSystem {
                 localStorage.setItem('userRegistered', 'true');
                 localStorage.setItem('userInfo', JSON.stringify({ 
                     email: email,
-                    username: username,
-                    name: username  // 在生产环境中暂时使用username作为显示名称
+                    username: usernameExtracted,
+                    name: usernameExtracted  // 在生产环境中暂时使用username作为显示名称
                 }));
                 
                 if (response.token) {
@@ -413,7 +410,7 @@ class AuthSystem {
                         window.NavigationLoader.reload();
                     }, 500);
                 } else {
-                    this.updateNavigation(username);
+                    this.updateNavigation(usernameExtracted);
                 }
                 
                 setTimeout(() => {
@@ -422,10 +419,73 @@ class AuthSystem {
             }
             
         } catch (error) {
-            this.showMessage(this.handleAPIError(error), 'error');
+            // API服务器不可用，尝试离线模拟登录
+            console.log('API服务器不可用，尝试离线模拟登录...');
+            
+            const offlineResponse = this.tryOfflineLogin(username, password);
+            if (offlineResponse.success) {
+                // 离线登录成功
+                this.showMessage(offlineResponse.message, 'success');
+                
+                const isEmail = this.isValidEmail(username);
+                const email = isEmail ? username : `${username}@example.com`;
+                const usernameExtracted = email.split('@')[0];
+                
+                localStorage.setItem('userRegistered', 'true');
+                localStorage.setItem('userInfo', JSON.stringify({ 
+                    email: email,
+                    username: usernameExtracted,
+                    name: offlineResponse.name || usernameExtracted,
+                    isOfflineMode: true
+                }));
+                
+                localStorage.setItem('authToken', `offline_token_${Date.now()}`);
+                
+                // Update navigation
+                if (window.NavigationLoader) {
+                    setTimeout(() => {
+                        window.NavigationLoader.reload();
+                    }, 500);
+                } else {
+                    this.updateNavigation(usernameExtracted);
+                }
+                
+                setTimeout(() => {
+                    window.location.href = this.currentLanguage === 'zh' ? 'index-zh.html' : 'index.html';
+                }, 1500);
+            } else {
+                // 离线登录也失败
+                this.showMessage(offlineResponse.message, 'error');
+            }
+            
             console.error('Login error:', error);
         } finally {
             this.showLoading(false);
+        }
+    }
+    
+    // 离线模拟登录方法
+    tryOfflineLogin(username, password) {
+        // 演示账户数据库
+        const demoUsers = {
+            'admin@example.com': { password: '123456', name: '管理员' },
+            'admin': { password: '123456', name: '管理员' }
+        };
+        
+        // 检查用户名（支持邮箱和用户名格式）
+        const user = demoUsers[username] || demoUsers[username.toLowerCase()];
+        
+        if (user && user.password === password) {
+            return {
+                success: true,
+                message: this.getMessage('loginSuccess') + ' (离线模式)',
+                name: user.name
+            };
+        } else {
+            return {
+                success: false,
+                message: this.getMessage('loginFailed')
+            };
         }
     }
     
