@@ -10,8 +10,8 @@ class AuthSystem {
             this.API_BASE_URL = 'http://127.0.0.1:9999';
             this.API_VERSION = '';
         } else {
-            this.API_BASE_URL = 'https://api.sparkingtiming.com';
-            this.API_VERSION = '/v1';
+            this.API_BASE_URL = 'https://curve.sparkingtiming.com:9443';
+            this.API_VERSION = '';
         }
         
         this.TIMEOUT = 10000;
@@ -81,14 +81,13 @@ class AuthSystem {
     bindRegisterEvents() {
         const registerForm = document.getElementById('registerForm');
         if (registerForm) {
-            registerForm.addEventListener('submit', (e) => this.handleRegister(e));
+            document.getElementById('register-submit').addEventListener('click', (e) => this.handleRegister(e));
+            document.getElementById('verification-submit').addEventListener('click', (e) => this.handleVerification(e));
         }
-        
-        // Add verification code input validation
-        const verificationInput = document.getElementById('verification');
-        if (verificationInput) {
-            verificationInput.addEventListener('input', () => this.validateVerificationCodeInput());
-            verificationInput.addEventListener('blur', () => this.validateVerificationCodeReal());
+
+        const sendVerificationBtn = document.querySelector('.verification-resend');
+        if (sendVerificationBtn) {
+            sendVerificationBtn.addEventListener('click', () => this.sendVerificationCode());
         }
     }
     
@@ -117,10 +116,13 @@ class AuthSystem {
             timeout: this.TIMEOUT
         };
 
+        console.log("options: ", options);
+
         const mergedOptions = { ...defaultOptions, ...options };
 
         try {
             console.log(`Making ${mergedOptions.method} request to: ${url}`);
+            console.log('options: ', mergedOptions);
             
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT);
@@ -136,7 +138,6 @@ class AuthSystem {
                 const errorData = await response.json().catch(() => null);
                 throw new Error(errorData?.detail || `HTTP ${response.status}: ${response.statusText}`);
             }
-
             const data = await response.json();
             console.log('API Response:', data);
             return data;
@@ -164,11 +165,15 @@ class AuthSystem {
         try {
             this.showLoading(true);
             
-            const requestData = { email: email };
-            const response = await this.makeRequest('/register/send_code', {
+            const requestData = {username: username};
+
+            console.log("request Data: ", requestData);
+            const response = await this.makeRequest('/auth/resend-verification-code', {
                 method: 'POST',
                 body: JSON.stringify(requestData)
             });
+
+            console.log("response: ", response);
             
             // Update button text to "Resend" and mark as sent
             const sendBtn = document.querySelector('.verification-resend');
@@ -252,49 +257,46 @@ class AuthSystem {
             this.verificationCodeValid = null; // Unknown state
         }
     }
-    
-    async handleRegister(event) {
+
+    async handleuserInfo(event) {
         event.preventDefault();
+        console.log(window.location.origin);
 
-        if(localStorage.getItem('username_token') === null){
-            window.location.href = this.currentLanguage === 'zh' ? 'login.html?lang=en' : 'login.html?lang=zh';
-        }
-
+        const birthdate = document.getElementById('birthdate').value;
         const birthtime = document.getElementById('birthtime').value;
-        const gender = document.getElementById('gender').value;
+        const sex = document.getElementById('gender').value;
         const birthplace = document.getElementById('birthplace').value;
-        
+
         try {
-            // Show loading on the register button specifically
-            const registerButton = document.getElementById('register-submit');
-            if (registerButton) {
-                registerButton.disabled = true;
-                registerButton.style.opacity = '0.6';
-                const originalText = registerButton.textContent;
-                registerButton.setAttribute('data-original-text', originalText);
-                registerButton.textContent = this.getMessage('loading');
+            // Show loading on the submit button specifically
+            const updateInformationButton = document.getElementById('submit');
+            if (updateInformationButton) {
+                updateInformationButton.disabled = true;
+                updateInformationButton.style.opacity = '0.6';
+                const originalText = updateInformationButton.textContent;
+                updateInformationButton.setAttribute('data-original-text', originalText);
+                updateInformationButton.textContent = this.getMessage('updating');
             }
-            
+
             const requestData = {
-                name: formData.name,
-                email: formData.email,
-                verification_code: formData.verificationCode,
-                password: formData.password,
-                confirm_password: formData.confirmPassword
+                dob: birthdate+'T'+birthtime,
+                sex: sex,
+                birthplace: birthplace,
             };
+
+            const username_token = localStorage.getItem('username_token');
             
-            const response = await this.makeRequest('/register/submit', {
-                method: 'POST',
+            const response = await this.makeRequest('/users/me', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${username_token}`,
+                },
                 body: JSON.stringify(requestData)
             });
             
             this.showMessage(this.getMessage('registerSuccess'), 'success');
-            localStorage.setItem('userRegistered', 'true');
-            localStorage.setItem('userInfo', JSON.stringify({
-                name: response.name || formData.name,
-                email: formData.email,
-                username: response.username || formData.email.split('@')[0]
-            }));
             
             // Update navigation with new system
             if (window.NavigationLoader) {
@@ -323,6 +325,191 @@ class AuthSystem {
             }
         }
     }
+  
+
+    async handleVerification(event) {
+        event.preventDefault();
+
+        console.log("current language: ", this.currentLanguage);
+
+        const username = document.getElementById('username').value;
+        const verificationCode = document.getElementById('verification').value;
+
+        if (!username || !verificationCode) {
+            const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
+            alert(message);
+            return;
+        }
+
+        try {
+            // Show loading on the register button specifically
+            const registerButton = document.getElementById('verification-submit');
+            if (registerButton) {
+                registerButton.disabled = true;
+                registerButton.style.opacity = '0.6';
+                const originalText = registerButton.textContent;
+                registerButton.setAttribute('data-original-text', originalText);
+                registerButton.textContent = this.getMessage('loading');
+            }
+
+            const requestData = {
+                username: username,
+                confirmation_code: verificationCode
+            };
+            
+            const response = await this.makeRequest('/auth/verify-email', {
+                method: 'POST',
+                body: JSON.stringify(requestData)
+            });
+            
+            this.showMessage(this.getMessage('registerSuccess'), 'success');
+
+            const loginData = {
+                login_id: username,
+                password: localStorage.getItem('password'),
+                remember: false,
+            };
+
+            const loginResponse = await this.makeRequest('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify(loginData)
+            });
+            localStorage.setItem('access_token', loginResponse.access_token);
+            localStorage.setItem('token_type', loginResponse.token_type);
+            localStorage.setItem('username_token', loginResponse.username_token);
+            localStorage.setItem('username', loginResponse.username);
+            localStorage.removeItem('password');
+
+            console.log("username token set");
+            console.log(localStorage.getItem('username_token'));
+
+            this.showMessage(this.getMessage('loginSuccess'), 'success');
+            
+            if (window.NavigationLoader) {
+                console.log("navigation loader");
+                setTimeout(() => {
+                    window.NavigationLoader.reload();
+                }, 500);
+            } else {
+                console.log("local navigation");
+                this.updateNavigation(loginResponse.username);
+            }
+            
+            setTimeout(() => {
+                console.log("current language: ", this.currentLanguage);
+                console.log("destination: ", this.currentLanguage === 'zh' ? 'userInfo.html?lang=en' : 'userInfo.html?lang=zh');
+                window.location.href = this.currentLanguage === 'zh' ? 'userInfo.html?lang=zh' : 'userInfo.html?lang=en';
+            }, 2000);
+            
+        } catch (error) {
+            this.showMessage(this.handleAPIError(error), 'error');
+            console.error('Registration error:', error);
+        } finally {
+            // Restore register button
+            const registerButton = document.getElementById('register-submit');
+            if (registerButton) {
+                registerButton.disabled = false;
+                registerButton.style.opacity = '1';
+                const originalText = registerButton.getAttribute('data-original-text');
+                if (originalText) {
+                    registerButton.textContent = originalText;
+                }
+            }
+        }
+    }
+    
+    async handleRegister(event) {
+        event.preventDefault();
+
+        console.log("into handleregister");
+        console.log(window.location.origin);
+
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const agree = document.getElementById('agree').checked;
+        
+        if (!username || !email || !password || !confirmPassword) {
+            const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
+            alert(message);
+            return;
+        }
+        
+        if (password !== confirmPassword) {
+            const message = currentLanguage === 'zh' ? '密码不一致' : 'Passwords do not match';
+            alert(message);
+            return;
+        }
+        
+        if (!agree) {
+            const message = currentLanguage === 'zh' ? '请同意服务条款' : 'Please agree to the terms of service';
+            alert(message);
+            return;
+        }
+
+
+        try {
+            // Show loading on the register button specifically
+            const registerButton = document.getElementById('register-submit');
+            if (registerButton) {
+                registerButton.disabled = true;
+                registerButton.style.opacity = '0.6';
+                const originalText = registerButton.textContent;
+                registerButton.setAttribute('data-original-text', originalText);
+                registerButton.textContent = this.getMessage('loading');
+            }
+
+            const requestData = {
+                username: username,
+                email: email,
+                password: password
+            };
+
+            const response = await this.makeRequest('/auth/register', {
+                method: 'POST',
+                body: JSON.stringify(requestData)
+            });
+            
+            this.showMessage(this.getMessage('registerSuccess'), 'success');
+
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+            
+            // Update navigation with new system
+            if (window.NavigationLoader) {
+                setTimeout(() => {
+                    window.NavigationLoader.reload();
+                }, 500);
+            }
+            
+            // setTimeout(() => {
+            //     window.location.href = this.currentLanguage === 'zh' ? 'email-verification.html?lang=en' : 'email-verification.html?lang=zh';
+            // }, 2000);
+            
+        } catch (error) {
+            this.showMessage(this.handleAPIError(error), 'error');
+            console.error('Registration error:', error);
+        } finally {
+            // Restore register button
+            const registerButton = document.getElementById('register-submit');
+            if (registerButton) {
+                registerButton.disabled = false;
+                registerButton.style.opacity = '1';
+                const originalText = registerButton.getAttribute('data-original-text');
+                if (originalText) {
+                    registerButton.textContent = originalText;
+                }
+            }
+            // Switch to page 2
+            document.getElementById('page1').classList.remove('active');
+            document.getElementById('page2').classList.add('active');
+            document.getElementById('page-indicator').textContent = '2/2';
+            document.getElementById('back-btn').style.display = 'flex';
+            currentPage = 2;
+        }
+    }
     
     async handleLogin(event) {
         event.preventDefault();
@@ -330,7 +517,9 @@ class AuthSystem {
         const username = document.getElementById('username')?.value?.trim();
         const password = document.getElementById('password')?.value;
         const remember = document.getElementById('remember')?.checked;
-        
+
+        console.log("remember: ", remember);
+
         if (!username || !password) {
             this.showMessage(this.getMessage('pleaseEnterEmailPassword'), 'error');
             return;
@@ -349,7 +538,7 @@ class AuthSystem {
                 username: email,  // 本地测试服务器期望 username 字段
                 password: password
             } : {
-                email: email,     // 生产服务器期望 email 字段
+                login_id: username,   
                 password: password,
                 remember: remember
             };
@@ -393,23 +582,19 @@ class AuthSystem {
             } else {
                 // 生产服务器响应格式
                 this.showMessage(this.getMessage('loginSuccess'), 'success');
-                localStorage.setItem('userRegistered', 'true');
-                localStorage.setItem('userInfo', JSON.stringify({ 
-                    email: email,
-                    username: usernameExtracted,
-                    name: usernameExtracted  // 在生产环境中暂时使用username作为显示名称
-                }));
-                
-                if (response.token) {
-                    localStorage.setItem('authToken', response.token);
-                }
+                localStorage.setItem('token_type', response.token_type);
+                localStorage.setItem('username_token', response.username_token);
+                localStorage.setItem('access_token', response.access_token);
+                localStorage.setItem('username', response.username);
                 
                 // Update navigation with new system
                 if (window.NavigationLoader) {
+                    console.log("navigation loader");
                     setTimeout(() => {
                         window.NavigationLoader.reload();
                     }, 500);
                 } else {
+                    console.log("local navigation");
                     this.updateNavigation(usernameExtracted);
                 }
                 
@@ -686,7 +871,8 @@ class AuthSystem {
                 loginFailed: '登录失败，请检查邮箱和密码',
                 loading: '处理中...',
                 resendCode: '重新发送',
-                logoutSuccess: '已退出登录'
+                logoutSuccess: '已退出登录',
+                pleaseEnterUsername: '请输入用户名',
             },
             en: {
                 pleaseEnterEmail: 'Please enter email address',
@@ -704,6 +890,7 @@ class AuthSystem {
                 registerSuccess: 'Registration successful! Redirecting...',
                 registerFailed: 'Registration failed, please try again',
                 pleaseEnterEmailPassword: 'Please enter email and password',
+                pleaseEnterUsername: 'Please enter username',
                 loginSuccess: 'Login successful! Redirecting...',
                 loginFailed: 'Login failed, please check email and password',
                 loading: 'Processing...',
@@ -831,9 +1018,8 @@ class AuthSystem {
     
     // 退出登录
     logout() {
-        localStorage.removeItem('userRegistered');
-        localStorage.removeItem('userInfo');
-        localStorage.removeItem('authToken');
+        localStorage.removeItem('username_token');
+        localStorage.removeItem('access_token');
         
         // Use new navigation system if available
         if (window.NavigationLoader) {
@@ -847,7 +1033,7 @@ class AuthSystem {
             if (navAuth) {
                 const isEnglish = this.currentLanguage === 'en';
                 navAuth.innerHTML = `
-                    <a href="login.html${isEnglish ? '?lang=en' : ''}" class="login-btn">${isEnglish ? 'Sign In' : '登录'}</a>
+                    <a href="login.html${isEnglish ? '?lang=en' : ''}" class="login-btn">${isEnglish ? 'Log In' : '登录'}</a>
                     <a href="register.html${isEnglish ? '?lang=en' : ''}" class="signup-btn">${isEnglish ? 'Sign Up' : '注册'}</a>
                     <a href="${isEnglish ? 'index.html' : 'index-zh.html'}" class="lang-btn">${isEnglish ? 'ZH' : 'EN'}</a>
                 `;

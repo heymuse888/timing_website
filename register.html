@@ -9,311 +9,12 @@
 		<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/navigation.css" />
+		<link rel="stylesheet" href="assets/css/register-style.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<style>
-		/* Register page specific styles */
-		.register-container {
-			position: relative;
-			z-index: 3;
-			min-height: calc(100vh - 5rem);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0 2rem 2rem;
-		}
 
-		.register-content {
-			background-color: rgba(27, 31, 34, 0.85);
-			border-radius: 12px;
-			padding: 3rem 2.5rem 2rem 2.5rem;
-			width: 28rem;
-			max-width: 100%;
-			position: relative;
-		}
-
-		.register-title {
-			text-align: center;
-			color: #ffffff;
-			font-size: 1.8rem;
-			font-weight: 300;
-			margin-bottom: 1rem;
-			letter-spacing: 0.1em;
-		}
-
-		.form-group {
-			margin-bottom: 1.5rem;
-		}
-
-		.form-group label {
-			display: block;
-			margin-bottom: 0.5rem;
-			font-weight: 600;
-			color: #ffffff;
-			font-size: 0.9rem;
-			letter-spacing: 0.05em;
-		}
-
-		.form-input {
-			width: 100%;
-			padding: 0.8rem 1rem;
-
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			border-radius: 8px;
-			background: rgba(255, 255, 255, 0.05);
-			color: #ffffff;
-			font-size: 0.9rem;
-
-			transition: all 0.3s ease;
-			box-sizing: border-box;
-		}
-
-		.form-input:focus {
-			outline: none;
-			border-color: #9f6cf7;
-			background: rgba(255, 255, 255, 0.1);
-			box-shadow: 0 0 0 3px rgba(159, 108, 247, 0.1);
-		}
-
-		.form-input::placeholder {
-			color: rgba(255, 255, 255, 0.5);
-		}
-
-		/* Verification code input with resend link */
-		.verification-group {
-			position: relative;
-		}
-
-		.verification-group .form-input {
-			padding-right: 80px;
-		}
-
-		.verification-resend {
-			position: absolute;
-			right: 12px;
-			top: 50%;
-			transform: translateY(-50%);
-			color: rgba(255, 255, 255, 0.8);
-			font-size: 0.8rem;
-			text-decoration: underline;
-			text-decoration-color: rgba(255, 255, 255, 0.4);
-			text-underline-offset: 2px;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			background: none;
-			border: none;
-			outline: none;
-			padding: 0;
-		}
-
-		.verification-resend:hover {
-			color: #ffffff;
-			text-decoration-color: rgba(255, 255, 255, 0.6);
-		}
-
-
-		/* Password mismatch warning */
-		.password-warning {
-			color: #ff4444;
-			font-size: 0.8rem;
-			margin-top: 0.3rem;
-			display: none;
-		}
-
-		.password-warning.show {
-			display: block;
-		}
-
-		/* Multi-page form styles */
-		.form-page {
-			display: none;
-		}
-
-		.form-page.active {
-			display: block;
-		}
-
-		/* Page indicator */
-		.page-indicator {
-			position: absolute;
-			top: 1rem;
-			right: 1.5rem;
-			color: rgba(255, 255, 255, 0.6);
-			font-size: 0.9rem;
-			font-weight: 500;
-		}
-
-		/* Back button */
-
-		.back-btn {
-			position: absolute;
-			top: 1rem;
-			left: 1.5rem;
-			background: none;
-			border: none;
-			color: rgba(255, 255, 255, 0.8);
-			font-size: 1.2rem;
-			cursor: pointer;
-			padding: 0.5rem;
-			border-radius: 50%;
-			transition: all 0.3s ease;
-			display: none;
-		}
-
-		.back-btn:hover {
-			background: rgba(255, 255, 255, 0.1);
-			color: #ffffff;
-
-		}
-
-		.checkbox-forgot-row {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin: 1.5rem 0 2rem 0;
-		}
-
-		.checkbox-group {
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-		}
-
-		.checkbox-group input[type="checkbox"] {
-			width: 18px;
-			height: 18px;
-			accent-color: #9f6cf7;
-		}
-
-		.checkbox-group label {
-			margin: 0;
-			font-size: 0.9rem;
-			font-weight: 600;
-			color: #ffffff;
-			letter-spacing: 0.05em;
-		}
-
-		.forgot-password {
-			text-align: right;
-		}
-
-		.forgot-password a {
-			color: #ffffff;
-			text-decoration: none;
-			font-size: 0.85rem;
-			transition: color 0.3s ease;
-		}
-
-		.forgot-password a:hover {
-			color: rgba(255, 255, 255, 0.8);
-			text-decoration: underline;
-		}
-
-		.form-register-btn {
-			width: 100%;
-			background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
-			color: #ffffff;
-			border: none;
-			padding: 1rem 2rem;
-			border-radius: 8px;
-			font-size: 1rem;
-			font-weight: 600;
-			letter-spacing: 0.1em;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
-			text-align: center;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.form-register-btn:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 8px 25px rgba(159, 108, 247, 0.4);
-			background: linear-gradient(45deg, #b784ff, #84a0ff);
-		}
-
-		.login-link {
-			text-align: center;
-			margin-top: 2rem;
-			padding-top: 1.5rem;
-			border-top: 1px solid rgba(255, 255, 255, 0.1);
-		}
-
-		.login-link p {
-			color: rgba(255, 255, 255, 0.7);
-			font-size: 0.9rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.login-link a {
-			color: #9f6cf7;
-			text-decoration: none;
-			font-weight: 600;
-			transition: color 0.3s ease;
-		}
-
-		.login-link a:hover {
-			color: #b784ff;
-		}
-
-		/* Mobile responsive */
-		@media screen and (max-width: 768px) {
-			.register-container {
-				padding: 0 1rem 1rem;
-			}
-
-			.register-content {
-				padding: 2.5rem 2rem 1.5rem 2rem;
-				width: 100%;
-			}
-
-			.register-title {
-				font-size: 1.5rem;
-			}
-		}
-
-		@media screen and (max-width: 600px) {
-			.register-container {
-				min-height: calc(100vh - 4rem);
-				padding: 0 1rem 1rem;
-			}
-		}
-
-		@media screen and (max-width: 480px) {
-			.register-container {
-				padding: 0 0.5rem 0.5rem;
-			}
-
-			.register-content {
-				padding: 2rem 1.5rem 1rem 1.5rem;
-				border-radius: 8px;
-			}
-		}
-	</style>
 	<body class="is-preload">
 		<!-- Top Navigation Bar (exactly same as intro page) -->
-		<nav class="top-navigation">
-			<div class="nav-container">
-				<div class="nav-logo" onclick="goToHomePage()" style="cursor: pointer;">
-					<img src="images/LOGO.png" alt="Timing Logo" />
-					<span class="logo-text">Timing</span>
-				</div>
-				<div class="nav-menu">
-					<a href="#" class="nav-item" id="nav-intro">简介</a>
-					<a href="#" class="nav-item" id="nav-work">功能</a>
-					<a href="#" class="nav-item" id="nav-curve">能量曲线</a>
-					<a href="#" class="nav-item" id="nav-contact">联系我们</a>
-				</div>
-				<div class="nav-auth">
-					<a href="#" class="login-btn" id="nav-login">登录</a>
-					<a href="#" class="signup-btn" id="nav-signup">注册</a>
-					<a href="#" class="lang-btn" id="nav-lang">ENG</a>
-				</div>
-			</div>
-		</nav>
-
 
 		<!-- Wrapper (same as intro page for background consistency) -->
 		<div id="wrapper">
@@ -325,7 +26,6 @@
 				<div class="page-indicator" id="page-indicator">1/2</div>
 				
 				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
-
 				
 				<form id="registerForm" action="#" method="post">
 					<!-- Page 1: Basic Information -->
@@ -339,14 +39,6 @@
 							<label for="email" id="email-label">邮箱</label>
 							<input type="email" id="email" name="email" class="form-input" placeholder="">
 						</div>
-						
-						<!-- <div class="form-group">
-							<label for="verification" id="verification-label">验证码</label>
-							<div class="verification-group">
-								<input type="text" id="verification" name="verification" class="form-input" placeholder="">
-								<span class="verification-resend" id="verification-resend">重新发送</span>
-							</div>
-						</div> -->
 						
 						<div class="form-group">
 							<label for="password" id="password-label">密码</label>
@@ -376,46 +68,38 @@
 						<button type="submit" class="form-register-btn" id="register-submit">注册</button>
 					</div>
 
-					<!-- Page 2: Birth Information
+					<!-- Page 2: Verification information -->
 					<div class="form-page" id="page2">
 						<div class="form-group">
-							<label for="birthtime" id="birthtime-label">出生时间</label>
-							<input type="datetime-local" id="birthtime" name="birthtime" class="form-input">
-
+							<label for="username-verification" id="username-verification-label">用户名</label>
+							<input type="text" id="username-verification" name="username-verification" class="form-input" placeholder="">
+							<script>
+								document.getElementById('username-verification').addEventListener('keydown', function(e){
+									if(e.key == 'Enter') {
+										e.preventDefault();
+										document.getElementById('verification-submit').click();
+									}
+								})
+							</script>
 						</div>
-
+						
 						<div class="form-group">
-							<label for="gender" id="gender-label">出生性别</label>
-							<select id="gender" name="gender" class="form-input">
-
-								<option value="">请选择性别</option>
-								<option value="female">女</option>
-								<option value="male">男</option>
-							</select>
-						</div>
-
-						<div class="form-group">
-							<label for="birthplace" id="birthplace-label">出生地点</label>
-							<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="">
-
-						</div>
-
-						<div class="checkbox-forgot-row">
-							<div class="checkbox-group">
-								<input type="checkbox" id="userAgreement" name="userAgreement" checked>
-								<label for="userAgreement" id="user-agreement-label">请阅读并同意用户协议和隐私政策</label>
+							<label for="verification" id="verification-label">验证码</label>
+							<div class="verification-group">
+								<input type="text" id="verification" name="verification" class="form-input" placeholder="">
+								<span class="verification-resend" id="verification-resend">重新发送</span>
+								<script>
+									document.getElementById('verification').addEventListener('keydown', function(e){
+										if(e.key == 'Enter') {
+											e.preventDefault();
+											document.getElementById('verification-submit').click();
+										}
+									})
+								</script>
 							</div>
 						</div>
-
-						<div class="checkbox-forgot-row" style="margin-top: 1rem;">
-							<div class="checkbox-group">
-								<input type="checkbox" id="betaTester" name="betaTester" checked>
-								<label for="betaTester" id="beta-tester-label">申请成为内测用户</label>
-							</div>
-						</div>
-
-						<button type="submit" class="form-register-btn" id="register-submit">注册</button>
-					</div> -->
+						<button type="submit" class="form-register-btn" id="verification-submit">验证邮箱</button>
+					</div>
 
 				</form>
 				
@@ -447,6 +131,7 @@
 		<script src="assets/js/util.js"></script>
 		<script src="assets/js/main.js"></script>
 		<!-- Navigation handling -->
+		<script src="assets/js/navigation-loader.js"></script>
 		<script src="assets/js/navigation.js"></script>
 		
 		<script>
@@ -495,11 +180,13 @@
 					registerTitle: '欢迎来到Timing',
 					userNameLabel: '用户名',
 					userNamePlaceholder: '请输入您的用户名',
+					usernameVerificationLabel: '用户名',
+					userNameVerificationPlaceholder: '请输入您的用户名',
 					emailLabel: '邮箱',
 					emailPlaceholder: '请输入邮箱地址',
-					// verificationLabel: '验证码',
-					// verificationPlaceholder: '请输入验证码',
-					// verificationResend: '重新发送',
+					verificationLabel: '验证码',
+					verificationPlaceholder: '请输入验证码',
+					verificationResend: '重新发送',
 
 					passwordLabel: '密码',
 					passwordPlaceholder: '请输入密码',
@@ -510,26 +197,13 @@
 					termsLink: '查看条款',
 					nextBtn: '确认',
 					birthtimeLabel: '出生时间',
-					// genderLabel: '出生性别',
-					// genderOptions: {
-					// 	placeholder: '请选择性别',
-					// 	female: '女',
-					// 	male: '男'
-					// },
-					// birthplaceLabel: '出生地点',
-					// birthplacePlaceholder: '请输入出生地点',
+
 					userAgreementLabel: '请阅读并同意用户协议和隐私政策',
 					betaTesterLabel: '申请成为内测用户',
 					registerSubmit: '注册',
+					verificationSubmit: "验证邮箱",
 					loginText: '已有账户？',
 					loginLink: '立即登录',
-					navIntro: '简介',
-					navWork: '功能',
-					navCurve: '能量曲线',
-					navContact: '联系我们',
-					navLogin: '登录',
-					navSignup: '注册',
-					navLang: 'ENG'
 
 				},
 				en: {
@@ -537,11 +211,13 @@
 					registerTitle: 'Welcome to Timing',
 					userNameLabel: 'Username',
 					userNamePlaceholder: 'Please enter your username',
+					usernameVerificationLabel: 'Username',
+					userNameVerificationPlaceholder: 'Please enter your username',
 					emailLabel: 'Email',
 					emailPlaceholder: 'Enter your email address',
-					// verificationLabel: 'Verification Code',
-					// verificationPlaceholder: 'Enter verification code',
-					// verificationResend: 'Resend',
+					verificationLabel: 'Verification Code',
+					verificationPlaceholder: 'Enter verification code',
+					verificationResend: 'Resend',
 
 					passwordLabel: 'Password',
 					passwordPlaceholder: 'Enter your password',
@@ -551,28 +227,14 @@
 					agreeLabel: 'Agree to Terms of Service',
 					termsLink: 'View Terms',
 					nextBtn: 'Confirm',
-					// birthtimeLabel: 'Birth Date & Time',
-					// genderLabel: 'Birth Gender',
-					// genderOptions: {
-					// 	placeholder: 'Please select gender',
-					// 	female: 'Female',
-					// 	male: 'Male'
-					// },
-					// birthplaceLabel: 'Birth Place',
-					// birthplacePlaceholder: 'Please enter birth place',
+
 
 					userAgreementLabel: 'Please read and agree to the User Agreement and Privacy Policy',
 					betaTesterLabel: 'Apply to become a beta tester',
 					registerSubmit: 'Register',
+					verificationSubmit: 'Verify Email',
 					loginText: 'Already have an account?',
 					loginLink: 'Sign In Now',
-					navIntro: 'Introduction',
-					navWork: 'Function',
-					navCurve: 'Energy Curve',
-					navContact: 'Contact',
-					                navLogin: 'SIGN IN',
-					navSignup: 'SIGN UP',
-					navLang: '中文'
 
 				}
 			};
@@ -589,11 +251,14 @@
 				document.getElementById('register-title').textContent = c.registerTitle;
 				document.getElementById('userName-label').textContent = c.userNameLabel;
 				document.getElementById('username').placeholder = c.userNamePlaceholder;
+				document.getElementById('username-verification-label').textContent = c.userNameLabel;
+				document.getElementById('username-verification').placeholder = c.userNamePlaceholder;
+
 				document.getElementById('email-label').textContent = c.emailLabel;
 				document.getElementById('email').placeholder = c.emailPlaceholder;
-				// document.getElementById('verification-label').textContent = c.verificationLabel;
-				// document.getElementById('verification').placeholder = c.verificationPlaceholder;
-				// document.getElementById('verification-resend').textContent = c.verificationResend;
+				document.getElementById('verification-label').textContent = c.verificationLabel;
+				document.getElementById('verification').placeholder = c.verificationPlaceholder;
+				document.getElementById('verification-resend').textContent = c.verificationResend;
 
 				document.getElementById('password-label').textContent = c.passwordLabel;
 				document.getElementById('password').placeholder = c.passwordPlaceholder;
@@ -602,68 +267,14 @@
 				document.getElementById('password-warning').textContent = c.passwordWarning;
 				document.getElementById('agree-label').textContent = c.agreeLabel;
 				document.getElementById('termsLink').textContent = c.termsLink;
-				// document.getElementById('next-btn').textContent = c.nextBtn;
-				// document.getElementById('birthtime-label').textContent = c.birthtimeLabel;
-				// document.getElementById('gender-label').textContent = c.genderLabel;
-				// document.getElementById('birthplace-label').textContent = c.birthplaceLabel;
-				// document.getElementById('birthplace').placeholder = c.birthplacePlaceholder;
-				// document.getElementById('user-agreement-label').textContent = c.userAgreementLabel;
-				// document.getElementById('beta-tester-label').textContent = c.betaTesterLabel;
+
 				document.getElementById('register-submit').textContent = c.registerSubmit;
+				document.getElementById('verification-submit').textContent = c.verificationSubmit;
 				document.getElementById('login-text').textContent = c.loginText;
 				document.getElementById('login-link').textContent = c.loginLink;
 				
-				// Update gender select options
-				// const genderSelect = document.getElementById('gender');
-				// genderSelect.innerHTML = `
-				// 	<option value="">${c.genderOptions.placeholder}</option>
-				// 	<option value="female">${c.genderOptions.female}</option>
-				// 	<option value="male">${c.genderOptions.male}</option>
-				// `;
-				
-				// Update navigation
-				document.getElementById('nav-intro').textContent = c.navIntro;
-				document.getElementById('nav-work').textContent = c.navWork;
-				document.getElementById('nav-curve').textContent = c.navCurve;
-				document.getElementById('nav-contact').textContent = c.navContact;
-				document.getElementById('nav-login').textContent = c.navLogin;
-				document.getElementById('nav-signup').textContent = c.navSignup;
-				document.getElementById('nav-lang').textContent = c.navLang;
-				
-				// Update navigation links based on language
-				if (lang === 'zh') {
-					document.getElementById('nav-intro').href = 'index-zh.html#intro';
-					document.getElementById('nav-work').href = 'index-zh.html#work';
-					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=zh';
-					document.getElementById('nav-contact').href = 'index-zh.html#contact';
-					document.getElementById('nav-login').href = 'login.html?lang=zh';
-					document.getElementById('nav-signup').href = 'register.html?lang=zh';
-					document.getElementById('nav-lang').href = 'register.html?lang=en';
-				} else {
-					document.getElementById('nav-intro').href = 'index.html#intro';
-					document.getElementById('nav-work').href = 'index.html#work';
-					document.getElementById('nav-curve').href = 'curve/index_curve.html?lang=en';
-					document.getElementById('nav-contact').href = 'index.html#contact';
-					document.getElementById('nav-login').href = 'login.html?lang=en';
-					document.getElementById('nav-signup').href = 'register.html?lang=en';
-					document.getElementById('nav-lang').href = 'register.html?lang=zh';
-				}
-				
-				// Update nav-auth class for English page
-				const navAuth = document.querySelector('.nav-auth');
-				if (lang === 'en') {
-					navAuth.classList.add('english-page');
-				} else {
-					navAuth.classList.remove('english-page');
-				}
 			}
 			
-			// Language switching
-			document.getElementById('nav-lang').addEventListener('click', function(e) {
-				e.preventDefault();
-				const newLang = currentLanguage === 'zh' ? 'en' : 'zh';
-				updateContent(newLang);
-			});
 			
 			// Logo click handler
 			function goToHomePage() {
@@ -689,42 +300,7 @@
 			
 			// Page navigation variables
 			let currentPage = 1;
-			
-			// Page navigation functions
-			// function nextPage() {
-			// 	// Validate page 1 fields
-			// 	const username = document.getElementById('username').value;
-			// 	const email = document.getElementById('email').value;
-			// 	const verification = document.getElementById('verification').value;
-			// 	const password = document.getElementById('password').value;
-			// 	const confirmPassword = document.getElementById('confirmPassword').value;
-			// 	const agree = document.getElementById('agree').checked;
-				
-			// 	if (!username || !email || !password || !confirmPassword) {
-			// 		const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
-			// 		alert(message);
-			// 		return;
-			// 	}
-				
-			// 	if (password !== confirmPassword) {
-			// 		const message = currentLanguage === 'zh' ? '密码不一致' : 'Passwords do not match';
-			// 		alert(message);
-			// 		return;
-			// 	}
-				
-			// 	if (!agree) {
-			// 		const message = currentLanguage === 'zh' ? '请同意服务条款' : 'Please agree to the terms of service';
-			// 		alert(message);
-			// 		return;
-			// 	}
-				
-			// 	// Switch to page 2
-			// 	document.getElementById('page1').classList.remove('active');
-			// 	document.getElementById('page2').classList.add('active');
-			// 	document.getElementById('page-indicator').textContent = '2/2';
-			// 	document.getElementById('back-btn').style.display = 'block';
-			// 	currentPage = 2;
-			// }
+
 			
 			function goBack() {
 				// Switch to page 1
@@ -734,6 +310,7 @@
 				document.getElementById('back-btn').style.display = 'none';
 				currentPage = 1;
 			}
+
 			
 			// Initialize language on page load
 			document.addEventListener('DOMContentLoaded', function() {
@@ -743,70 +320,7 @@
 				// Add password validation listeners
 				document.getElementById('password').addEventListener('input', validatePassword);
 				document.getElementById('confirmPassword').addEventListener('input', validatePassword);
-			});
-			
-
-			
-			// Register form handling
-			document.getElementById('registerForm').addEventListener('submit', function(e) {
-				e.preventDefault();
-
-				const username = document.getElementById('username').value;
-				const email = document.getElementById('email').value;
-				// const verification = document.getElementById('verification').value;
-
-				const password = document.getElementById('password').value;
-				const confirmPassword = document.getElementById('confirmPassword').value;
-				const agree = document.getElementById('agree').checked;
-				
-				if (!username || !email || !password) {
-
-					const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
-					alert(message);
-					return;
-				}
-				
-				if (password !== confirmPassword) {
-					const message = currentLanguage === 'zh' ? '密码不一致' : 'Passwords do not match';
-					alert(message);
-					return;
-				}
-				
-				if (!agree) {
-					const message = currentLanguage === 'zh' ? '请同意服务条款' : 'Please agree to the terms of service';
-					alert(message);
-					return;
-				}
-				
-				// // Validate page 2 fields
-				// const birthtime = document.getElementById('birthtime').value;
-				// const gender = document.getElementById('gender').value;
-				// const birthplace = document.getElementById('birthplace').value;
-				
-				// if (!birthtime || !gender || !birthplace) {
-				// 	const message = currentLanguage === 'zh' ? '请填写所有必填字段' : 'Please fill in all required fields';
-				// 	alert(message);
-				// 	return;
-				// }
-				
-				// Get all form data
-				// const formData = {
-				// 	username: document.getElementById('username').value,
-				// 	email: document.getElementById('email').value,
-				// 	verification: document.getElementById('verification').value,
-				// 	password: document.getElementById('password').value,
-				// 	birthtime: birthtime,
-				// 	gender: gender,
-				// 	birthplace: birthplace,
-				// 	userAgreement: document.getElementById('userAgreement').checked,
-				// 	betaTester: document.getElementById('betaTester').checked,
-				// 	language: currentLanguage
-				// };
-				
-				// // TODO: 这里将来会连接到后端API
-				// console.log('注册信息:', formData);
-				
-			});
+			});			
 			
 			// Terms link handling
 			document.getElementById('termsLink').addEventListener('click', function(e) {

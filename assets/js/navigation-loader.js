@@ -44,12 +44,11 @@
                     return 'zh';
                 }
                 // Default to Chinese
-                return 'zh';
+                return 'en';
             }
             
             // Default based on filename (English for index.html, Chinese otherwise)
-            return window.location.pathname.includes('index.html') && 
-                   !window.location.pathname.includes('index-zh.html') ? 'en' : 'zh';
+            return !window.location.pathname.includes('index-zh.html') ? 'en' : 'zh';
         },
 
         // Get page type
@@ -66,9 +65,8 @@
 
         // Check if user is logged in
         isUserLoggedIn: function() {
-            const userRegistered = localStorage.getItem('userRegistered');
-            const userInfo = localStorage.getItem('userInfo');
-            return userRegistered === 'true' && userInfo;
+            const username_token = localStorage.getItem('username_token');
+            return username_token !== null;
         },
 
         // Get logged in user info
@@ -76,12 +74,10 @@
             if (!this.isUserLoggedIn()) return null;
             
             try {
-                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                const username = localStorage.getItem('username');
                 return {
-                    displayName: userInfo.name || userInfo.username || userInfo.email?.split('@')[0] || 'User',
-                    email: userInfo.email,
-                    name: userInfo.name,
-                    username: userInfo.username
+                    displayName: username,
+                    username: username
                 };
             } catch (error) {
                 console.error('Error parsing user info:', error);
@@ -143,11 +139,11 @@
             if (isLoggedIn && userInfo) {
                 // User is logged in - show user menu
                 return [
-                                          {
-                          text: userInfo.displayName,
-                          href: this.getUserSettingsHref(language, pageType),
-                          class: 'user-name-btn',
-                          id: 'user-name',
+                    {
+                        text: userInfo.displayName,
+                        href: this.getUserSettingsHref(language, pageType),
+                        class: 'user-name-btn',
+                        id: 'user-name',
                         type: 'user-display'
                     },
                     {
@@ -169,7 +165,7 @@
                 // User not logged in - show login/register buttons
                 return [
                     {
-                        text: isEnglish ? 'SIGN IN' : '登录',
+                        text: isEnglish ? 'Log In' : '登录',
                         href: this.getAuthHref('login', language, pageType),
                         class: 'login-btn',
                         id: 'login',
@@ -468,9 +464,8 @@
         // Handle logout functionality
         handleLogout: function(language) {
             // Clear user data
-            localStorage.removeItem('userRegistered');
-            localStorage.removeItem('userInfo');
-            localStorage.removeItem('authToken');
+            localStorage.removeItem('username_token');
+            localStorage.removeItem('access_token');
             
             // Show logout message
             this.showMessage(language === 'en' ? 'Logged out successfully' : '已退出登录', 'success');
@@ -551,7 +546,7 @@
 
     // Listen for storage changes to update navigation when login state changes
     window.addEventListener('storage', function(e) {
-        if (e.key === 'userRegistered' || e.key === 'userInfo') {
+        if (e.key === 'username_token') {
             setTimeout(() => {
                 NavigationLoader.reload();
             }, 100);

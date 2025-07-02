@@ -302,7 +302,7 @@
 					navWork: 'Function',
 					navCurve: 'Energy Curve',
 					navContact: 'Contact',
-					navLogin: 'SIGN IN',
+					navLogin: 'Log In',
 					navSignup: 'SIGN UP',
 					navLang: '中文'
 				}
@@ -338,35 +338,8 @@
 			
 			// Forgot password handling
 			document.addEventListener('DOMContentLoaded', function() {
-				const detectedLang = detectLanguage();
+				const detectedLang = window.NavigationConfig.detectLanguage();
 				updateContent(detectedLang);
-			});
-			
-			// Login form handling
-			document.getElementById('loginForm').addEventListener('submit', function(e) {
-				e.preventDefault();
-				
-				const username = document.getElementById('username').value;
-				const password = document.getElementById('password').value;
-				const remember = document.getElementById('remember').checked;
-				
-				if (!username || !password) {
-					const message = currentLanguage === 'zh' ? '请填写完整的账号和密码' : 'Please fill in username and password';
-					alert(message);
-					return;
-				}
-				
-				// TODO: 这里将来会连接到后端API
-				console.log('登录信息:', {
-					username: username,
-					password: password,
-					remember: remember,
-					language: currentLanguage
-				});
-				
-				// 临时提示
-				// const message = currentLanguage === 'zh' ? '登录功能将在后端完成后启用' : 'Login functionality will be enabled after backend completion';
-				// alert(message);
 			});
 			
 			// Forgot password handling

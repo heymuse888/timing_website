@@ -9,222 +9,10 @@
 		<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/navigation.css" />
+		<link rel="stylesheet" href="assets/css/user-settings-style.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<style>
-		/* User Settings page specific styles */
-		.settings-container {
-			position: relative;
-			z-index: 3;
-			min-height: calc(100vh - 5rem);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 0 2rem 2rem;
-		}
 
-		.settings-content {
-			background-color: rgba(27, 31, 34, 0.85);
-			border-radius: 12px;
-			padding: 3rem 2.5rem 2rem 2.5rem;
-			width: 28rem;
-			max-width: 100%;
-			position: relative;
-		}
-
-		.settings-title {
-			text-align: center;
-			color: #ffffff;
-			font-size: 1.8rem;
-			font-weight: 300;
-			margin-bottom: 1rem;
-			letter-spacing: 0.1em;
-		}
-
-		.settings-subtitle {
-			text-align: center;
-			color: rgba(255, 255, 255, 0.7);
-			font-size: 0.9rem;
-			margin-bottom: 2rem;
-		}
-
-		.form-group {
-			margin-bottom: 1.5rem;
-		}
-
-		.form-group label {
-			display: block;
-			margin-bottom: 0.5rem;
-			font-weight: 600;
-			color: #ffffff;
-			font-size: 0.9rem;
-			letter-spacing: 0.05em;
-		}
-
-		.form-input {
-			width: 100%;
-			padding: 1rem 1.5rem;
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			border-radius: 8px;
-			background: rgba(255, 255, 255, 0.05);
-			color: #ffffff;
-			font-size: 1rem;
-			line-height: 1.5;
-			min-height: 3.5rem;
-			height: 3.5rem;
-			transition: all 0.3s ease;
-			box-sizing: border-box;
-		}
-
-		.form-input:focus {
-			outline: none;
-			border-color: #9f6cf7;
-			background: rgba(255, 255, 255, 0.1);
-			box-shadow: 0 0 0 3px rgba(159, 108, 247, 0.1);
-		}
-
-		.form-input::placeholder {
-			color: rgba(255, 255, 255, 0.5);
-		}
-
-		/* DateTime input styling */
-		.form-input[type="datetime-local"] {
-			color-scheme: dark;
-		}
-
-		/* Select input styling */
-		select.form-input {
-			padding: 1rem 3rem 1rem 1.5rem;
-			appearance: none;
-			background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
-			background-repeat: no-repeat;
-			background-position: right 1rem center;
-			background-size: 1.2rem;
-		}
-
-		select.form-input option {
-			background: #2a1810;
-			color: #ffffff;
-		}
-
-		/* Password section separator */
-		.password-section {
-			border-top: 1px solid rgba(255, 255, 255, 0.1);
-			padding-top: 1.5rem;
-			margin-top: 2rem;
-		}
-
-		.password-section-title {
-			color: rgba(255, 255, 255, 0.8);
-			font-size: 0.9rem;
-			font-weight: 600;
-			margin-bottom: 1rem;
-			text-align: center;
-			letter-spacing: 0.05em;
-		}
-
-		/* Button styling */
-		.button-group {
-			display: flex;
-			gap: 1rem;
-			margin-top: 2rem;
-		}
-
-		.form-btn {
-			flex: 1;
-			border: none;
-			padding: 1rem 2rem;
-			border-radius: 8px;
-			font-size: 1rem;
-			font-weight: 600;
-			letter-spacing: 0.1em;
-			cursor: pointer;
-			transition: all 0.3s ease;
-			text-align: center;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.form-cancel-btn {
-			background: rgba(255, 255, 255, 0.1);
-			color: rgba(255, 255, 255, 0.9);
-			border: 1px solid rgba(255, 255, 255, 0.3);
-		}
-
-		.form-cancel-btn:hover {
-			background: rgba(255, 255, 255, 0.2);
-			border-color: rgba(255, 255, 255, 0.5);
-			color: #ffffff;
-		}
-
-		.form-save-btn {
-			background: linear-gradient(45deg, #9f6cf7, #6f8bf7);
-			color: #ffffff;
-			box-shadow: 0 4px 15px rgba(159, 108, 247, 0.3);
-		}
-
-		.form-save-btn:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 8px 25px rgba(159, 108, 247, 0.4);
-			background: linear-gradient(45deg, #b784ff, #84a0ff);
-		}
-
-		/* Back button */
-		.back-btn {
-			position: absolute;
-			top: 1rem;
-			left: 1.5rem;
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			color: rgba(255, 255, 255, 0.9);
-			width: 40px;
-			height: 40px;
-			cursor: pointer;
-			border-radius: 50%;
-			transition: all 0.3s ease;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-decoration: none;
-		}
-
-		.back-btn:hover {
-			background: rgba(255, 255, 255, 0.2);
-			border-color: rgba(255, 255, 255, 0.4);
-			color: #ffffff;
-		}
-
-		.back-btn::before {
-			content: "←";
-			font-size: 1.2rem;
-		}
-
-
-
-		/* Mobile responsive */
-		@media screen and (max-width: 768px) {
-			.settings-container {
-				padding: 0 1rem 1rem;
-			}
-
-			.settings-content {
-				padding: 2.5rem 2rem 1.5rem 2rem;
-				width: 100%;
-			}
-
-			.button-group {
-				flex-direction: column;
-			}
-
-			.back-btn {
-				top: 0.5rem;
-				left: 1rem;
-				width: 35px;
-				height: 35px;
-			}
-		}
-	</style>
 	<body class="is-preload">
 		<!-- Navigation will be loaded dynamically -->
 
@@ -242,8 +30,13 @@
 				<form id="settingsForm">
 					<!-- Basic Information Section -->
 					<div class="form-group">
-						<label for="name" id="name-label">姓名</label>
-						<input type="text" id="name" name="name" class="form-input" placeholder="请输入您的姓名" required>
+						<label for="firstname" id="firstname-label"></label>
+						<input type="text" id="firstname" name="firstname" class="form-input" placeholder="姓">
+					</div>
+
+					<div class="form-group">
+						<label for="lastname" id="lastname-label"></label>
+						<input type="text" id="lastname" name="lastname" class="form-input" placeholder="名">
 					</div>
 					
 					<div class="form-group">
@@ -252,22 +45,46 @@
 							<option value="" id="gender-placeholder">请选择性别</option>
 							<option value="female" id="gender-female">女</option>
 							<option value="male" id="gender-male">男</option>
+							<option value="other" id="gender-other">其他</option>
 						</select>
 					</div>
 					
+					
 					<div class="form-group">
-						<label for="birthtime" id="birthtime-label">生日时间</label>
-						<input type="datetime-local" id="birthtime" name="birthtime" class="form-input" required>
+						<label for="birthtime" id="birthtime-label">出生时间</label>
+						<input type="text" id="birthdate" placeholder="YYYY-MM-DD" maxlength="10">
+						<script>
+							document.getElementById('birthdate').addEventListener('input', function(e) {
+								let value = e.target.value.replace(/\D/g, '');
+								if (value.length > 4) {
+									value = value.substring(0, 4) + '-' + value.substring(4);
+								}
+								if (value.length > 7) {
+									value = value.substring(0, 7) + '-' + value.substring(7);
+								}
+								e.target.value = value.substring(0, 10);
+							});
+						</script>
+						<input type="text" id="birthtime" placeholder="HH:MM" maxlength="5">
+						<script>
+							document.getElementById('birthtime').addEventListener('input', function(e) {
+								let value = e.target.value.replace(/\D/g, '');
+								if (value.length > 2) {
+									value = value.substring(0, 2) + ':' + value.substring(2);
+								}
+								e.target.value = value.substring(0, 5);
+							});
+						</script>
 					</div>
 					
 					<div class="form-group">
-						<label for="birthplace" id="birthplace-label">生日地点</label>
-						<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="请输入您的出生地点" required>
+						<label for="birthplace" id="birthplace-label">出生地点</label>
+						<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="请输入您的出生地点">
 					</div>
 
 					<!-- Password Section -->
 					<div class="password-section">
-						<div class="password-section-title" id="password-section-title">密码修改（可选）</div>
+						<div class="password-section-title" id="password-section-title">密码修改</div>
 						
 						<div class="form-group">
 							<label for="currentPassword" id="current-password-label">当前密码</label>
@@ -314,20 +131,22 @@
 				zh: {
 					title: '用户设置',
 					subtitle: '修改您的个人信息和账户设置',
-					nameLabel: '姓名',
-					namePlaceholder: '请输入您的姓名',
+					firstnameLabel: '姓',
+					firstnamePlaceholder: '姓',
+					lastnameLabel: '名',
+					lastnamePlaceholder: '名',
 					genderLabel: '性别',
 					genderPlaceholder: '请选择性别',
 					genderFemale: '女',
 					genderMale: '男',
-					birthtimeLabel: '生日时间',
+					genderOther: '其他',
 					birthplaceLabel: '生日地点',
 					birthplacePlaceholder: '请输入您的出生地点',
-					passwordSectionTitle: '密码修改（可选）',
+					passwordSectionTitle: '密码修改',
 					currentPasswordLabel: '当前密码',
 					currentPasswordPlaceholder: '请输入当前密码以确认修改',
 					newPasswordLabel: '新密码',
-					newPasswordPlaceholder: '如需修改密码请填写（至少6个字符）',
+					newPasswordPlaceholder: '请输入新密码',
 					confirmPasswordLabel: '确认新密码',
 					confirmPasswordPlaceholder: '请再次输入新密码',
 					cancelBtn: '取消',
@@ -349,16 +168,18 @@
 				en: {
 					title: 'User Settings',
 					subtitle: 'Modify your personal information and account settings',
-					nameLabel: 'Name',
-					namePlaceholder: 'Enter your name',
+					firstnameLabel: 'First Name',
+					firstnamePlaceholder: 'First Name',
+					lastnameLabel: 'Last Name',
+					lastnamePlaceholder: 'Last Name',
 					genderLabel: 'Gender',
 					genderPlaceholder: 'Please select gender',
 					genderFemale: 'Female',
 					genderMale: 'Male',
-					birthtimeLabel: 'Birth Date & Time',
+					genderOther: 'Other',
 					birthplaceLabel: 'Birth Location',
 					birthplacePlaceholder: 'Enter your birth location',
-					passwordSectionTitle: 'Password Change (Optional)',
+					passwordSectionTitle: 'Password Change',
 					currentPasswordLabel: 'Current Password',
 					currentPasswordPlaceholder: 'Enter current password to confirm changes',
 					newPasswordLabel: 'New Password',
@@ -384,7 +205,7 @@
 			};
 
 			// Current language and user data
-			let currentLanguage = 'zh';
+			let currentLanguage = window.NavigationConfig.detectLanguage();
 			let originalUserData = {};
 
 			// Initialize page
@@ -418,9 +239,8 @@
 
 			// Check if user is logged in
 			function isUserLoggedIn() {
-				const userRegistered = localStorage.getItem('userRegistered');
-				const userInfo = localStorage.getItem('userInfo');
-				return userRegistered === 'true' && userInfo;
+				const username_token = localStorage.getItem('username_token');
+				return username_token !== null;
 			}
 
 			// Redirect to login page
@@ -437,12 +257,16 @@
 				
 				document.getElementById('settings-title').textContent = t.title;
 				document.getElementById('settings-subtitle').textContent = t.subtitle;
-				document.getElementById('name-label').textContent = t.nameLabel;
-				document.getElementById('name').placeholder = t.namePlaceholder;
+				document.getElementById('firstname-label').textContent = t.firstnameLabel;
+				document.getElementById('firstname').placeholder = t.firstnamePlaceholder;
+				document.getElementById('lastname-label').textContent = t.lastnameLabel;
+				document.getElementById('lastname').placeholder = t.lastnamePlaceholder;
 				document.getElementById('gender-label').textContent = t.genderLabel;
 				document.getElementById('gender-placeholder').textContent = t.genderPlaceholder;
 				document.getElementById('gender-female').textContent = t.genderFemale;
 				document.getElementById('gender-male').textContent = t.genderMale;
+				document.getElementById('gender-other').textContent = t.genderOther;
+
 				document.getElementById('birthtime-label').textContent = t.birthtimeLabel;
 				document.getElementById('birthplace-label').textContent = t.birthplaceLabel;
 				document.getElementById('birthplace').placeholder = t.birthplacePlaceholder;
