@@ -152,6 +152,41 @@ class AuthSystem {
             throw error;
         }
     }
+
+    async getUserInformation() {
+        try{ 
+            const username_token = localStorage.getItem('username_token');
+
+            const response = await this.makeRequest('/users/me', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${username_token}`
+                },
+            });
+
+            localStorage.setItem('user_id', response.user_id);
+            localStorage.setItem('username', response.username);
+            localStorage.setItem('email', response.email);
+            localStorage.setItem('gender', response.sex);
+
+            localStorage.setItem('first_name', response.first_name);
+            localStorage.setItem('last_name', response.last_name);
+            localStorage.setItem('birthplace', response.birthplace);
+            
+            const dob = response.dob;
+            const tIndex = dob.indexOf("T");
+            const birthdate = dob.substring(0, tIndex);
+            const birthtime = dob.substring(tIndex+1);
+
+            localStorage.setItem('birthdate', birthdate);
+            localStorage.setItem('birthtime', birthtime);
+        } catch (error) {
+            this.showMessage(this.handleAPIError(error), 'error');
+            console.error('User information retrieve error:', error);
+        }
+    }
     
     async sendVerificationCode() {
         const usernameInput = document.getElementById('username');
@@ -277,7 +312,7 @@ class AuthSystem {
                 updateInformationButton.setAttribute('data-original-text', originalText);
                 updateInformationButton.textContent = this.getMessage('updating');
             }
-
+            
             const requestData = {
                 dob: birthdate+'T'+birthtime,
                 sex: sex,
@@ -314,13 +349,13 @@ class AuthSystem {
             console.error('Registration error:', error);
         } finally {
             // Restore register button
-            const registerButton = document.getElementById('register-submit');
-            if (registerButton) {
-                registerButton.disabled = false;
-                registerButton.style.opacity = '1';
-                const originalText = registerButton.getAttribute('data-original-text');
+            const updateInformationButton = document.getElementById('submit');
+            if (updateInformationButton) {
+                updateInformationButton.disabled = false;
+                updateInformationButton.style.opacity = '1';
+                const originalText = updateInformationButton.getAttribute('data-original-text');
                 if (originalText) {
-                    registerButton.textContent = originalText;
+                    updateInformationButton.textContent = originalText;
                 }
             }
         }
@@ -507,6 +542,7 @@ class AuthSystem {
             document.getElementById('page2').classList.add('active');
             document.getElementById('page-indicator').textContent = '2/2';
             document.getElementById('back-btn').style.display = 'flex';
+            document.getElementById('verification-title').style.display = 'flex';
             currentPage = 2;
         }
     }
@@ -547,6 +583,7 @@ class AuthSystem {
                 method: 'POST',
                 body: JSON.stringify(requestData)
             });
+
             
             // 处理不同服务器的响应格式
             if (this.isLocalTest) {
@@ -582,11 +619,25 @@ class AuthSystem {
             } else {
                 // 生产服务器响应格式
                 this.showMessage(this.getMessage('loginSuccess'), 'success');
+
                 localStorage.setItem('token_type', response.token_type);
                 localStorage.setItem('username_token', response.username_token);
                 localStorage.setItem('access_token', response.access_token);
-                localStorage.setItem('username', response.username);
                 
+                const userinfoResponse = await this.makeRequest('/users/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${response.username_token}`
+                    },
+                });
+    
+                localStorage.setItem('user_id', userinfoResponse.user_id);
+                localStorage.setItem('username', userinfoResponse.username);
+                localStorage.setItem('email', userinfoResponse.email);
+
+
                 // Update navigation with new system
                 if (window.NavigationLoader) {
                     console.log("navigation loader");
@@ -903,15 +954,28 @@ class AuthSystem {
     }
     
     // 检查登录状态
-    checkLoginStatus() {
-        const userRegistered = localStorage.getItem('userRegistered');
-        const userInfo = localStorage.getItem('userInfo');
+    async checkLoginStatus() {
+        const username_token = localStorage.getItem('username_token');
         
-        if (userRegistered === 'true' && userInfo) {
+        if (username_token !== null) {
             try {
-                const user = JSON.parse(userInfo);
+                const response = await this.makeRequest('/users/me', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${username_token}`
+                    },
+                });
+
+                console.log("successful response: ", response);
+
+                localStorage.setItem('user_id', response.user_id);
+                localStorage.setItem('username', response.username);
+                localStorage.setItem('email', response.email);
+
                 // 显示用户名（邮箱@之前的部分）
-                const displayName = user.username || user.email?.split('@')[0] || 'User';
+                const displayName = response.username;
                 
                 // Use new navigation system if available
                 if (window.NavigationLoader) {

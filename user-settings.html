@@ -124,6 +124,7 @@
 		<script src="assets/js/main.js"></script>
 		<script src="assets/js/navigation-loader.js"></script>
 		<script src="assets/js/navigation.js"></script>
+		<script src="assets/js/auth.js"></script>
 
 		<script>
 			// Language configuration
@@ -140,7 +141,8 @@
 					genderFemale: '女',
 					genderMale: '男',
 					genderOther: '其他',
-					birthplaceLabel: '生日地点',
+					birthtimeLabel: '出生时间',
+					birthplaceLabel: '出生地点',
 					birthplacePlaceholder: '请输入您的出生地点',
 					passwordSectionTitle: '密码修改',
 					currentPasswordLabel: '当前密码',
@@ -177,6 +179,7 @@
 					genderFemale: 'Female',
 					genderMale: 'Male',
 					genderOther: 'Other',
+					birthtimeLabel: 'Birth Date & Time',
 					birthplaceLabel: 'Birth Location',
 					birthplacePlaceholder: 'Enter your birth location',
 					passwordSectionTitle: 'Password Change',
@@ -283,37 +286,15 @@
 
 			// Load current user settings
 			function loadUserSettings() {
-				try {
-					const userInfo = localStorage.getItem('userInfo');
-					if (userInfo) {
-						const user = JSON.parse(userInfo);
-						originalUserData = { ...user };
+				window.authSystem.getUserInformation();
 
-						// Populate form fields with existing user data
-						if (user.name) {
-							document.getElementById('name').value = user.name;
-						}
-						if (user.displayName && !user.name) {
-							document.getElementById('name').value = user.displayName;
-						}
-						if (user.gender) {
-							document.getElementById('gender').value = user.gender;
-						}
-						if (user.birthDatetime) {
-							document.getElementById('birthtime').value = user.birthDatetime;
-						}
-						if (user.birthLocation) {
-							document.getElementById('birthplace').value = user.birthLocation;
-						}
+				document.getElementById('firstname').value = localStorage.getItem('first_name');
+				document.getElementById('lastname').value = localStorage.getItem('last_name');
+				document.getElementById('birthdate').value = localStorage.getItem('birthdate');
+				document.getElementById('birthtime').value = localStorage.getItem('birthtime');
+				document.getElementById('gender').value = localStorage.getItem('gender');
+				document.getElementById('birthplace').value = localStorage.getItem('birthplace');
 
-						console.log('User data loaded:', user);
-					} else {
-						console.log('No user info found in localStorage');
-					}
-				} catch (error) {
-					console.error('Error loading user settings:', error);
-					alert(translations[currentLanguage].loadError);
-				}
 			}
 
 			// Setup form validation
@@ -339,10 +320,12 @@
 
 				// Collect form data
 				const formData = {
-					name: document.getElementById('name').value.trim(),
-					gender: document.getElementById('gender').value,
-					birthDatetime: document.getElementById('birthtime').value,
-					birthLocation: document.getElementById('birthplace').value.trim(),
+					first_name: document.getElementById('firstname').value.trim(),
+					last_name: document.getElementById('lastname').value.trim(),
+					sex: document.getElementById('gender').value,
+					birthdate:document.getElementById('birthdate').value,
+					birthtime: document.getElementById('birthtime').value,
+					birthplace: document.getElementById('birthplace').value.trim(),
 					currentPassword: document.getElementById('currentPassword').value,
 					newPassword: document.getElementById('newPassword').value,
 					confirmPassword: document.getElementById('confirmPassword').value
@@ -362,38 +345,9 @@
 			// Validate form
 			function validateForm() {
 				const t = translations[currentLanguage];
-				const name = document.getElementById('name').value.trim();
-				const gender = document.getElementById('gender').value;
-				const birthtime = document.getElementById('birthtime').value;
-				const birthplace = document.getElementById('birthplace').value.trim();
 				const currentPassword = document.getElementById('currentPassword').value;
 				const newPassword = document.getElementById('newPassword').value;
 				const confirmPassword = document.getElementById('confirmPassword').value;
-
-				// Basic required fields
-				if (!name) {
-					alert(t.nameRequired);
-					document.getElementById('name').focus();
-					return false;
-				}
-
-				if (!gender) {
-					alert(t.genderRequired);
-					document.getElementById('gender').focus();
-					return false;
-				}
-
-				if (!birthtime) {
-					alert(t.birthtimeRequired);
-					document.getElementById('birthtime').focus();
-					return false;
-				}
-
-				if (!birthplace) {
-					alert(t.birthplaceRequired);
-					document.getElementById('birthplace').focus();
-					return false;
-				}
 
 				// Password validation
 				if (newPassword || confirmPassword) {
@@ -420,27 +374,63 @@
 			}
 
 			// Update user settings
-			function updateUserSettings(formData) {
-				const userInfo = localStorage.getItem('userInfo');
-				if (!userInfo) {
-					throw new Error(translations[currentLanguage].userNotFound);
-				}
+			async function updateUserSettings(formData) {
+				try{
+					const submitButton = document.getElementById('submit');
+					if (submitButton) {
+						submitButton.disabled = true;
+						submitButton.style.opacity = '0.6';
+						const originalText = submitButton.textContent;
+						submitButton.setAttribute('data-original-text', originalText);
+						submitButton.textContent = this.getMessage('updating');
+					}
+            
+					const requestData = {
+						first_name: formData.first_name,
+						last_name: formData.last_name,
+						sex: formData.sex,
+						dob: formData.birthdate+'T'+formData.birthtime,
+						birthplace: formData.birthplace,
+					};
 
-				const user = JSON.parse(userInfo);
+					const username_token = localStorage.getItem('username_token');
 				
-				// Update basic information
-				user.name = formData.name;
-				user.displayName = formData.name;
-				user.gender = formData.gender;
-				user.birthDatetime = formData.birthDatetime;
-				user.birthLocation = formData.birthLocation;
+					const response = await window.authSystem.makeRequest('/users/me', {
+						method: 'PUT',
+						headers: {
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+							'Authorization': `Bearer ${username_token}`,
+						},
+						body: JSON.stringify(requestData)
+					});
 
-				// Save updated user info
-				localStorage.setItem('userInfo', JSON.stringify(user));
+					// Reload navigation to show updated name
+					if (window.NavigationLoader) {
+						window.NavigationLoader.reload();
+					}
 
-				// Reload navigation to show updated name
-				if (window.NavigationLoader) {
-					window.NavigationLoader.reload();
+					localStorage.setItem('first_name', formData.first_name);
+					localStorage.setItem('last_name', formData.last_name);
+					localStorage.setItem('gender', formData.sex);
+					localStorage.setItem('birthdate', formData.birthdate);
+					localStorage.setItem('birthtime', formData.birthtime);
+					localStorage.setItem('birthplace', formData.birthplace);
+
+				} catch (error) {
+					this.showMessage(this.handleAPIError(error), 'error');
+					console.error('Registration error:', error);
+				} finally {
+					// Restore register button
+					const submitButton = document.getElementById('submit');
+					if (submitButton) {
+						submitButton.disabled = false;
+						submitButton.style.opacity = '1';
+						const originalText = submitButton.getAttribute('data-original-text');
+						if (originalText) {
+							submitButton.textContent = originalText;
+						}
+					}
 				}
 			}
 
@@ -459,17 +449,21 @@
 			// Check if there are unsaved changes
 			function hasChanges() {
 				const currentData = {
-					name: document.getElementById('name').value.trim(),
+					first_name: document.getElementById('firstname').value.trim(),
+					last_name: document.getElementById('lastname').value.trim(),
+					birthdate: document.getElementById('birthdate').value,
+					birthtime: document.getElementById('birthtime').value,
+					bithplace: document.getElementById('birthplace').value,
 					gender: document.getElementById('gender').value,
-					birthDatetime: document.getElementById('birthtime').value,
-					birthLocation: document.getElementById('birthplace').value.trim()
+					birthplace: document.getElementById('birthplace').value.trim()
 				};
-
 				return (
-					currentData.name !== (originalUserData.name || '') ||
-					currentData.gender !== (originalUserData.gender || '') ||
-					currentData.birthDatetime !== (originalUserData.birthDatetime || '') ||
-					currentData.birthLocation !== (originalUserData.birthLocation || '') ||
+					currentData.first_name !== (localStorage.getItem('first_name') || '') ||
+					currentData.last_name !== (localStorage.getItem('last_name') || '') ||
+					currentData.gender !== (localStorage.getItem('gender') || '') ||
+					currentData.birthdate !== (localStorage.getItem('birthdate') || '') ||
+					currentData.birthtime !== (localStorage.getItem('birthtime') || '') ||
+					currentData.birthplace !== (localStorage.getItem('birthplace') || '') ||
 					document.getElementById('currentPassword').value ||
 					document.getElementById('newPassword').value ||
 					document.getElementById('confirmPassword').value
