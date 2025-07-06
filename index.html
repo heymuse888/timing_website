@@ -305,6 +305,21 @@
 						}
 					});
 
+					// Auto-fill user data if available
+					try {
+						const userInfo = localStorage.getItem('userInfo');
+						if (userInfo) {
+							const user = JSON.parse(userInfo);
+							
+							// Pre-fill event location with user's birth location if available
+							if (user.birthLocation) {
+								document.getElementById('event-location').value = user.birthLocation;
+							}
+						}
+					} catch (error) {
+						console.error('Error auto-filling user data:', error);
+					}
+
 					if (eventForm) {
 						eventForm.addEventListener('submit', function(e) {
 							e.preventDefault();

@@ -547,62 +547,39 @@ class AuthSystem {
                 method: 'POST',
                 body: JSON.stringify(requestData)
             });
-            
-            // 处理不同服务器的响应格式
-            if (this.isLocalTest) {
-                // 本地测试服务器响应格式
-                if (response.success) {
-                    this.showMessage(response.message || this.getMessage('loginSuccess'), 'success');
-                    localStorage.setItem('userRegistered', 'true');
-                    localStorage.setItem('userInfo', JSON.stringify({ 
-                        email: email,
-                        username: response.username || usernameExtracted,
-                        name: response.name || response.username || usernameExtracted
-                    }));
-                    
-                    if (response.token) {
-                        localStorage.setItem('authToken', response.token);
-                    }
-                    
-                    // Update navigation with new system
-                    if (window.NavigationLoader) {
-                        setTimeout(() => {
-                            window.NavigationLoader.reload();
-                        }, 500);
-                    } else {
-                        this.updateNavigation(response.username || usernameExtracted);
-                    }
-                    
-                    setTimeout(() => {
-                        window.location.href = this.currentLanguage === 'zh' ? 'index-zh.html' : 'index.html';
-                    }, 1500);
-                } else {
-                    this.showMessage(response.message || this.getMessage('loginFailed'), 'error');
-                }
-            } else {
-                // 生产服务器响应格式
-                this.showMessage(this.getMessage('loginSuccess'), 'success');
-                localStorage.setItem('token_type', response.token_type);
-                localStorage.setItem('username_token', response.username_token);
-                localStorage.setItem('access_token', response.access_token);
-                localStorage.setItem('username', response.username);
+
+            if (response.success) {
+                this.showMessage(response.message || this.getMessage('loginSuccess'), 'success');
                 
-                // Update navigation with new system
+                localStorage.setItem('userRegistered', 'true');
+                localStorage.setItem('userInfo', JSON.stringify({ 
+                    email: email,
+                    username: usernameExtracted,
+                    name: response.name || usernameExtracted,
+                    gender: response.gender,
+                    birthDate: response.birthDate,
+                    birthTime: response.birthTime,
+                    birthDatetime: response.birthDatetime,
+                    birthLocation: response.birthLocation
+                }));
+                
+                localStorage.setItem('authToken', response.token || `token_${Date.now()}`);
+                
+                // Update navigation
                 if (window.NavigationLoader) {
-                    console.log("navigation loader");
                     setTimeout(() => {
                         window.NavigationLoader.reload();
                     }, 500);
                 } else {
-                    console.log("local navigation");
                     this.updateNavigation(usernameExtracted);
                 }
                 
                 setTimeout(() => {
                     window.location.href = this.currentLanguage === 'zh' ? 'index-zh.html' : 'index.html';
                 }, 1500);
+            } else {
+                this.showMessage(response.message || this.getMessage('loginFailed'), 'error');
             }
-            
         } catch (error) {
             // API服务器不可用，尝试离线模拟登录
             console.log('API服务器不可用，尝试离线模拟登录...');
@@ -621,6 +598,11 @@ class AuthSystem {
                     email: email,
                     username: usernameExtracted,
                     name: offlineResponse.name || usernameExtracted,
+                    gender: offlineResponse.gender,
+                    birthDate: offlineResponse.birthDate,
+                    birthTime: offlineResponse.birthTime,
+                    birthDatetime: offlineResponse.birthDatetime,
+                    birthLocation: offlineResponse.birthLocation,
                     isOfflineMode: true
                 }));
                 
@@ -653,8 +635,24 @@ class AuthSystem {
     tryOfflineLogin(username, password) {
         // 演示账户数据库
         const demoUsers = {
-            'admin@example.com': { password: '123456', name: '管理员' },
-            'admin': { password: '123456', name: '管理员' }
+            'admin@example.com': { 
+                password: '123456', 
+                name: '管理员',
+                gender: 'female',
+                birthDate: '2003-01-02',
+                birthTime: '04:05',
+                birthDatetime: '2003-01-02 04:05',
+                birthLocation: '这里'
+            },
+            'admin': { 
+                password: '123456', 
+                name: '管理员',
+                gender: 'female',
+                birthDate: '2003-01-02',
+                birthTime: '04:05',
+                birthDatetime: '2003-01-02 04:05',
+                birthLocation: '这里'
+            }
         };
         
         // 检查用户名（支持邮箱和用户名格式）
@@ -664,7 +662,12 @@ class AuthSystem {
             return {
                 success: true,
                 message: this.getMessage('loginSuccess') + ' (离线模式)',
-                name: user.name
+                name: user.name,
+                gender: user.gender,
+                birthDate: user.birthDate,
+                birthTime: user.birthTime,
+                birthDatetime: user.birthDatetime,
+                birthLocation: user.birthLocation
             };
         } else {
             return {

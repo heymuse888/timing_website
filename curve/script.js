@@ -64,7 +64,7 @@ async function analyzeBirthdayAPI(userData) {
     
     for (const endpoint of apiEndpoints) {
         try {
-            console.log(`🔄 尝试连接API: ${endpoint}`);
+            console.log(`尝试连接API: ${endpoint}`);
             
             const fetchPromise = fetch(endpoint, {
                 method: 'POST',
@@ -77,17 +77,17 @@ async function analyzeBirthdayAPI(userData) {
             // 使用Promise.race来实现超时控制
             const response = await Promise.race([fetchPromise, timeoutPromise]);
             
-            console.log('✅ 收到响应:', response.status, response.statusText);
+            console.log('收到响应:', response.status, response.statusText);
             
             if (!response.ok) {
                 throw new Error(`API请求失败: ${response.status} ${response.statusText}`);
             }
 
             const data = await response.json();
-            console.log(`🎯 使用真实API数据 (${endpoint})`);
+            console.log(`使用真实API数据 (${endpoint})`);
             return data;
         } catch (error) {
-            console.warn(`❌ API端点 ${endpoint} 不可用:`, error.message);
+            console.warn(`API端点 ${endpoint} 不可用:`, error.message);
             // 继续尝试下一个端点
         }
     }
@@ -362,32 +362,131 @@ class BirthdayAnalyzer {
     constructor() {
         this.chart = null;
         this.rawData = null;
-        this.currentZoomLevel = 1; // 缩放级别：1=最粗糙（3个月），数值越大越详细
-        this.maxZoomLevel = 6;     // 最大缩放级别
-        this.currentOffset = 0;    // 当前时间偏移量（数据点数）
+        this.currentZoomLevel = 1;
+        this.maxZoomLevel = 6;
+        this.currentOffset = 0;
+        
+        // 设置出生时间输入的最大值为当前时间
+        const birthtimeInput = document.getElementById('birthtime');
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        birthtimeInput.max = `${year}-${month}-${day}T${hours}:${minutes}`;
+        birthtimeInput.min = "1900-01-01T00:00";
         
         // 设置全局变量以便onClick事件访问
         window.birthdayAnalyzer = this;
+        
+        // 自动填充用户数据
+        this.autoFillUserData();
         
         this.initializeEventListeners();
         this.initializeChart();
     }
 
+    // 自动填充用户数据
+    autoFillUserData() {
+        try {
+            const userInfo = localStorage.getItem('userInfo');
+            if (userInfo) {
+                const user = JSON.parse(userInfo);
+                
+                // 填充姓名
+                if (user.name) {
+                    document.getElementById('name').value = user.name;
+                } else if (user.displayName) {
+                    document.getElementById('name').value = user.displayName;
+                } else if (user.username) {
+                    document.getElementById('name').value = user.username;
+                }
+                
+                // 填充性别
+                if (user.gender) {
+                    document.getElementById('gender').value = user.gender;
+                }
+                
+                // 填充出生时间
+                let datetimeValue = '';
+                if (user.birthDate && user.birthTime) {
+                    datetimeValue = `${user.birthDate}T${user.birthTime}`;
+                } else if (user.birthDatetime) {
+                    const parts = user.birthDatetime.split(' ');
+                    if (parts.length >= 2) {
+                        datetimeValue = `${parts[0]}T${parts[1]}`;
+                    } else if (parts[0].includes('-')) {
+                        datetimeValue = parts[0] + 'T00:00';
+                    }
+                }
+                if (datetimeValue) {
+                    document.getElementById('birthtime').value = datetimeValue;
+                }
+                
+                // 填充出生地点
+                if (user.birthLocation) {
+                    document.getElementById('birthplace').value = user.birthLocation;
+                }
+            }
+        } catch (error) {
+            console.error('Error auto-filling user data:', error);
+        }
+    }
+
+    validateDateTime(dateTimeStr) {
+        // 尝试解析日期时间
+        const date = new Date(dateTimeStr);
+
+        // 1. 检查是否能成功解析
+        if (isNaN(date.getTime())) {
+            return { valid: false, message: '请输入有效的日期和时间' };
+        }
+
+        // 2. 检查年份范围
+        const year = date.getFullYear();
+        const currentYear = new Date().getFullYear();
+        if (year < 1900 || year > currentYear) {
+            return { valid: false, message: `年份必须在1900到${currentYear}年之间` };
+        }
+
+        // 3. 检查是否是未来时间
+        const now = new Date();
+        if (date > now) {
+            return { valid: false, message: '不能选择未来时间' };
+        }
+
+        // 4. 检查日期是否真的存在（例如避免2月30号）
+        const month = date.getMonth(); // 0-11
+        const day = date.getDate();
+        const realMaxDay = new Date(year, month + 1, 0).getDate();
+        if (day > realMaxDay) {
+            return { valid: false, message: '该日期不存在' };
+        }
+
+        return { valid: true };
+    }
+
     initializeEventListeners() {
+        // 添加日期时间输入验证
+        const birthtimeInput = document.getElementById('birthtime');
+        birthtimeInput.addEventListener('change', () => {
+            const dateTimeValue = birthtimeInput.value;
+            if (dateTimeValue) {
+                const validation = this.validateDateTime(dateTimeValue);
+                if (!validation.valid) {
+                    alert(validation.message);
+                    birthtimeInput.value = '';
+                    return;
+                }
+            }
+        });
+
         const submitBtn = document.querySelector('.submit-btn');
         submitBtn.addEventListener('click', () => this.analyzeBirthday());
         
         // 添加缩放控制按钮事件
         this.addZoomControls();
-        
-        // 开发测试：双击按钮直接使用模拟数据
-        submitBtn.addEventListener('dblclick', () => this.testMockData());
-        
-        // 临时测试：右键点击按钮直接使用模拟数据（跳过表单验证）
-        submitBtn.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-            this.testMockData();
-        });
     }
     
     // 测试模拟数据功能
@@ -396,9 +495,9 @@ class BirthdayAnalyzer {
         try {
             this.rawData = generateMockData();
             this.updateChart();
-            console.log('✅ 模拟数据测试成功');
+            console.log('模拟数据测试成功');
         } catch (error) {
-            console.error('❌ 模拟数据测试失败:', error);
+            console.error('模拟数据测试失败:', error);
         }
     }
     
@@ -409,13 +508,50 @@ class BirthdayAnalyzer {
         controlsDiv.style.cssText = `
             margin-bottom: 20px; 
             display: flex; 
-            gap: 15px; 
+            flex-direction: column;
+            gap: 10px; 
             align-items: center; 
-            justify-content: center;
             padding: 15px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+        `;
+
+        // 创建信息显示行
+        const infoRow = document.createElement('div');
+        infoRow.className = 'zoom-info-row';
+        infoRow.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        `;
+
+        // 缩放级别显示
+        const zoomInfo = document.createElement('div');
+        zoomInfo.className = 'zoom-info';
+        zoomInfo.style.cssText = `
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.05);
+            color: #E2E8F0;
+            border-radius: 6px;
+            font-size: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: nowrap;
+            min-width: 150px;
+        `;
+
+        // 创建按钮行
+        const buttonRow = document.createElement('div');
+        buttonRow.className = 'zoom-button-row';
+        buttonRow.style.cssText = `
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
         `;
         
         // Zoom Out 按钮
@@ -437,71 +573,13 @@ class BirthdayAnalyzer {
             justify-content: center;
         `;
         
-        zoomOutBtn.addEventListener('click', () => {
-            if (this.currentZoomLevel > 1) {
-                this.adjustOffsetForZoomChange(this.currentZoomLevel, this.currentZoomLevel - 1);
-                this.currentZoomLevel--;
-                this.updateZoomInfo();
-                this.updateChart();
-            }
-        });
-        
-        // 缩放级别显示
-        const zoomInfo = document.createElement('div');
-        zoomInfo.className = 'zoom-info';
-        zoomInfo.style.cssText = `
-            padding: 6px 12px;
-            background: rgba(255,255,255,0.05);
-            color: #E2E8F0;
-            border-radius: 6px;
-            font-size: 12px;
-            min-width: 100px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
-            white-space: nowrap;
-        `;
-        
         // Zoom In 按钮
         const zoomInBtn = document.createElement('button');
         zoomInBtn.innerHTML = '⊕';
         zoomInBtn.className = 'zoom-in-btn';
-        zoomInBtn.style.cssText = `
-            padding: 8px;
-            background: transparent;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 18px;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        `;
+        zoomInBtn.style.cssText = zoomOutBtn.style.cssText;
         
-        zoomInBtn.addEventListener('click', () => {
-            if (this.currentZoomLevel < this.maxZoomLevel) {
-                this.adjustOffsetForZoomChange(this.currentZoomLevel, this.currentZoomLevel + 1);
-                this.currentZoomLevel++;
-                this.updateZoomInfo();
-                this.updateChart();
-            }
-        });
-        
-        // 鼠标悬停效果
-        [zoomOutBtn, zoomInBtn].forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                btn.style.transform = 'scale(1.1)';
-                btn.style.opacity = '0.8';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'scale(1)';
-                btn.style.opacity = '1';
-            });
-        });
-        
-        // 添加滑动控制按钮
+        // 滑动按钮
         const slideLeftBtn = document.createElement('button');
         slideLeftBtn.innerHTML = '◀';
         slideLeftBtn.className = 'slide-left-btn';
@@ -518,38 +596,37 @@ class BirthdayAnalyzer {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 15px;
         `;
         
         const slideRightBtn = document.createElement('button');
         slideRightBtn.innerHTML = '▶';
         slideRightBtn.className = 'slide-right-btn';
-        slideRightBtn.style.cssText = `
-            padding: 8px;
-            background: transparent;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        `;
-        
-        // 滑动按钮事件
-        slideLeftBtn.addEventListener('click', () => {
-            this.slideLeft();
+        slideRightBtn.style.cssText = slideLeftBtn.style.cssText;
+
+        // 添加事件监听器
+        zoomOutBtn.addEventListener('click', () => {
+            if (this.currentZoomLevel > 1) {
+                this.adjustOffsetForZoomChange(this.currentZoomLevel, this.currentZoomLevel - 1);
+                this.currentZoomLevel--;
+                this.updateZoomInfo();
+                this.updateChart();
+            }
         });
         
-        slideRightBtn.addEventListener('click', () => {
-            this.slideRight();
+        zoomInBtn.addEventListener('click', () => {
+            if (this.currentZoomLevel < this.maxZoomLevel) {
+                this.adjustOffsetForZoomChange(this.currentZoomLevel, this.currentZoomLevel + 1);
+                this.currentZoomLevel++;
+                this.updateZoomInfo();
+                this.updateChart();
+            }
         });
-        
-        // 滑动按钮悬停效果
-        [slideLeftBtn, slideRightBtn].forEach(btn => {
+
+        slideLeftBtn.addEventListener('click', () => this.slideLeft());
+        slideRightBtn.addEventListener('click', () => this.slideRight());
+
+        // 添加悬停效果
+        [zoomOutBtn, zoomInBtn, slideLeftBtn, slideRightBtn].forEach(btn => {
             btn.addEventListener('mouseenter', () => {
                 btn.style.transform = 'scale(1.1)';
                 btn.style.opacity = '0.8';
@@ -560,11 +637,36 @@ class BirthdayAnalyzer {
             });
         });
 
-        controlsDiv.appendChild(zoomOutBtn);
-        controlsDiv.appendChild(zoomInfo);
-        controlsDiv.appendChild(zoomInBtn);
-        controlsDiv.appendChild(slideLeftBtn);
-        controlsDiv.appendChild(slideRightBtn);
+        // 组装布局
+        infoRow.appendChild(zoomInfo);
+        buttonRow.appendChild(zoomOutBtn);
+        buttonRow.appendChild(zoomInBtn);
+        buttonRow.appendChild(slideLeftBtn);
+        buttonRow.appendChild(slideRightBtn);
+
+        controlsDiv.appendChild(infoRow);
+        controlsDiv.appendChild(buttonRow);
+        
+        // 添加响应式样式
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (min-width: 769px) {
+                .zoom-controls {
+                    flex-direction: row !important;
+                    gap: 15px !important;
+                    justify-content: center !important;
+                }
+                .zoom-info-row {
+                    width: auto !important;
+                    flex: 0 0 auto !important;
+                }
+                .zoom-button-row {
+                    width: auto !important;
+                    flex: 0 0 auto !important;
+                }
+            }
+        `;
+        document.head.appendChild(style);
         
         energySection.insertBefore(controlsDiv, energySection.querySelector('canvas'));
         this.updateZoomInfo();
@@ -671,18 +773,12 @@ class BirthdayAnalyzer {
 
     updateZoomInfo() {
         const zoomInfo = document.querySelector('.zoom-info');
-        if (zoomInfo) {
-            const windowSize = this.currentZoomLevel;
-            const dataPoints = this.rawData ? this.rawData.health.time.length : 0;
-            
-            if (dataPoints > 0) {
-                const effectivePoints = Math.min(12, Math.ceil(dataPoints / windowSize));
-                const timespan = this.getTimespanDescription(windowSize, dataPoints);
-                zoomInfo.textContent = `级别 ${this.currentZoomLevel} - ${timespan}`;
-            } else {
-                zoomInfo.textContent = `缩放级别 ${this.currentZoomLevel}`;
-            }
-        }
+        if (!zoomInfo) return;
+
+        const windowSize = this.currentZoomLevel;
+        const timespan = this.getTimespanDescription(windowSize, 12);
+        
+        zoomInfo.textContent = `级别${this.currentZoomLevel} ${timespan}`;
         
         // 更新按钮状态
         const zoomOutBtn = document.querySelector('.zoom-out-btn');
@@ -699,9 +795,6 @@ class BirthdayAnalyzer {
             zoomInBtn.style.opacity = zoomInBtn.disabled ? '0.5' : '1';
             zoomInBtn.style.cursor = zoomInBtn.disabled ? 'not-allowed' : 'pointer';
         }
-        
-        // 更新滑动按钮状态
-        this.updateSlideButtons();
     }
     
     getTimespanDescription(zoomLevel, dataPoints) {
@@ -882,13 +975,20 @@ class BirthdayAnalyzer {
             nameInput.focus();
             return;
         }
-        
+
         if (!birthtime) {
             alert('请选择出生时间');
             birthtimeInput.focus();
             return;
         }
-        
+
+        // 验证日期和时间
+        const validation = this.validateDateTime(birthtime);
+        if (!validation.valid) {
+            alert(validation.message);
+            return;
+        }
+
         if (!birthplace) {
             alert('请输入出生地');
             birthplaceInput.focus();
@@ -900,7 +1000,7 @@ class BirthdayAnalyzer {
             submitBtn.disabled = true;
             btnText.textContent = '推演中...';
             console.log('🚀 开始分析生日数据...');
-            
+
             // 从datetime-local格式中提取日期和时间
             const datetimeObj = new Date(birthtime);
             const birthday = datetimeObj.toISOString().split('T')[0]; // YYYY-MM-DD格式
@@ -914,13 +1014,13 @@ class BirthdayAnalyzer {
                 birthtime: timeOnly,
                 birthplace: birthplace
             };
-            
+
             this.rawData = await analyzeBirthdayAPI(userData);
             this.updateChart();
-            
-            console.log('✅ 分析完成，图表已更新');
+
+            console.log('分析完成，图表已更新');
         } catch (error) {
-            console.error('❌ 分析失败:', error);
+            console.error('分析失败:', error);
             alert('分析失败，请稍后重试');
         } finally {
             // 恢复按钮状态

@@ -82,12 +82,14 @@
 			justify-content: space-between;
 			align-items: center;
 			margin: 1.5rem 0 2rem 0;
+			gap: 1rem;
 		}
 
 		.checkbox-group {
 			display: flex;
 			align-items: center;
 			gap: 0.5rem;
+			padding-top: 1px; 
 		}
 
 		.checkbox-group input[type="checkbox"] {
@@ -105,14 +107,17 @@
 		}
 
 		.forgot-password {
-			text-align: right;
+			display: flex;
+			align-items: center;
+			margin: 0;
+			margin-top: -5px;
 		}
 
 		.forgot-password a {
 			color: #ffffff;
 			text-decoration: none;
-			font-size: 0.85rem;
-			transition: color 0.3s ease;
+			font-size: 0.9rem; 
+			line-height: 1.2rem;  
 		}
 
 		.forgot-password a:hover {
@@ -302,7 +307,7 @@
 					navWork: 'Function',
 					navCurve: 'Energy Curve',
 					navContact: 'Contact',
-					navLogin: 'Log In',
+					navLogin: 'SIGN IN',
 					navSignup: 'SIGN UP',
 					navLang: '中文'
 				}
@@ -352,8 +357,11 @@
 			// Register link handling
 			document.getElementById('register-link').addEventListener('click', function(e) {
 				e.preventDefault();
-				// Navigate to register page with current language
-				window.location.href = `register.html?lang=${currentLanguage}`;
+				// Get current language from URL or default to 'zh'
+				const urlParams = new URLSearchParams(window.location.search);
+				const lang = urlParams.get('lang') || 'zh';
+				// Navigate to register page with language parameter
+				window.location.href = `register.html?lang=${lang}`;
 			});
 		</script>
 	</body>

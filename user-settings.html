@@ -11,6 +11,75 @@
 		<link rel="stylesheet" href="assets/css/navigation.css" />
 		<link rel="stylesheet" href="assets/css/user-settings-style.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* Datetime input styling - matching index_curve.html */
+			.datetime-input {
+				width: 100% !important;
+				padding: 0.8em 1em !important;
+				border: 1px solid rgba(255, 255, 255, 0.3) !important;
+				border-radius: 8px !important;
+				background: rgba(255, 255, 255, 0.05) !important;
+				color: #ffffff !important;
+				font-size: 0.9em !important;
+				transition: all 0.3s ease !important;
+				box-sizing: border-box;
+			}
+
+			.datetime-input:focus {
+				outline: none !important;
+				border-color: #9f6cf7 !important;
+				background: rgba(255, 255, 255, 0.1) !important;
+			}
+
+			/* Make date time picker icon white */
+			.datetime-input::-webkit-calendar-picker-indicator {
+				filter: invert(1);
+				cursor: pointer;
+			}
+
+			.datetime-input::-webkit-datetime-edit {
+				color: #ffffff;
+			}
+
+			.datetime-input::-webkit-datetime-edit-fields-wrapper {
+				color: #ffffff;
+			}
+
+			.datetime-input::-webkit-datetime-edit-text {
+				color: rgba(255, 255, 255, 0.7);
+			}
+
+			.datetime-input::-webkit-datetime-edit-month-field,
+			.datetime-input::-webkit-datetime-edit-day-field,
+			.datetime-input::-webkit-datetime-edit-year-field,
+			.datetime-input::-webkit-datetime-edit-hour-field,
+			.datetime-input::-webkit-datetime-edit-minute-field,
+			.datetime-input::-webkit-datetime-edit-ampm-field {
+				color: #ffffff;
+			}
+
+			/* Password change link styling */
+			.password-link-section {
+				text-align: center;
+				margin-top: 2rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+			}
+
+			.password-change-link {
+				color: #9f6cf7;
+				text-decoration: none;
+				font-weight: 600;
+				font-size: 0.9rem;
+				transition: color 0.3s ease;
+				cursor: pointer;
+			}
+
+			.password-change-link:hover {
+				color: #b784ff;
+				text-decoration: underline;
+			}
+		</style>
 	</head>
 
 	<body class="is-preload">
@@ -22,21 +91,14 @@
 		<!-- Main Settings Container -->
 		<div class="settings-container">
 			<div class="settings-content">
-				<a href="#" class="back-btn" onclick="goBack()"></a>
-				
 				<h1 class="settings-title" id="settings-title">用户设置</h1>
 				<p class="settings-subtitle" id="settings-subtitle">修改您的个人信息和账户设置</p>
 				
 				<form id="settingsForm">
 					<!-- Basic Information Section -->
 					<div class="form-group">
-						<label for="firstname" id="firstname-label"></label>
-						<input type="text" id="firstname" name="firstname" class="form-input" placeholder="姓">
-					</div>
-
-					<div class="form-group">
-						<label for="lastname" id="lastname-label"></label>
-						<input type="text" id="lastname" name="lastname" class="form-input" placeholder="名">
+						<label for="name" id="name-label">用户名</label>
+						<input type="text" id="name" name="name" class="form-input" placeholder="请输入您的用户名">
 					</div>
 					
 					<div class="form-group">
@@ -52,29 +114,7 @@
 					
 					<div class="form-group">
 						<label for="birthtime" id="birthtime-label">出生时间</label>
-						<input type="text" id="birthdate" placeholder="YYYY-MM-DD" maxlength="10">
-						<script>
-							document.getElementById('birthdate').addEventListener('input', function(e) {
-								let value = e.target.value.replace(/\D/g, '');
-								if (value.length > 4) {
-									value = value.substring(0, 4) + '-' + value.substring(4);
-								}
-								if (value.length > 7) {
-									value = value.substring(0, 7) + '-' + value.substring(7);
-								}
-								e.target.value = value.substring(0, 10);
-							});
-						</script>
-						<input type="text" id="birthtime" placeholder="HH:MM" maxlength="5">
-						<script>
-							document.getElementById('birthtime').addEventListener('input', function(e) {
-								let value = e.target.value.replace(/\D/g, '');
-								if (value.length > 2) {
-									value = value.substring(0, 2) + ':' + value.substring(2);
-								}
-								e.target.value = value.substring(0, 5);
-							});
-						</script>
+						<input type="datetime-local" id="birthtime" placeholder="MM/DD/YYYY XX:XX AM" class="datetime-input">
 					</div>
 					
 					<div class="form-group">
@@ -82,30 +122,15 @@
 						<input type="text" id="birthplace" name="birthplace" class="form-input" placeholder="请输入您的出生地点">
 					</div>
 
-					<!-- Password Section -->
-					<div class="password-section">
-						<div class="password-section-title" id="password-section-title">密码修改</div>
-						
-						<div class="form-group">
-							<label for="currentPassword" id="current-password-label">当前密码</label>
-							<input type="password" id="currentPassword" name="currentPassword" class="form-input" placeholder="请输入当前密码以确认修改">
-						</div>
-						
-						<div class="form-group">
-							<label for="newPassword" id="new-password-label">新密码</label>
-							<input type="password" id="newPassword" name="newPassword" class="form-input" placeholder="如需修改密码请填写（至少6个字符）">
-						</div>
-						
-						<div class="form-group">
-							<label for="confirmPassword" id="confirm-password-label">确认新密码</label>
-							<input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="请再次输入新密码">
-						</div>
-					</div>
-
 					<!-- Buttons -->
 					<div class="button-group">
 						<button type="button" class="form-btn form-cancel-btn" onclick="cancelChanges()" id="cancel-btn">取消</button>
 						<button type="submit" class="form-btn form-save-btn" id="save-btn">确认保存</button>
+					</div>
+					
+					<!-- Password Change Link -->
+					<div class="password-link-section">
+						<a href="#" class="password-change-link" onclick="goToPasswordChange()" id="password-change-link">修改密码</a>
 					</div>
 				</form>
 			</div>
@@ -131,24 +156,18 @@
 				zh: {
 					title: '用户设置',
 					subtitle: '修改您的个人信息和账户设置',
-					firstnameLabel: '姓',
-					firstnamePlaceholder: '姓',
-					lastnameLabel: '名',
-					lastnamePlaceholder: '名',
+					nameLabel: '用户名',
+					namePlaceholder: '请输入您的用户名',
 					genderLabel: '性别',
 					genderPlaceholder: '请选择性别',
 					genderFemale: '女',
 					genderMale: '男',
 					genderOther: '其他',
-					birthplaceLabel: '生日地点',
+					birthtimeLabel: '出生时间',
+					birthtimePlaceholder: 'MM/DD/YYYY XX:XX AM',
+					birthplaceLabel: '出生地点',
 					birthplacePlaceholder: '请输入您的出生地点',
-					passwordSectionTitle: '密码修改',
-					currentPasswordLabel: '当前密码',
-					currentPasswordPlaceholder: '请输入当前密码以确认修改',
-					newPasswordLabel: '新密码',
-					newPasswordPlaceholder: '请输入新密码',
-					confirmPasswordLabel: '确认新密码',
-					confirmPasswordPlaceholder: '请再次输入新密码',
+					passwordChangeLink: '修改密码',
 					cancelBtn: '取消',
 					saveBtn: '确认保存',
 					loginRequired: '请先登录！',
@@ -157,9 +176,6 @@
 					genderRequired: '请选择性别',
 					birthtimeRequired: '请选择生日时间',
 					birthplaceRequired: '请输入生日地点',
-					currentPasswordRequired: '修改密码需要输入当前密码',
-					passwordTooShort: '新密码至少需要6个字符',
-					passwordMismatch: '新密码与确认密码不一致',
 					updateSuccess: '用户信息更新成功！',
 					updateError: '更新失败：',
 					unsavedChanges: '您有未保存的修改，确定要取消吗？',
@@ -168,24 +184,18 @@
 				en: {
 					title: 'User Settings',
 					subtitle: 'Modify your personal information and account settings',
-					firstnameLabel: 'First Name',
-					firstnamePlaceholder: 'First Name',
-					lastnameLabel: 'Last Name',
-					lastnamePlaceholder: 'Last Name',
+					nameLabel: 'Username',
+					namePlaceholder: 'Please enter your username',
 					genderLabel: 'Gender',
 					genderPlaceholder: 'Please select gender',
 					genderFemale: 'Female',
 					genderMale: 'Male',
 					genderOther: 'Other',
+					birthtimeLabel: 'Birth Date & Time',
+					birthtimePlaceholder: 'MM/DD/YYYY XX:XX AM',
 					birthplaceLabel: 'Birth Location',
 					birthplacePlaceholder: 'Enter your birth location',
-					passwordSectionTitle: 'Password Change',
-					currentPasswordLabel: 'Current Password',
-					currentPasswordPlaceholder: 'Enter current password to confirm changes',
-					newPasswordLabel: 'New Password',
-					newPasswordPlaceholder: 'Enter new password if you want to change it (at least 6 characters)',
-					confirmPasswordLabel: 'Confirm New Password',
-					confirmPasswordPlaceholder: 'Re-enter new password',
+					passwordChangeLink: 'Change Password',
 					cancelBtn: 'Cancel',
 					saveBtn: 'Save Changes',
 					loginRequired: 'Please login first!',
@@ -194,9 +204,6 @@
 					genderRequired: 'Please select your gender',
 					birthtimeRequired: 'Please select your birth date and time',
 					birthplaceRequired: 'Please enter your birth location',
-					currentPasswordRequired: 'Please enter your current password to change password',
-					passwordTooShort: 'New password must be at least 6 characters long',
-					passwordMismatch: 'New password and confirmation do not match',
 					updateSuccess: 'User information updated successfully!',
 					updateError: 'Update failed: ',
 					unsavedChanges: 'You have unsaved changes, are you sure you want to cancel?',
@@ -239,8 +246,9 @@
 
 			// Check if user is logged in
 			function isUserLoggedIn() {
-				const username_token = localStorage.getItem('username_token');
-				return username_token !== null;
+				const userRegistered = localStorage.getItem('userRegistered');
+				const userInfo = localStorage.getItem('userInfo');
+				return userRegistered === 'true' && userInfo;
 			}
 
 			// Redirect to login page
@@ -257,10 +265,8 @@
 				
 				document.getElementById('settings-title').textContent = t.title;
 				document.getElementById('settings-subtitle').textContent = t.subtitle;
-				document.getElementById('firstname-label').textContent = t.firstnameLabel;
-				document.getElementById('firstname').placeholder = t.firstnamePlaceholder;
-				document.getElementById('lastname-label').textContent = t.lastnameLabel;
-				document.getElementById('lastname').placeholder = t.lastnamePlaceholder;
+				document.getElementById('name-label').textContent = t.nameLabel;
+				document.getElementById('name').placeholder = t.namePlaceholder;
 				document.getElementById('gender-label').textContent = t.genderLabel;
 				document.getElementById('gender-placeholder').textContent = t.genderPlaceholder;
 				document.getElementById('gender-female').textContent = t.genderFemale;
@@ -268,15 +274,10 @@
 				document.getElementById('gender-other').textContent = t.genderOther;
 
 				document.getElementById('birthtime-label').textContent = t.birthtimeLabel;
+				document.getElementById('birthtime').placeholder = t.birthtimePlaceholder;
 				document.getElementById('birthplace-label').textContent = t.birthplaceLabel;
 				document.getElementById('birthplace').placeholder = t.birthplacePlaceholder;
-				document.getElementById('password-section-title').textContent = t.passwordSectionTitle;
-				document.getElementById('current-password-label').textContent = t.currentPasswordLabel;
-				document.getElementById('currentPassword').placeholder = t.currentPasswordPlaceholder;
-				document.getElementById('new-password-label').textContent = t.newPasswordLabel;
-				document.getElementById('newPassword').placeholder = t.newPasswordPlaceholder;
-				document.getElementById('confirm-password-label').textContent = t.confirmPasswordLabel;
-				document.getElementById('confirmPassword').placeholder = t.confirmPasswordPlaceholder;
+				document.getElementById('password-change-link').textContent = t.passwordChangeLink;
 				document.getElementById('cancel-btn').textContent = t.cancelBtn;
 				document.getElementById('save-btn').textContent = t.saveBtn;
 			}
@@ -292,16 +293,36 @@
 						// Populate form fields with existing user data
 						if (user.name) {
 							document.getElementById('name').value = user.name;
-						}
-						if (user.displayName && !user.name) {
+						} else if (user.displayName) {
 							document.getElementById('name').value = user.displayName;
+						} else if (user.username) {
+							document.getElementById('name').value = user.username;
 						}
+						
 						if (user.gender) {
 							document.getElementById('gender').value = user.gender;
 						}
-						if (user.birthDatetime) {
-							document.getElementById('birthtime').value = user.birthDatetime;
+						
+						// Handle birth date and time - convert to datetime-local format
+						let datetimeValue = '';
+						if (user.birthDate && user.birthTime) {
+							// Combine separate date and time
+							datetimeValue = `${user.birthDate}T${user.birthTime}`;
+						} else if (user.birthDatetime) {
+							// Convert legacy birthDatetime to datetime-local format
+							const parts = user.birthDatetime.split(' ');
+							if (parts.length >= 2) {
+								datetimeValue = `${parts[0]}T${parts[1]}`;
+							} else if (parts[0].includes('-')) {
+								// Only date provided
+								datetimeValue = parts[0] + 'T00:00';
+							}
 						}
+						
+						if (datetimeValue) {
+							document.getElementById('birthtime').value = datetimeValue;
+						}
+						
 						if (user.birthLocation) {
 							document.getElementById('birthplace').value = user.birthLocation;
 						}
@@ -312,7 +333,8 @@
 					}
 				} catch (error) {
 					console.error('Error loading user settings:', error);
-					alert(translations[currentLanguage].loadError);
+					// Don't show alert for loading errors, just log it
+					console.log('User settings will start with default values');
 				}
 			}
 
@@ -337,15 +359,29 @@
 				// Set saving flag to prevent beforeunload prompt
 				isSaving = true;
 
-				// Collect form data
+				// Collect form data from datetime-local input
+				const birthtimeValue = document.getElementById('birthtime').value;
+				let birthdate = '';
+				let birthtime = '';
+				let birthDatetime = '';
+				
+				if (birthtimeValue) {
+					// Convert datetime-local format (YYYY-MM-DDTHH:MM) to separate date and time
+					const parts = birthtimeValue.split('T');
+					if (parts.length === 2) {
+						birthdate = parts[0];
+						birthtime = parts[1];
+						birthDatetime = `${birthdate} ${birthtime}`;
+					}
+				}
+				
 				const formData = {
 					name: document.getElementById('name').value.trim(),
 					gender: document.getElementById('gender').value,
-					birthDatetime: document.getElementById('birthtime').value,
-					birthLocation: document.getElementById('birthplace').value.trim(),
-					currentPassword: document.getElementById('currentPassword').value,
-					newPassword: document.getElementById('newPassword').value,
-					confirmPassword: document.getElementById('confirmPassword').value
+					birthDate: birthdate,
+					birthTime: birthtime,
+					birthDatetime: birthDatetime,
+					birthLocation: document.getElementById('birthplace').value.trim()
 				};
 
 				try {
@@ -364,11 +400,8 @@
 				const t = translations[currentLanguage];
 				const name = document.getElementById('name').value.trim();
 				const gender = document.getElementById('gender').value;
-				const birthtime = document.getElementById('birthtime').value;
+				const birthtimeValue = document.getElementById('birthtime').value;
 				const birthplace = document.getElementById('birthplace').value.trim();
-				const currentPassword = document.getElementById('currentPassword').value;
-				const newPassword = document.getElementById('newPassword').value;
-				const confirmPassword = document.getElementById('confirmPassword').value;
 
 				// Basic required fields
 				if (!name) {
@@ -383,7 +416,7 @@
 					return false;
 				}
 
-				if (!birthtime) {
+				if (!birthtimeValue) {
 					alert(t.birthtimeRequired);
 					document.getElementById('birthtime').focus();
 					return false;
@@ -393,27 +426,6 @@
 					alert(t.birthplaceRequired);
 					document.getElementById('birthplace').focus();
 					return false;
-				}
-
-				// Password validation
-				if (newPassword || confirmPassword) {
-					if (!currentPassword) {
-						alert(t.currentPasswordRequired);
-						document.getElementById('currentPassword').focus();
-						return false;
-					}
-
-					if (newPassword.length < 6) {
-						alert(t.passwordTooShort);
-						document.getElementById('newPassword').focus();
-						return false;
-					}
-
-					if (newPassword !== confirmPassword) {
-						alert(t.passwordMismatch);
-						document.getElementById('confirmPassword').focus();
-						return false;
-					}
 				}
 
 				return true;
@@ -432,6 +444,8 @@
 				user.name = formData.name;
 				user.displayName = formData.name;
 				user.gender = formData.gender;
+				user.birthDate = formData.birthDate;
+				user.birthTime = formData.birthTime;
 				user.birthDatetime = formData.birthDatetime;
 				user.birthLocation = formData.birthLocation;
 
@@ -458,21 +472,32 @@
 
 			// Check if there are unsaved changes
 			function hasChanges() {
+				const birthtimeValue = document.getElementById('birthtime').value;
+				let currentBirthDate = '';
+				let currentBirthTime = '';
+				
+				if (birthtimeValue) {
+					const parts = birthtimeValue.split('T');
+					if (parts.length === 2) {
+						currentBirthDate = parts[0];
+						currentBirthTime = parts[1];
+					}
+				}
+				
 				const currentData = {
 					name: document.getElementById('name').value.trim(),
 					gender: document.getElementById('gender').value,
-					birthDatetime: document.getElementById('birthtime').value,
+					birthDate: currentBirthDate,
+					birthTime: currentBirthTime,
 					birthLocation: document.getElementById('birthplace').value.trim()
 				};
 
 				return (
-					currentData.name !== (originalUserData.name || '') ||
+					currentData.name !== (originalUserData.name || originalUserData.displayName || originalUserData.username || '') ||
 					currentData.gender !== (originalUserData.gender || '') ||
-					currentData.birthDatetime !== (originalUserData.birthDatetime || '') ||
-					currentData.birthLocation !== (originalUserData.birthLocation || '') ||
-					document.getElementById('currentPassword').value ||
-					document.getElementById('newPassword').value ||
-					document.getElementById('confirmPassword').value
+					currentData.birthDate !== (originalUserData.birthDate || '') ||
+					currentData.birthTime !== (originalUserData.birthTime || '') ||
+					currentData.birthLocation !== (originalUserData.birthLocation || '')
 				);
 			}
 
@@ -490,6 +515,12 @@
 					const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
 					window.location.href = homePage;
 				}
+			}
+
+			// Go to password change page
+			function goToPasswordChange() {
+				const langParam = '?lang=' + currentLanguage;
+				window.location.href = 'password-change.html' + langParam;
 			}
 
 			// Track if user is saving to avoid unnecessary prompts

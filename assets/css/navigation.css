@@ -191,17 +191,8 @@ body {
     }
 }
 
-@media screen and (max-width: 900px) {
-    .nav-menu {
-        gap: 1.5rem;
-    }
 
-    .nav-item {
-        font-size: 0.85rem;
-    }
-}
-
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 920px) {
     .nav-container {
         padding: 0 1rem;
     }
@@ -231,24 +222,14 @@ body {
     }
 }
 
-@media screen and (max-width: 720px) {
-    .nav-menu {
-        gap: 1rem;
-    }
-
-    .nav-item {
-        font-size: 0.75rem;
-    }
-}
-
-@media screen and (max-width: 650px) {
-    /* Hide contact first as it's usually least important */
+@media screen and (max-width: 850px) {
+    /* Hide contact first */
     .nav-item[data-nav-id="contact"] {
         display: none;
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
     /* Hide introduction next */
     .nav-item[data-nav-id="intro"] {
         display: none;
@@ -256,8 +237,8 @@ body {
 }
 
 @media screen and (max-width: 550px) {
-    /* Hide work section */
-    .nav-item[data-nav-id="work"] {
+    /* Keep event timing and energy curve visible until the end */
+    .nav-item:not([data-nav-id="curve"]):not([data-nav-id="timing"]) {
         display: none;
     }
 }

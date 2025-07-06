@@ -130,30 +130,17 @@
 		}
 
 		/* Back button */
-
-		.back-btn {
+		button.back-btn {
+			all: unset; 
 			position: absolute;
 			top: 1rem;
 			left: 1.5rem;
-			background: none;
-			border: none;
 			color: rgba(255, 255, 255, 0.8);
-			font-size: 1.2rem;
+			font-size: 1.5rem;
 			cursor: pointer;
-			padding: 0.5rem;
-			border-radius: 50%;
-			transition: all 0.3s ease;
-
+			line-height: 1;
 			display: none;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.back-btn:hover {
-			background: rgba(255, 255, 255, 0.1);
-			color: #ffffff;
-
-		}
+		  }
 
 		.checkbox-forgot-row {
 			display: flex;
@@ -184,6 +171,7 @@
 
 		.forgot-password {
 			text-align: right;
+			margin-top: -10px;
 		}
 
 		.forgot-password a {

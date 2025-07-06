@@ -487,8 +487,8 @@
             </div>
             <div class="input-group">
                 <label>出生时间</label>
-							<input type="datetime-local" id="birthtime" placeholder="MM/DD/YYYY XX:XX AM" class="datetime-input">
-						</div>
+                <input type="datetime-local" id="birthtime" class="datetime-input" min="1900-01-01T00:00">
+            </div>
 						<div class="input-group">
 							<label>出生性别</label>
 							<select id="gender" class="gender-select">
@@ -587,7 +587,7 @@
 						female: 'Female',
 						male: 'Male'
 					},
-					birthplaceLabel: 'Birth Place',
+					birthplaceLabel: 'Birth Location',
 					birthplacePlaceholder: 'Please enter birth city',
 					submitText: 'Calculate',
 					closeText: 'Close',

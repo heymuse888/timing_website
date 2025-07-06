@@ -4,9 +4,6 @@
 		<title>注册 - Timing</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-		<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
-		<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="stylesheet" href="assets/css/navigation.css" />
 		<link rel="stylesheet" href="assets/css/register-style.css" />
@@ -180,14 +177,13 @@
 					registerTitle: '欢迎来到Timing',
 					userNameLabel: '用户名',
 					userNamePlaceholder: '请输入您的用户名',
-					usernameVerificationLabel: '用户名',
-					userNameVerificationPlaceholder: '请输入您的用户名',
+					userNameverificationLabel: '用户名或邮箱',
+					userNameverificationPlaceholder: '请输入您的用户名或邮箱',
 					emailLabel: '邮箱',
 					emailPlaceholder: '请输入邮箱地址',
 					verificationLabel: '验证码',
 					verificationPlaceholder: '请输入验证码',
 					verificationResend: '重新发送',
-
 					passwordLabel: '密码',
 					passwordPlaceholder: '请输入密码',
 					confirmPasswordLabel: '确认密码',
@@ -211,8 +207,8 @@
 					registerTitle: 'Welcome to Timing',
 					userNameLabel: 'Username',
 					userNamePlaceholder: 'Please enter your username',
-					usernameVerificationLabel: 'Username',
-					userNameVerificationPlaceholder: 'Please enter your username',
+					userNameverificationLabel: 'Username or Email',
+					userNameverificationPlaceholder: 'Please enter your username or email',
 					emailLabel: 'Email',
 					emailPlaceholder: 'Enter your email address',
 					verificationLabel: 'Verification Code',
@@ -251,8 +247,8 @@
 				document.getElementById('register-title').textContent = c.registerTitle;
 				document.getElementById('userName-label').textContent = c.userNameLabel;
 				document.getElementById('username').placeholder = c.userNamePlaceholder;
-				document.getElementById('username-verification-label').textContent = c.userNameLabel;
-				document.getElementById('username-verification').placeholder = c.userNamePlaceholder;
+				document.getElementById('username-verification-label').textContent = c.userNameverificationLabel;
+				document.getElementById('username-verification').placeholder = c.userNameverificationPlaceholder;
 
 				document.getElementById('email-label').textContent = c.emailLabel;
 				document.getElementById('email').placeholder = c.emailPlaceholder;
@@ -303,12 +299,22 @@
 
 			
 			function goBack() {
-				// Switch to page 1
-				document.getElementById('page2').classList.remove('active');
-				document.getElementById('page1').classList.add('active');
-				document.getElementById('page-indicator').textContent = '1/2';
-				document.getElementById('back-btn').style.display = 'none';
-				currentPage = 1;
+				if (currentPage === 2) {
+					// Switch to page 1
+					document.getElementById('page2').classList.remove('active');
+					document.getElementById('page1').classList.add('active');
+					document.getElementById('page-indicator').textContent = '1/2';
+					document.getElementById('back-btn').style.display = 'none';
+					currentPage = 1;
+				} else {
+					// Go back to previous page or home page
+					if (document.referrer && document.referrer.includes(window.location.origin)) {
+						window.history.back();
+					} else {
+						const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
+						window.location.href = homePage;
+					}
+				}
 			}
 
 			

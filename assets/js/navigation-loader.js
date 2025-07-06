@@ -58,6 +58,7 @@
             if (pathname.includes('login.html')) return 'login';
             if (pathname.includes('register.html')) return 'register';
             if (pathname.includes('user-settings.html')) return 'user-settings';
+            if (pathname.includes('password-change.html')) return 'password-change';
             if (pathname.includes('index-zh.html')) return 'home-zh';
             if (pathname.includes('index.html')) return 'home-en';
             return 'home-zh'; // default
@@ -65,8 +66,9 @@
 
         // Check if user is logged in
         isUserLoggedIn: function() {
-            const username_token = localStorage.getItem('username_token');
-            return username_token !== null;
+            const userRegistered = localStorage.getItem('userRegistered');
+            const userInfo = localStorage.getItem('userInfo');
+            return userRegistered === 'true' && userInfo;
         },
 
         // Get logged in user info
@@ -74,10 +76,12 @@
             if (!this.isUserLoggedIn()) return null;
             
             try {
-                const username = localStorage.getItem('username');
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
                 return {
-                    displayName: username,
-                    username: username
+                    displayName: userInfo.name || userInfo.username || userInfo.email?.split('@')[0] || 'User',
+                    email: userInfo.email,
+                    name: userInfo.name,
+                    username: userInfo.username
                 };
             } catch (error) {
                 console.error('Error parsing user info:', error);
@@ -165,7 +169,7 @@
                 // User not logged in - show login/register buttons
                 return [
                     {
-                        text: isEnglish ? 'Log In' : '登录',
+                        text: isEnglish ? 'SIGN IN' : '登录',
                         href: this.getAuthHref('login', language, pageType),
                         class: 'login-btn',
                         id: 'login',
@@ -194,7 +198,7 @@
             const isEnglish = language === 'en';
             const isCurvePage = pageType === 'curve';
             const isLoginRegisterPage = pageType === 'login' || pageType === 'register';
-            const isUserSettingsPage = pageType === 'user-settings';
+            const isUserSettingsPage = pageType === 'user-settings' || pageType === 'password-change';
             
             if (item === 'curve') {
                 const curvePage = isCurvePage ? '#' : 
@@ -226,12 +230,13 @@
             const newLanguage = currentLanguage === 'en' ? 'zh' : 'en';
             const isCurvePage = pageType === 'curve';
             const isLoginRegisterPage = pageType === 'login' || pageType === 'register';
+            const isUserSettingsPage = pageType === 'user-settings' || pageType === 'password-change';
             
             if (isCurvePage) {
                 return currentLanguage === 'en' ? '../index-zh.html' : '../index.html';
             }
             
-            if (isLoginRegisterPage) {
+            if (isLoginRegisterPage || isUserSettingsPage) {
                 const currentPage = window.location.pathname.split('/').pop();
                 return currentPage + '?lang=' + newLanguage;
             }
@@ -419,8 +424,9 @@
             window.goToHomePage = function() {
                 const isCurvePage = pageType === 'curve';
                 const isLoginRegisterPage = pageType === 'login' || pageType === 'register';
+                const isUserSettingsPage = pageType === 'user-settings' || pageType === 'password-change';
                 
-                if (isLoginRegisterPage || isCurvePage) {
+                if (isLoginRegisterPage || isCurvePage || isUserSettingsPage) {
                     const mainPage = language === 'zh' ? 'index-zh.html' : 'index.html';
                     const basePath = isCurvePage ? '../' : '';
                     window.location.href = basePath + mainPage;
@@ -463,9 +469,10 @@
 
         // Handle logout functionality
         handleLogout: function(language) {
-            // Clear user data
-            localStorage.removeItem('username_token');
-            localStorage.removeItem('access_token');
+            // Clear user data (same as auth.js logout function)
+            localStorage.removeItem('userRegistered');
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('authToken');
             
             // Show logout message
             this.showMessage(language === 'en' ? 'Logged out successfully' : '已退出登录', 'success');
@@ -546,7 +553,7 @@
 
     // Listen for storage changes to update navigation when login state changes
     window.addEventListener('storage', function(e) {
-        if (e.key === 'username_token') {
+        if (e.key === 'userRegistered' || e.key === 'userInfo') {
             setTimeout(() => {
                 NavigationLoader.reload();
             }, 100);
