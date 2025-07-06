@@ -1,9 +1,4 @@
 <!DOCTYPE HTML>
-<!--
-	Dimension by HTML5 UP
-	https://html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (https://html5up.net/license)
--->
 <html>
 	<head>
 		<title>Timing - Life Hacking System</title>
@@ -286,11 +281,35 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/auth.js"></script>
+
 			<!-- Load navigation system -->
 			<script src="assets/js/navigation-loader.js"></script>
 			<script src="assets/js/navigation.js"></script>
+			
+			<script >
+				// Logo click handler
+				function goToHomePage() {
+					console.log("get to go to home page");
+					if (currentLanguage === 'zh') {
+						window.location.href = 'index-zh.html';
+					} else {
+						window.location.href = 'index.html';
+					}
+				}
+			</script>
 
 			<script>
+				// Check if user is logged in
+				function isUserLoggedIn() {
+					const username_token = localStorage.getItem('username_token');
+					return username_token !== null;
+				}
+
+				function redirectToLogin() {
+					const loginPage = window.NavigationConfig.detectLanguage() === 'en' ? 'login.html?lang=en' : 'login.html?lang=zh';
+					window.location.href = loginPage;
+				}
 
 				// Event Timing Form Functionality
 				document.addEventListener('DOMContentLoaded', function() {
@@ -324,9 +343,9 @@
 						eventForm.addEventListener('submit', function(e) {
 							e.preventDefault();
 							
-							// Check if user is registered first
-							if (!isUserRegistered()) {
-								showRegistrationModal();
+							if(!isUserLoggedIn()){
+								alert(window.NavigationConfig.detectLanguage() === 'zh'? '请先登录！': 'Please log in first!');
+								redirectToLogin();
 								return;
 							}
 							
@@ -371,6 +390,7 @@
 							}, 2000);
 						});
 					}
+					
 
 					function generateMockResult(eventData) {
 						// This is a mock function - replace with actual API call

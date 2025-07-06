@@ -99,12 +99,13 @@
             
             // Base path for relative URLs
             const basePath = isCurvePage ? '../' : '';
-            
+
             return {
                 logo: {
                     src: basePath + 'images/LOGO.png',
                     alt: 'Timing Logo',
-                    text: 'Timing'
+                    text: 'Timing',
+                    href: language === 'zh' ? 'index-zh.html' : 'index.html',
                 },
                 menuItems: [
                     {
@@ -241,7 +242,7 @@
                 return currentPage + '?lang=' + newLanguage;
             }
             
-                          return currentLanguage === 'en' ? 'index-zh.html' : 'index.html';
+                return currentLanguage === 'en' ? 'index-zh.html' : 'index.html';
           },
  
           // Get user settings page href

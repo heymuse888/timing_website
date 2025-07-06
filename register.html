@@ -20,6 +20,7 @@
 		<div class="register-container">
 			<div class="register-content">
 				<button class="back-btn" id="back-btn" onclick="goBack()">←</button>
+				<h2 class="verification-title" id="verification-title"></h2>
 				<div class="page-indicator" id="page-indicator">1/2</div>
 				
 				<h1 class="register-title" id="register-title">欢迎来到Timing</h1>
@@ -299,22 +300,13 @@
 
 			
 			function goBack() {
-				if (currentPage === 2) {
-					// Switch to page 1
-					document.getElementById('page2').classList.remove('active');
-					document.getElementById('page1').classList.add('active');
-					document.getElementById('page-indicator').textContent = '1/2';
-					document.getElementById('back-btn').style.display = 'none';
-					currentPage = 1;
-				} else {
-					// Go back to previous page or home page
-					if (document.referrer && document.referrer.includes(window.location.origin)) {
-						window.history.back();
-					} else {
-						const homePage = currentLanguage === 'en' ? 'index.html' : 'index-zh.html';
-						window.location.href = homePage;
-					}
-				}
+				// Switch to page 1
+				document.getElementById('page2').classList.remove('active');
+				document.getElementById('page1').classList.add('active');
+				document.getElementById('page-indicator').textContent = '1/2';
+				document.getElementById('back-btn').style.display = 'none';
+				document.getElementById('verification-title').style.display = 'flex';
+				currentPage = 1;
 			}
 
 			
